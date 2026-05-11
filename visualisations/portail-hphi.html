@@ -730,6 +730,7 @@ loop();
   <button class="tab" data-m="4">⑤ T⁴ → H_φ</button>
   <button class="tab" data-m="5">⑥ Synthèse des connexions</button>
   <button class="tab" data-m="6">⑦ Test P2 — φ-MEA</button>
+  <button class="tab" data-m="7">⑧ Test P2 v1.0.0 — données brutes</button>
 </div>
 <canvas id="pm-cv" width="900" height="700"></canvas>
 <div class="desc" id="pm-desc"></div>
@@ -740,6 +741,45 @@ loop();
 var cv=document.getElementById('pm-cv'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
 var mode=0,frame=0,phi=(1+Math.sqrt(5))/2;
 var sliderA=0.5;
+var vueP2=1; // vue active du module 2 onglet 8 (1=précision, 2=universalité, 3=stabilité, 4=développement, 0=neutre)
+
+// Gestionnaire de clic sur le canvas — actif uniquement en mode 7 (onglet 8)
+// Zones cliquables correspondant aux 4 panneaux (cohérent avec scene7)
+cv.addEventListener('click',function(e){
+  if(mode!==7) return;
+  var rect=cv.getBoundingClientRect();
+  var scaleX=W/rect.width, scaleY=H/rect.height;
+  var x=(e.clientX-rect.left)*scaleX;
+  var y=(e.clientY-rect.top)*scaleY;
+  // Panneau 1 : x=20-440, y=40 jusqu'à H-60
+  if(x>=20 && x<=440 && y>=40 && y<=H-60) vueP2=1;
+  // Panneau 2 : x=460-880, y=40-245
+  else if(x>=460 && x<=880 && y>=40 && y<=245) vueP2=2;
+  // Panneau 3 : x=460-880, y=265-420
+  else if(x>=460 && x<=880 && y>=265 && y<=420) vueP2=3;
+  // Panneau 4 : x=460-880, y=440-610
+  else if(x>=460 && x<=880 && y>=440 && y<=610) vueP2=4;
+  // Hors panneau : on ne change rien
+  // Mettre à jour l'indicateur dans la zone ctrl
+  var sav=document.getElementById('pm-sav');
+  if(sav){
+    var labels=['','① précision','② universalité','③ stabilité','④ développement'];
+    sav.textContent=labels[vueP2]||'';
+  }
+});
+// Curseur pointer en mode 7 quand on survole un panneau
+cv.addEventListener('mousemove',function(e){
+  if(mode!==7){ cv.style.cursor='default'; return; }
+  var rect=cv.getBoundingClientRect();
+  var scaleX=W/rect.width, scaleY=H/rect.height;
+  var x=(e.clientX-rect.left)*scaleX;
+  var y=(e.clientY-rect.top)*scaleY;
+  var inP1=(x>=20&&x<=440&&y>=40&&y<=H-60);
+  var inP2=(x>=460&&x<=880&&y>=40&&y<=245);
+  var inP3=(x>=460&&x<=880&&y>=265&&y<=420);
+  var inP4=(x>=460&&x<=880&&y>=440&&y<=610);
+  cv.style.cursor=(inP1||inP2||inP3||inP4)?'pointer':'default';
+});
 
 var DESCS=[
   "§4.1 PEREZ (2026c) — La section transverse de l'attracteur de Lorenz révèle un ensemble de Cantor : une infinité de feuillets de mesure de Lebesgue nulle mais de dimension de Hausdorff non entière. Cette structure est identique à la décomposition H_φ = ⊕H_k dans H_∞. Conjecture : dim_H(H_φ) = 1 + 1/φ = φ.",
@@ -775,6 +815,9 @@ function buildCtrl(){
   } else if(mode===6){
     c.innerHTML='<span>Niveau k</span><input type="range" id="pm-sa" min="1" max="12" value="8" step="1"><span class="v" id="pm-sav">k=8</span>';
     document.getElementById('pm-sa').oninput=function(){sliderA=this.value/12;document.getElementById('pm-sav').textContent='k='+this.value;};
+  } else if(mode===7){
+    vueP2=1; // initialiser sur vue 1 (précision)
+    c.innerHTML='<span style="color:rgba(200,200,220,.55);">Cliquez sur un panneau pour le mettre en focus</span><span class="v" id="pm-sav" style="margin-left:auto;color:#818cf8;">① précision</span>';
   } else {
     c.innerHTML='';
   }
@@ -1366,6 +1409,272 @@ function scene6(){
   tx('Test P2 préliminaire (PEREZ 2026c) — Signal indicatif positif — Test conclusif : données brutes CMOS MaxOne (réseau Zurich)',W/2,H-8,'rgba(129,140,248,.4)',9);
 }
 
+// ── SCENE 7 : Test P2 v1.0.0 — 4 panneaux (PEREZ 2026d) ──
+function scene7(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.008;
+  // Vue sélectionnée par clic sur panneau : 1=précision, 2=universalité, 3=stabilité, 4=développement
+  var vue=vueP2;
+  // Tous les panneaux restent lisibles ; le slider signale juste le panneau "focus" via cadre épais
+  function op(panneau){ return 0.92; }
+  function frameWidth(panneau){ return (vue===panneau)?3:1; }
+  function frameAlpha(panneau){ return (vue===panneau)?1.0:0.35; }
+  function isFocus(panneau){ return vue===panneau; }
+
+  // ═══ PANNEAU GAUCHE : Précision (écart à φ en log10) ═══════════
+  var P1x=20, P1y=40, P1w=420, P1h=H-100;
+  var alpha1=op(1);
+  // Cadre
+  ctx.strokeStyle='rgba(245,158,11,'+frameAlpha(1)+')';ctx.lineWidth=frameWidth(1);ctx.strokeRect(P1x,P1y,P1w,P1h);
+  if(isFocus(1)){
+    var fp=0.6+0.4*Math.sin(T*2);
+    ctx.beginPath();ctx.arc(P1x+P1w-12,P1y+12,4,0,Math.PI*2);
+    ctx.fillStyle='rgba(245,158,11,'+fp+')';ctx.fill();
+  }
+  tx('① Précision — écart |ratio − φ| (%)',P1x+P1w/2,P1y+14,'rgba(245,158,11,'+(0.85*alpha1)+')',12);
+  tx('axe log : 0.001% → 10%',P1x+P1w/2,P1y+28,'rgba(245,158,11,'+(0.5*alpha1)+')',9);
+
+  // 7 meilleurs ratios bruts (§6.3)
+  var ratios=[
+    {src:'MO extra',  tr:'φ⁷→φ⁸', err:0.003, col:'#f59e0b', star:true},
+    {src:'MO réf',    tr:'φ⁵→φ⁶', err:0.033, col:'#34d399'},
+    {src:'MO11',      tr:'φ⁶→φ⁷', err:0.036, col:'#34d399'},
+    {src:'CS 60s',    tr:'φ⁴→φ⁵', err:0.164, col:'#818cf8'},
+    {src:'CS 60s',    tr:'φ⁵→φ⁶', err:0.181, col:'#818cf8'},
+    {src:'MO12',      tr:'φ⁶→φ⁷', err:0.182, col:'#34d399'},
+    {src:'MO concat', tr:'φ⁴→φ⁵', err:0.265, col:'#34d399'}
+  ];
+
+  // Échelle log10 : log10(0.001)=-3, log10(10)=1, plage de 4 décades sur P1h*0.7
+  var plotY0=P1y+50, plotH=P1h-110;
+  function logY(err){
+    var l=Math.log10(Math.max(err,0.0005)); // clamp à 0.0005 pour pas faire -inf
+    return plotY0+plotH*(1-(l+3)/4);
+  }
+  // Zones de qualité (bandes de fond)
+  var zones=[
+    {ymin:0.001,ymax:0.01, col:'rgba(52,211,153,', label:'record', lblCol:'rgba(52,211,153,'},
+    {ymin:0.01, ymax:0.1,  col:'rgba(245,158,11,', label:'excellent', lblCol:'rgba(245,158,11,'},
+    {ymin:0.1,  ymax:1.0,  col:'rgba(129,140,248,', label:'très bon', lblCol:'rgba(129,140,248,'},
+    {ymin:1.0,  ymax:10,   col:'rgba(120,120,140,', label:'bon', lblCol:'rgba(120,120,140,'}
+  ];
+  zones.forEach(function(z){
+    var y1=logY(z.ymax), y2=logY(z.ymin);
+    ctx.fillStyle=z.col+(0.08*alpha1)+')';
+    ctx.fillRect(P1x+50,y1,P1w-70,y2-y1);
+    ctx.fillStyle=z.lblCol+(0.55*alpha1)+')';
+    ctx.font='9px Arial';ctx.textAlign='right';
+    ctx.fillText(z.label,P1x+P1w-12,(y1+y2)/2+3);
+  });
+  // Graduations log
+  [0.001,0.01,0.1,1,10].forEach(function(v){
+    var py=logY(v);
+    ctx.beginPath();ctx.moveTo(P1x+50,py);ctx.lineTo(P1x+P1w-12,py);
+    ctx.strokeStyle='rgba(100,100,150,'+(0.18*alpha1)+')';ctx.lineWidth=1;
+    ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='rgba(180,180,200,'+(0.5*alpha1)+')';ctx.font='9px Arial';ctx.textAlign='right';
+    ctx.fillText(v+'%',P1x+47,py+3);
+  });
+
+  // Points : un par ratio, espacés horizontalement
+  var dx=(P1w-90)/(ratios.length+1);
+  ratios.forEach(function(r,i){
+    var px=P1x+60+(i+1)*dx;
+    var py=logY(r.err);
+    var pulse=r.star?(0.7+0.3*Math.sin(T*2)):1.0;
+    var radius=r.star?7:5;
+    // Halo pour le record
+    if(r.star){
+      ctx.beginPath();ctx.arc(px,py,16,0,Math.PI*2);
+      ctx.fillStyle='rgba(245,158,11,'+(0.12*alpha1*pulse)+')';ctx.fill();
+    }
+    ctx.beginPath();ctx.arc(px,py,radius,0,Math.PI*2);
+    var rgb=r.col==='#f59e0b'?'245,158,11':r.col==='#34d399'?'52,211,153':'129,140,248';
+    ctx.fillStyle='rgba('+rgb+','+(0.85*alpha1*pulse)+')';ctx.fill();
+    // Valeur err à droite du point
+    ctx.fillStyle='rgba('+rgb+','+(0.9*alpha1)+')';ctx.font='9px Arial';ctx.textAlign='left';
+    ctx.fillText(r.err+'%',px+radius+3,py+3);
+  });
+  // Légende des sources, alignée verticalement en bas du panneau (sous le plot)
+  var legY=P1y+P1h-72;
+  tx('Sources (de gauche à droite) :',P1x+P1w/2,legY,'rgba(200,200,220,'+(0.6*alpha1)+')',9);
+  ratios.forEach(function(r,i){
+    var px=P1x+60+(i+1)*dx;
+    var rgb=r.col==='#f59e0b'?'245,158,11':r.col==='#34d399'?'52,211,153':'129,140,248';
+    // Petit carré coloré + nom + transition empilés verticalement
+    ctx.fillStyle='rgba('+rgb+','+(0.9*alpha1)+')';
+    ctx.fillRect(px-2,legY+10,4,4);
+    tx(r.src,px,legY+24,'rgba('+rgb+','+(0.85*alpha1)+')',8);
+    tx(r.tr,px,legY+35,'rgba(160,160,180,'+(0.6*alpha1)+')',7);
+  });
+  // Bandeau bas du panneau
+  tx('★ MO extra φ⁷→φ⁸ : 0.003% — record absolu',P1x+P1w/2,P1y+P1h-22,'rgba(245,158,11,'+(0.85*alpha1)+')',10);
+  tx('Espèces : ● Homo sapiens (HO)   ● Mus musculus (MO/CS)',P1x+P1w/2,P1y+P1h-8,'rgba(180,180,200,'+(0.55*alpha1)+')',9);
+
+  // ═══ PANNEAU DROIT-HAUT : Universalité Fisher 100% ═══════════
+  var P2x=460, P2y=40, P2w=420, P2h=205;
+  var alpha2=op(2);
+  ctx.strokeStyle='rgba(52,211,153,'+frameAlpha(2)+')';ctx.lineWidth=frameWidth(2);ctx.strokeRect(P2x,P2y,P2w,P2h);
+  if(isFocus(2)){
+    var fp=0.6+0.4*Math.sin(T*2);
+    ctx.beginPath();ctx.arc(P2x+P2w-12,P2y+12,4,0,Math.PI*2);
+    ctx.fillStyle='rgba(52,211,153,'+fp+')';ctx.fill();
+  }
+  tx('② Universalité — Fisher φ⁶/φ⁷/φ⁸',P2x+P2w/2,P2y+14,'rgba(52,211,153,'+(0.85*alpha2)+')',12);
+  tx('présence dans toutes les préparations LFP',P2x+P2w/2,P2y+28,'rgba(52,211,153,'+(0.5*alpha2)+')',9);
+
+  // Grille 4 groupes × 3 niveaux
+  var groups=[
+    {name:'HO',     n:'20/20', spec:'H. sapiens, organoïdes'},
+    {name:'MO',     n:'9/9',   spec:'M. musculus, P45D'},
+    {name:'MO extra',n:'5/5',  spec:'M. musculus, P45D'},
+    {name:'CS',     n:'6/6',   spec:'M. musculus, P13D ex vivo'}
+  ];
+  var levels=['φ⁶','φ⁷','φ⁸'];
+  var gridX=P2x+120, gridY=P2y+50, cellW=80, cellH=32, gap=4;
+  // Header colonnes
+  levels.forEach(function(l,j){
+    tx(l,gridX+j*cellW+cellW/2,gridY-6,'rgba(245,158,11,'+(0.8*alpha2)+')',12);
+  });
+  groups.forEach(function(g,i){
+    var rowY=gridY+i*(cellH+gap);
+    // Label ligne (à gauche, deux lignes : nom + species)
+    tx(g.name,gridX-8,rowY+12,'rgba(220,220,235,'+(0.85*alpha2)+')',10,'right');
+    tx(g.spec,gridX-8,rowY+24,'rgba(140,140,160,'+(0.5*alpha2)+')',8,'right');
+    // Cellules
+    levels.forEach(function(l,j){
+      var cx=gridX+j*cellW+3, cy=rowY;
+      var cw=cellW-6, ch=cellH-gap;
+      var contam=(g.name==='CS' && l==='φ⁸');
+      var col=contam?'rgba(245,158,11,':'rgba(52,211,153,';
+      ctx.fillStyle=col+(0.18*alpha2)+')';
+      ctx.fillRect(cx,cy,cw,ch);
+      ctx.strokeStyle=col+(0.7*alpha2)+')';ctx.lineWidth=1;
+      ctx.strokeRect(cx,cy,cw,ch);
+      // 100% + n/n sur deux lignes DANS la cellule
+      tx('100%',cx+cw/2,cy+13,col+(0.95*alpha2)+')',10);
+      tx(g.n,cx+cw/2,cy+25,col+(0.65*alpha2)+')',8);
+    });
+  });
+  // Note contamination en bas du panneau
+  tx('⚠ φ⁸ CS contaminé bruit 50Hz (validation a contrario par ratio φ⁸/50Hz = 0.019)',P2x+P2w/2,P2y+P2h-10,'rgba(245,158,11,'+(0.6*alpha2)+')',8);
+
+  // ═══ PANNEAU DROIT-MILIEU : Stabilité HO3 (17 jours) ═══════════
+  var P3x=460, P3y=265, P3w=420, P3h=155;
+  var alpha3=op(3);
+  ctx.strokeStyle='rgba(129,140,248,'+frameAlpha(3)+')';ctx.lineWidth=frameWidth(3);ctx.strokeRect(P3x,P3y,P3w,P3h);
+  if(isFocus(3)){
+    var fp=0.6+0.4*Math.sin(T*2);
+    ctx.beginPath();ctx.arc(P3x+P3w-12,P3y+12,4,0,Math.PI*2);
+    ctx.fillStyle='rgba(129,140,248,'+fp+')';ctx.fill();
+  }
+  tx('③ Stabilité temporelle — HO3 sur 17 jours',P3x+P3w/2,P3y+14,'rgba(129,140,248,'+(0.85*alpha3)+')',12);
+  tx('CV = 0.3% · ±0.14 Hz · 4 sessions',P3x+P3w/2,P3y+28,'rgba(129,140,248,'+(0.5*alpha3)+')',9);
+
+  // Mini-timeline (HO3 : 12, 24, 26, 29 sept. — soit jours 0, 12, 14, 17)
+  var tlX=P3x+60, tlY=P3y+85, tlW=P3w-130;
+  // Bande ±CV autour de la moyenne (visualisation du CV=0.3%)
+  ctx.fillStyle='rgba(129,140,248,'+(0.15*alpha3)+')';
+  ctx.fillRect(tlX,tlY-8,tlW,16);
+  ctx.strokeStyle='rgba(129,140,248,'+(0.35*alpha3)+')';
+  ctx.setLineDash([3,3]);
+  ctx.beginPath();ctx.moveTo(tlX,tlY-8);ctx.lineTo(tlX+tlW,tlY-8);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(tlX,tlY+8);ctx.lineTo(tlX+tlW,tlY+8);ctx.stroke();
+  ctx.setLineDash([]);
+  // Ligne moyenne au centre
+  ctx.beginPath();ctx.moveTo(tlX,tlY);ctx.lineTo(tlX+tlW,tlY);
+  ctx.strokeStyle='rgba(129,140,248,'+(0.6*alpha3)+')';ctx.lineWidth=1;ctx.stroke();
+  // Label bande à droite, hors zone mais dans le cadre
+  tx('±0.14',tlX+tlW+22,tlY-4,'rgba(129,140,248,'+(0.7*alpha3)+')',9);
+  tx('Hz',tlX+tlW+22,tlY+8,'rgba(129,140,248,'+(0.7*alpha3)+')',9);
+
+  // 4 points HO3 : jours 0, 12, 14, 17 (12, 24, 26, 29 sept.)
+  var days=[0,12,14,17];
+  var dates=['12 sept.','24 sept.','26 sept.','29 sept.'];
+  // Variations infimes pour montrer CV=0.3% (réelles : ±0.14 Hz sur 28.59 → ±0.5% du Y range affiché)
+  var dys=[-3,2,-1,1]; // dans la bande ±8 px
+  days.forEach(function(d,i){
+    var px=tlX+(d/17)*tlW;
+    var pulse=0.7+0.3*Math.sin(T*1.5+i);
+    ctx.beginPath();ctx.arc(px,tlY+dys[i],5,0,Math.PI*2);
+    ctx.fillStyle='rgba(129,140,248,'+(0.9*alpha3*pulse)+')';ctx.fill();
+    tx(dates[i],px,tlY+26,'rgba(180,180,200,'+(0.65*alpha3)+')',8);
+    tx('J'+d,px,tlY-16,'rgba(140,140,160,'+(0.55*alpha3)+')',8);
+  });
+  tx('moyenne CF φ⁷ ≈ 28.59 Hz   ·   CV = 0.3%',P3x+P3w/2,P3y+P3h-12,'rgba(180,180,200,'+(0.6*alpha3)+')',9);
+
+  // ═══ PANNEAU DROIT-BAS : Trajectoire développementale ════════
+  var P4x=460, P4y=440, P4w=420, P4h=170;
+  var alpha4=op(4);
+  ctx.strokeStyle='rgba(167,139,250,'+frameAlpha(4)+')';ctx.lineWidth=frameWidth(4);ctx.strokeRect(P4x,P4y,P4w,P4h);
+  if(isFocus(4)){
+    var fp=0.6+0.4*Math.sin(T*2);
+    ctx.beginPath();ctx.arc(P4x+P4w-12,P4y+12,4,0,Math.PI*2);
+    ctx.fillStyle='rgba(167,139,250,'+fp+')';ctx.fill();
+  }
+  tx('④ Trans-espèces & développement — CF φ⁷',P4x+P4w/2,P4y+14,'rgba(167,139,250,'+(0.85*alpha4)+')',12);
+  tx('Homo + Mus, 3 âges  ·  ligne orange : φ⁷ = 29.03 Hz',P4x+P4w/2,P4y+28,'rgba(167,139,250,'+(0.55*alpha4)+')',9);
+
+  // Mini-plot : axe X = âge (catégoriel), axe Y = CF φ⁷
+  var ppX=P4x+50, ppY=P4y+50, ppW=P4w-100, ppH=P4h-90;
+  var dev=[
+    {age:'P13D',     prep:'CS tranche', cf:27.650, col:'#34d399', x:0.10, lblAbove:true},
+    {age:'P45D',     prep:'MO réf',     cf:29.464, col:'#34d399', x:0.42, lblAbove:true},
+    {age:'P45D',     prep:'MO extra',   cf:29.347, col:'#34d399', x:0.58, lblAbove:false},
+    {age:'6–8 mois', prep:'HO',         cf:28.585, col:'#818cf8', x:0.90, lblAbove:true}
+  ];
+  // Plage Y
+  var cfMin=26.5, cfMax=30;
+  function cfY(cf){ return ppY+ppH*(1-(cf-cfMin)/(cfMax-cfMin)); }
+  // Référence φ⁷ théorique (ligne orange seule, label dans le sous-titre du panneau)
+  var phi7=Math.pow(phi,7);
+  ctx.beginPath();ctx.moveTo(ppX,cfY(phi7));ctx.lineTo(ppX+ppW,cfY(phi7));
+  ctx.strokeStyle='rgba(245,158,11,'+(0.6*alpha4)+')';ctx.lineWidth=1.5;ctx.stroke();
+  // Graduations Y
+  [27,28,29,30].forEach(function(v){
+    ctx.fillStyle='rgba(160,160,180,'+(0.45*alpha4)+')';
+    ctx.font='8px Arial';ctx.textAlign='right';
+    ctx.fillText(v+' Hz',ppX-4,cfY(v)+3);
+    ctx.beginPath();ctx.moveTo(ppX,cfY(v));ctx.lineTo(ppX+ppW,cfY(v));
+    ctx.strokeStyle='rgba(100,100,150,'+(0.12*alpha4)+')';
+    ctx.setLineDash([2,3]);ctx.stroke();ctx.setLineDash([]);
+  });
+  // Points
+  dev.forEach(function(p,i){
+    var px=ppX+p.x*ppW;
+    var py=cfY(p.cf);
+    var pulse=0.75+0.25*Math.sin(T*1.2+i*1.5);
+    var rgb=p.col==='#34d399'?'52,211,153':'129,140,248';
+    // Halo
+    ctx.beginPath();ctx.arc(px,py,10,0,Math.PI*2);
+    ctx.fillStyle='rgba('+rgb+','+(0.18*alpha4*pulse)+')';ctx.fill();
+    ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);
+    ctx.fillStyle='rgba('+rgb+','+(0.9*alpha4)+')';ctx.fill();
+    // Label nom + valeur — anti-collision avec la ligne phi7 (cfY(phi7))
+    // Pour les points proches de phi7, on éloigne suffisamment le bloc texte
+    var yPhi7=cfY(phi7);
+    if(p.lblAbove){
+      // Bloc au-dessus : nom plus haut, Hz juste sous le nom
+      tx(p.cf.toFixed(2)+' Hz',px,py-14,'rgba(200,200,220,'+(0.7*alpha4)+')',8);
+      tx(p.prep,px,py-25,'rgba('+rgb+','+(0.9*alpha4)+')',9);
+    } else {
+      // Bloc en-dessous : décale plus bas pour passer sous la ligne phi7
+      var offsetY=20;
+      if(Math.abs(py-yPhi7)<14){ offsetY=26; }
+      tx(p.prep,px,py+offsetY,'rgba('+rgb+','+(0.9*alpha4)+')',9);
+      tx(p.cf.toFixed(2)+' Hz',px,py+offsetY+11,'rgba(200,200,220,'+(0.7*alpha4)+')',8);
+    }
+    // Label âge (en bas du graphe, sur l'axe X)
+    tx(p.age,px,ppY+ppH+14,'rgba(160,160,180,'+(0.6*alpha4)+')',9);
+  });
+  tx('● Mus musculus    ● Homo sapiens',P4x+P4w/2,P4y+P4h-10,'rgba(180,180,200,'+(0.55*alpha4)+')',9);
+
+  // ═══ Datasets analysés (encadré bas-droit, toujours visible) ══
+  // Pas de panneau dédié — info compact dans le label de pied
+
+  tx('Test P2 v1.0.0 (PEREZ 2026d, doi:10.5281/zenodo.20113396)   ·   24 préparations LFP   ·   3275 CF   ·   χ²=2475.61, p<0.001   ·   N CF dans 20% φⁿ : 2308/3275 (70%)',W/2,H-8,'rgba(129,140,248,.45)',9);
+}
+
 function loop(){
   ctx.clearRect(0,0,W,H);frame++;
   if(mode===0) scene0();
@@ -1374,7 +1683,8 @@ function loop(){
   else if(mode===3) scene3();
   else if(mode===4) scene4();
   else if(mode===5) scene5();
-  else scene6();
+  else if(mode===6) scene6();
+  else scene7();
   requestAnimationFrame(loop);
 }
 loop();
