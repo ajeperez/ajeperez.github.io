@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexandre J.E. Perez — Théorie H_φ</title>
+<meta name="description" content="Théorie H_φ — Formalisation de l'Unus Mundus de Jung et Pauli comme espace de Hilbert structuré par le nombre d'or. Corpus complet PEREZ 2026 et visualisations interactives.">
+<meta name="author" content="Alexandre Joseph Etienne PEREZ">
+<meta property="og:title" content="Théorie H_φ — Alexandre J.E. Perez">
+<meta property="og:description" content="Formalisation mathématique de l'Unus Mundus comme espace de Hilbert structuré par le nombre d'or φ.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Josefin+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- Langue switch -->
+<div id="lang-switch">
+  <button data-lang="fr" class="lang-btn active">FR</button>
+  <span class="lang-sep">/</span>
+  <button data-lang="en" class="lang-btn">EN</button>
+</div>
+
+<main class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <p class="kicker">
+      <span data-fr="Travaux de recherche — Théorie H_φ" data-en="Research works — H_φ Theory">Travaux de recherche — Théorie H_φ</span>
+    </p>
+    <h1 class="title">
+      <span data-fr="Unus Mundus comme " data-en="Unus Mundus as ">Unus Mundus comme </span><em>H_φ</em>
+    </h1>
+    <p class="subtitle">
+      <span data-fr="Formalisation mathématique de l'intuition Pauli–Jung" data-en="Mathematical formalization of the Pauli–Jung intuition">
+        Formalisation mathématique de l'intuition Pauli–Jung
+      </span>
+    </p>
+    <p class="meta">
+      <strong>Alexandre Joseph Etienne PEREZ</strong>
+      &nbsp;·&nbsp; Lausanne, <span data-fr="10 mai 2026" data-en="May 10, 2026">10 mai 2026</span>
+      &nbsp;·&nbsp; <a href="mailto:ajeprz@proton.me">ajeprz@proton.me</a>
+    </p>
+    <div class="divider"></div>
+  </header>
+
+  <!-- Présentation -->
+  <section class="intro">
+    <p data-fr="Ce site rassemble le corpus complet de la théorie H_φ — une formalisation mathématique exploratoire de l'Unus Mundus postulé par Carl Gustav Jung et Wolfgang Pauli en 1952. La proposition centrale : la réalité sous-jacente unique d'où émergent psyché et matière est un espace de Hilbert dont la structure est entièrement déterminée par le nombre d'or φ ≈ 1,618."
+       data-en="This site gathers the complete corpus of H_φ theory — an exploratory mathematical formalization of the Unus Mundus postulated by Carl Gustav Jung and Wolfgang Pauli in 1952. Central proposition: the unique underlying reality from which psyche and matter emerge is a Hilbert space whose structure is entirely determined by the golden ratio φ ≈ 1.618.">
+      Ce site rassemble le corpus complet de la théorie H_φ — une formalisation mathématique exploratoire de l'Unus Mundus postulé par Carl Gustav Jung et Wolfgang Pauli en 1952. La proposition centrale : la réalité sous-jacente unique d'où émergent psyché et matière est un espace de Hilbert dont la structure est entièrement déterminée par le nombre d'or φ ≈ 1,618.
+    </p>
+    <p data-fr="La théorie produit deux prédictions empiriquement testables. P1 : une phase de Berry quantifiée à 2π/φ dans un cristal de Penrose ou un condensat BEC. P2 : la distribution discrète en φⁿ des fréquences neuronales spontanées des organoïdes cérébraux sur réseaux de microélectrodes — testée avec un signal positif à moins de 0,1 % de précision sur 7 datasets indépendants (PEREZ 2026d)."
+       data-en="The theory produces two empirically testable predictions. P1: a Berry phase quantized at 2π/φ in a Penrose crystal or BEC. P2: the discrete φⁿ distribution of spontaneous neural frequencies in cerebral organoids on MEA — tested with a positive signal below 0.1% precision across 7 independent datasets (PEREZ 2026d).">
+      La théorie produit deux prédictions empiriquement testables. P1 : une phase de Berry quantifiée à 2π/φ dans un cristal de Penrose ou un condensat BEC. P2 : la distribution discrète en φⁿ des fréquences neuronales spontanées des organoïdes cérébraux sur réseaux de microélectrodes — testée avec un signal positif à moins de 0,1 % de précision sur 7 datasets indépendants (PEREZ 2026d).
+    </p>
+    <p class="warning" data-fr="Travail exploratoire — hypothèse de recherche — non soumis à peer review. Toutes les affirmations sont clairement marquées comme hypothèses dans les documents."
+       data-en="Exploratory work — research hypothesis — not peer-reviewed. All claims are clearly marked as hypotheses in the documents.">
+      Travail exploratoire — hypothèse de recherche — non soumis à peer review. Toutes les affirmations sont clairement marquées comme hypothèses dans les documents.
+    </p>
+  </section>
+
+  <!-- Visualisations interactives -->
+  <section class="section">
+    <h2 class="section-title">
+      <span data-fr="Visualisations interactives" data-en="Interactive visualizations">Visualisations interactives</span>
+    </h2>
+    <p class="section-sub" data-fr="Deux portails de visualisations pour explorer la théorie pas à pas." data-en="Two visualization portals to explore the theory step by step.">
+      Deux portails de visualisations pour explorer la théorie pas à pas.
+    </p>
+
+    <div class="grid grid-2">
+
+      <a href="visualisations/portail-hphi.html" class="card violet">
+        <p class="card-num" data-fr="Portail 01" data-en="Portal 01">Portail 01</p>
+        <h3 class="card-title" data-fr="Unus Mundus comme H_φ" data-en="Unus Mundus as H_φ">Unus Mundus comme H_φ</h3>
+        <p class="card-desc"
+           data-fr="Opérateur R, Fibonacci ontologique, archétypes comme modes propres, ER=EPR &amp; synchronicité, brisure 4→3 et dualité effondrement/déploiement, synthèse complète."
+           data-en="R operator, ontological Fibonacci, archetypes as eigenmodes, ER=EPR &amp; synchronicity, 4→3 breaking and collapse/unfolding duality, complete synthesis.">
+          Opérateur R, Fibonacci ontologique, archétypes comme modes propres, ER=EPR &amp; synchronicité, brisure 4→3 et dualité effondrement/déploiement, synthèse complète.
+        </p>
+        <p class="card-meta" data-fr="6 onglets · curseurs animés" data-en="6 tabs · animated sliders">6 onglets · curseurs animés</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a href="visualisations/geometrie-espaces-abstraits.html" class="card green">
+        <p class="card-num" data-fr="Portail 02" data-en="Portal 02">Portail 02</p>
+        <h3 class="card-title" data-fr="Géométrie des espaces abstraits" data-en="Geometry of abstract spaces">Géométrie des espaces abstraits</h3>
+        <p class="card-desc"
+           data-fr="Tore 4D, attracteurs, repliement, double puits, symétries de Klein, brisure spontanée, expansion cosmique, trous noirs, holographie, ER=EPR."
+           data-en="4D torus, attractors, folding, double well, Klein symmetries, spontaneous breaking, cosmic expansion, black holes, holography, ER=EPR.">
+          Tore 4D, attracteurs, repliement, double puits, symétries de Klein, brisure spontanée, expansion cosmique, trous noirs, holographie, ER=EPR.
+        </p>
+        <p class="card-meta" data-fr="4 modules · 20+ visualisations" data-en="4 modules · 20+ visualizations">4 modules · 20+ visualisations</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Documents Zenodo -->
+  <section class="section">
+    <h2 class="section-title">
+      <span data-fr="Corpus de documents" data-en="Document corpus">Corpus de documents</span>
+    </h2>
+    <p class="section-sub"
+       data-fr="Cinq documents formant le corpus complet, déposés sur Zenodo en accès libre sous licence CC BY 4.0."
+       data-en="Five documents forming the complete corpus, deposited on Zenodo in open access under CC BY 4.0 license.">
+      Cinq documents formant le corpus complet, déposés sur Zenodo en accès libre sous licence CC BY 4.0.
+    </p>
+
+    <div class="docs">
+
+      <article class="doc">
+        <div class="doc-head">
+          <span class="doc-tag">PEREZ 2026a</span>
+          <span class="doc-pages" data-fr="13 pages · français" data-en="13 pages · French">13 pages · français</span>
+        </div>
+        <h3 class="doc-title" data-fr="Axiome, Archétype, Singularité"
+            data-en="Axiom, Archetype, Singularity">Axiome, Archétype, Singularité</h3>
+        <p class="doc-sub" data-fr="Trois noms pour un seul mystère ?" data-en="Three names for a single mystery?">Trois noms pour un seul mystère ?</p>
+        <p class="doc-desc"
+           data-fr="Hypothèse exploratoire d'origine sur la convergence structurelle de quatre objets fondamentaux : axiome (Gödel), archétype (Jung), singularité (Hawking–Penrose), φ/Fibonacci (Douady–Couder). Point d'entrée philosophique du programme de recherche."
+           data-en="Exploratory hypothesis on the structural convergence of four fundamental objects: axiom (Gödel), archetype (Jung), singularity (Hawking–Penrose), φ/Fibonacci (Douady–Couder). Philosophical entry point of the research program.">
+          Hypothèse exploratoire d'origine sur la convergence structurelle de quatre objets fondamentaux : axiome (Gödel), archétype (Jung), singularité (Hawking–Penrose), φ/Fibonacci (Douady–Couder). Point d'entrée philosophique du programme de recherche.
+        </p>
+        <div class="doc-links">
+          <a href="documents/PEREZ-2026a-axiome-archetype-singularite.pdf" class="btn btn-primary" download>
+            <span data-fr="Télécharger PDF" data-en="Download PDF">Télécharger PDF</span>
+          </a>
+          <a href="https://doi.org/10.5281/zenodo.20054634" class="btn btn-secondary" target="_blank" rel="noopener">
+            doi:10.5281/zenodo.20054634
+          </a>
+        </div>
+      </article>
+
+      <article class="doc">
+        <div class="doc-head">
+          <span class="doc-tag">PEREZ 2026b</span>
+          <span class="doc-pages" data-fr="30 pages · français" data-en="30 pages · French">30 pages · français</span>
+        </div>
+        <h3 class="doc-title"
+            data-fr="Réflexions personnelles sur la géométrie des espaces abstraits"
+            data-en="Personal reflections on the geometry of abstract spaces">Réflexions personnelles sur la géométrie des espaces abstraits</h3>
+        <p class="doc-sub" data-fr="…et la physique fondamentale" data-en="…and fundamental physics">…et la physique fondamentale</p>
+        <p class="doc-desc"
+           data-fr="Le pont conceptuel : topologie, attracteurs, double puits, symétries discrètes, pavages de Penrose, brisure de symétrie, expansion cosmique, trous noirs, complémentarité, holographie, ER=EPR. Connexions formelles avec H_φ."
+           data-en="The conceptual bridge: topology, attractors, double well, discrete symmetries, Penrose tilings, symmetry breaking, cosmic expansion, black holes, complementarity, holography, ER=EPR. Formal connections with H_φ.">
+          Le pont conceptuel : topologie, attracteurs, double puits, symétries discrètes, pavages de Penrose, brisure de symétrie, expansion cosmique, trous noirs, complémentarité, holographie, ER=EPR. Connexions formelles avec H_φ.
+        </p>
+        <div class="doc-links">
+          <a href="documents/PEREZ-2026b-reflexions-personnelles.pdf" class="btn btn-primary" download>
+            <span data-fr="Télécharger PDF" data-en="Download PDF">Télécharger PDF</span>
+          </a>
+          <a href="https://doi.org/10.5281/zenodo.20098372" class="btn btn-secondary" target="_blank" rel="noopener">
+            doi:10.5281/zenodo.20098372
+          </a>
+        </div>
+      </article>
+
+      <article class="doc doc-main">
+        <div class="doc-head">
+          <span class="doc-tag doc-tag-main">PEREZ 2026c</span>
+          <span class="doc-pages" data-fr="document principal · français" data-en="main document · French">document principal · français</span>
+        </div>
+        <h3 class="doc-title" data-fr="Unus Mundus comme H_φ" data-en="Unus Mundus as H_φ">Unus Mundus comme H_φ</h3>
+        <p class="doc-sub" data-fr="Une théorie psycho-cosmologique unifiée" data-en="A unified psycho-cosmological theory">Une théorie psycho-cosmologique unifiée</p>
+        <p class="doc-desc"
+           data-fr="La théorie unifiée complète avec formalisation mathématique : espace de Hilbert H_φ, opérateur d'auto-référence R, décomposition spectrale en niveaux de Fibonacci, dualité effondrement/déploiement, prédictions P1 et P2."
+           data-en="The complete unified theory with mathematical formalization: Hilbert space H_φ, self-reference operator R, spectral decomposition in Fibonacci levels, collapse/unfolding duality, P1 and P2 predictions.">
+          La théorie unifiée complète avec formalisation mathématique : espace de Hilbert H_φ, opérateur d'auto-référence R, décomposition spectrale en niveaux de Fibonacci, dualité effondrement/déploiement, prédictions P1 et P2.
+        </p>
+        <div class="doc-links">
+          <a href="https://doi.org/10.5281/zenodo.20098274" class="btn btn-primary" target="_blank" rel="noopener">
+            <span data-fr="Consulter sur Zenodo" data-en="View on Zenodo">Consulter sur Zenodo</span>
+          </a>
+          <a href="https://doi.org/10.5281/zenodo.20098274" class="btn btn-secondary" target="_blank" rel="noopener">
+            doi:10.5281/zenodo.20098274
+          </a>
+        </div>
+      </article>
+
+      <article class="doc">
+        <div class="doc-head">
+          <span class="doc-tag">PEREZ 2026d</span>
+          <span class="doc-pages" data-fr="29 pages · français" data-en="29 pages · French">29 pages · français</span>
+        </div>
+        <h3 class="doc-title"
+            data-fr="Rapport d'analyse — Prédiction P2"
+            data-en="Analysis Report — Prediction P2">Rapport d'analyse — Prédiction P2</h3>
+        <p class="doc-sub"
+           data-fr="Mesure de précision de φⁿ dans les réseaux neuronaux"
+           data-en="Precision measurement of φⁿ in neural networks">Mesure de précision de φⁿ dans les réseaux neuronaux</p>
+        <p class="doc-desc"
+           data-fr="Test empirique de P2 sur 7 datasets indépendants (24 préparations LFP, 3275 fréquences centrales). Best err 0.0% à φ⁶ et φ⁸, reproductibilité inter-plateformes à 78 mHz, validation indépendante DeepBreath. Signal positif à <0.1%."
+           data-en="Empirical test of P2 across 7 independent datasets (24 LFP preparations, 3275 central frequencies). Best err 0.0% at φ⁶ and φ⁸, inter-platform reproducibility at 78 mHz, independent DeepBreath validation. Positive signal at <0.1%.">
+          Test empirique de P2 sur 7 datasets indépendants (24 préparations LFP, 3275 fréquences centrales). Best err 0.0% à φ⁶ et φ⁸, reproductibilité inter-plateformes à 78 mHz, validation indépendante DeepBreath. Signal positif à <0.1%.
+        </p>
+        <div class="doc-links">
+          <a href="https://doi.org/10.5281/zenodo.20113396" class="btn btn-primary" target="_blank" rel="noopener">
+            <span data-fr="Consulter sur Zenodo" data-en="View on Zenodo">Consulter sur Zenodo</span>
+          </a>
+          <a href="https://doi.org/10.5281/zenodo.20113396" class="btn btn-secondary" target="_blank" rel="noopener">
+            doi:10.5281/zenodo.20113396
+          </a>
+        </div>
+      </article>
+
+      <article class="doc">
+        <div class="doc-head">
+          <span class="doc-tag">PEREZ 2026e</span>
+          <span class="doc-pages" data-fr="12 pages · français" data-en="12 pages · French">12 pages · français</span>
+        </div>
+        <h3 class="doc-title"
+            data-fr="Comprendre la théorie H_φ"
+            data-en="Understanding the H_φ theory">Comprendre la théorie H_φ</h3>
+        <p class="doc-sub" data-fr="Un guide pour les non-spécialistes"
+            data-en="A guide for non-specialists">Un guide pour les non-spécialistes</p>
+        <p class="doc-desc"
+           data-fr="Présentation accessible de la théorie sans équations, avec analogies et métaphores. Idéal pour une première lecture. Couvre les trois ingrédients (Jung, quantique, φ), les deux prédictions P1/P2 et les implications potentielles."
+           data-en="Accessible presentation of the theory without equations, with analogies and metaphors. Ideal for a first reading. Covers the three ingredients (Jung, quantum, φ), the two P1/P2 predictions and potential implications.">
+          Présentation accessible de la théorie sans équations, avec analogies et métaphores. Idéal pour une première lecture. Couvre les trois ingrédients (Jung, quantique, φ), les deux prédictions P1/P2 et les implications potentielles.
+        </p>
+        <div class="doc-links">
+          <a href="documents/PEREZ-2026e-vulgarisation-hphi.pdf" class="btn btn-primary" download>
+            <span data-fr="Télécharger PDF" data-en="Download PDF">Télécharger PDF</span>
+          </a>
+          <a href="https://doi.org/10.5281/zenodo.20098853" class="btn btn-secondary" target="_blank" rel="noopener">
+            doi:10.5281/zenodo.20098853
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Citation -->
+  <section class="section">
+    <h2 class="section-title">
+      <span data-fr="Citation" data-en="Citation">Citation</span>
+    </h2>
+    <p class="section-sub"
+       data-fr="Pour citer le corpus, utilisez la référence BibTeX ci-dessous :"
+       data-en="To cite this corpus, use the BibTeX reference below:">
+      Pour citer le corpus, utilisez la référence BibTeX ci-dessous :
+    </p>
+    <pre class="bibtex"><code>@misc{perez2026hphi,
+  author       = {Perez, Alexandre Joseph Etienne},
+  title        = {Unus Mundus as $H_\varphi$: a unified psycho-cosmological theory},
+  year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.20098274},
+  url          = {https://doi.org/10.5281/zenodo.20098274},
+  note         = {Corpus PEREZ 2026 — exploratory hypothesis, not peer-reviewed}
+}</code></pre>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="divider"></div>
+    <p class="footer-meta">
+      <span data-fr="Contact : " data-en="Contact: ">Contact : </span>
+      <a href="mailto:ajeprz@proton.me">ajeprz@proton.me</a>
+    </p>
+    <p class="footer-meta">
+      <span data-fr="Code source du site : " data-en="Site source code: ">Code source du site : </span>
+      <a href="https://github.com/ajeperez/ajeperez.github.io" target="_blank" rel="noopener">github.com/ajeperez/ajeperez.github.io</a>
+    </p>
+    <p class="footer-meta">
+      <span data-fr="Documents publiés sur " data-en="Documents published on ">Documents publiés sur </span>
+      <a href="https://zenodo.org/" target="_blank" rel="noopener">Zenodo</a>
+      <span data-fr=" — Licence " data-en=" — License ">— Licence </span>
+      <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>
+    </p>
+    <p class="footer-copy">
+      © 2026 Alexandre Joseph Etienne PEREZ —
+      <span data-fr="Travail spéculatif, non soumis à peer review"
+            data-en="Speculative work, not peer-reviewed">Travail spéculatif, non soumis à peer review</span>
+    </p>
+  </footer>
+
+</main>
+
+<script>
+// Langue switch — sans rechargement
+(function() {
+  var btns = document.querySelectorAll('.lang-btn');
+  var current = localStorage.getItem('lang') || 'fr';
+  apply(current);
+
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var lang = btn.dataset.lang;
+      apply(lang);
+      localStorage.setItem('lang', lang);
+    });
+  });
+
+  function apply(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-fr]').forEach(function(el) {
+      el.textContent = el.dataset[lang] || el.dataset.fr;
+    });
+    btns.forEach(function(b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

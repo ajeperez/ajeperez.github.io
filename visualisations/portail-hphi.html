@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Théorie H_φ — Visualisations interactives</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#05050d;color:#e2dfd6;overflow-x:hidden}
+.screen{display:none}.screen.active{display:block}
+#back-btn{display:none;position:fixed;top:18px;right:22px;z-index:9999}
+#back-btn button{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;background:rgba(5,5,13,.9);backdrop-filter:blur(8px);border:1px solid rgba(129,140,248,.35);color:#818cf8;padding:8px 18px;border-radius:20px;cursor:pointer;transition:border-color .2s,color .2s}
+#back-btn button:hover{border-color:#818cf8;color:#c7d0ff}
+/* Accueil */
+#screen-home{max-width:860px;margin:0 auto;padding:72px 32px 80px;font-family:'EB Garamond',Georgia,serif}
+.kicker{font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#818cf8;opacity:.7;margin-bottom:18px}
+.portal-title{font-size:clamp(26px,3.5vw,44px);font-weight:400;line-height:1.2;margin-bottom:6px;color:#e2dfd6}
+.portal-title em{font-style:italic;color:#818cf8}
+.portal-sub{font-size:clamp(17px,2vw,24px);color:rgba(226,223,214,.5);margin-top:3px;font-weight:400;font-family:'EB Garamond',Georgia,serif}
+.meta{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1px;color:#555566;margin-bottom:32px}
+.meta strong{color:rgba(220,218,210,.5);font-weight:400}
+.divider{height:1px;background:linear-gradient(90deg,transparent,#818cf8,transparent);opacity:.3;margin-bottom:32px}
+.intro{font-size:17px;line-height:1.8;color:rgba(226,223,214,.72);max-width:700px;margin-bottom:48px}
+.intro p+p{margin-top:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:820px;margin-bottom:52px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.card{background:#0b0b18;border-radius:14px;padding:26px 24px 48px;cursor:pointer;position:relative;overflow:hidden;transition:border-color .2s,transform .18s,box-shadow .2s;border:1px solid rgba(129,140,248,.18)}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,.4)}
+.card.violet{border-color:rgba(129,140,248,.18)}.card.violet:hover{border-color:#818cf8}
+.card.green{border-color:rgba(52,211,153,.18)}.card.green:hover{border-color:#34d399}
+.card.gold{border-color:rgba(245,158,11,.18);cursor:default}
+.card.full{grid-column:1/-1}
+.card-num{font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;opacity:.75;margin-bottom:10px}
+.card.violet .card-num{color:#818cf8}.card.green .card-num{color:#34d399}.card.gold .card-num{color:#f59e0b}
+.card-title{font-family:'EB Garamond',serif;font-size:20px;font-weight:400;color:#e2dfd6;line-height:1.3;margin-bottom:8px}
+.card-desc{font-size:13px;line-height:1.6;color:#444455}
+.card-arrow{position:absolute;bottom:18px;right:20px;font-size:16px;transition:transform .2s}
+.card.violet .card-arrow{color:#818cf8}.card.green .card-arrow{color:#34d399}
+.card:hover .card-arrow{transform:translateX(4px)}
+.badge{display:inline-block;font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:12px;margin-bottom:10px}
+.badge.bv{background:rgba(129,140,248,.12);color:rgba(129,140,248,.7);border:1px solid rgba(129,140,248,.2)}
+.badge.bg{background:rgba(52,211,153,.10);color:rgba(52,211,153,.7);border:1px solid rgba(52,211,153,.2)}
+.badge.bo{background:rgba(245,158,11,.10);color:rgba(245,158,11,.7);border:1px solid rgba(245,158,11,.2)}
+.footnote{font-size:13px;color:#333340;line-height:1.7;border-top:1px solid rgba(129,140,248,.12);padding-top:24px;font-family:'Josefin Sans',sans-serif;letter-spacing:.5px}
+.footnote a{color:rgba(129,140,248,.55);text-decoration:none}.footnote a:hover{color:#818cf8}
+/* Modules */
+#screen-um,#screen-pm{background:#05050d;min-height:100vh;padding:28px}
+#screen-um * {box-sizing:border-box;margin:0;padding:0}#screen-um body {font-family:Arial,sans-serif;background:#05050d;color:#e2dfd6;min-height:100vh;padding:28px}#screen-um h1 {font-size:19px;font-weight:400;margin-bottom:3px;color:#e2dfd6}#screen-um h1 em {font-style:italic;color:#818cf8}#screen-um p.sub {font-size:12px;color:#555;margin-bottom:16px;line-height:1.5}#screen-um canvas {display:block;border-radius:8px;background:#05050d}#screen-um .tabs {display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}#screen-um button.tab {font-size:11px;padding:4px 12px;border-radius:16px;border:1px solid #252535;background:transparent;color:#666;cursor:pointer}#screen-um button.tab.on {background:#1c1c2a;color:#818cf8;border-color:#818cf8}#screen-um .desc {font-size:12px;color:#777;line-height:1.6;margin:8px 0 4px;min-height:36px}#screen-um .ctrl {display:flex;align-items:center;gap:8px;font-size:11px;color:#666;margin-top:4px;flex-wrap:wrap}#screen-um .ctrl input[type=range] {flex:1;min-width:80px;accent-color:#818cf8}#screen-um .v {min-width:32px;color:#888}
+
+#screen-pm * {box-sizing:border-box;margin:0;padding:0}#screen-pm body {font-family:Arial,sans-serif;background:#05050d;color:#e2dfd6;min-height:100vh;padding:28px}#screen-pm h1 {font-size:19px;font-weight:400;margin-bottom:3px}#screen-pm h1 em {font-style:italic;color:#818cf8}#screen-pm p.sub {font-size:12px;color:#555;margin-bottom:16px}#screen-pm canvas {display:block;border-radius:8px;background:#05050d}#screen-pm .tabs {display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}#screen-pm button.tab {font-size:11px;padding:4px 12px;border-radius:16px;border:1px solid #252535;background:transparent;color:#666;cursor:pointer}#screen-pm button.tab.on {background:#1c1c2a;color:#818cf8;border-color:#818cf8}#screen-pm .desc {font-size:12px;color:#777;line-height:1.6;margin:8px 0 4px;min-height:36px}#screen-pm .ctrl {display:flex;align-items:center;gap:8px;font-size:11px;color:#666;margin-top:4px;flex-wrap:wrap}#screen-pm .ctrl input[type=range] {flex:1;min-width:80px;accent-color:#818cf8}#screen-pm .v {min-width:32px;color:#888}
+
+</style>
+</head>
+<body>
+
+<div id="back-btn"><button onclick="showScreen('home')">← Accueil</button></div>
+
+<!-- ACCUEIL -->
+<div id="screen-home" class="screen active">
+  <p class="kicker">Théorie H_φ — Visualisations interactives</p>
+  <h1 class="portal-title">Unus Mundus comme <em>H_φ</em></h1>
+  <p class="portal-sub">Visualisations interactives</p>
+  <p class="meta" style="margin-top:10px;">
+    <strong>Alexandre Joseph Etienne PEREZ</strong>
+    &nbsp;·&nbsp; Lausanne, 10 mai 2026 &nbsp;·&nbsp; © 2026 — Usage recherche
+  </p>
+  <div class="divider"></div>
+  <div class="intro">
+    <p>Ce portail rassemble deux modules de visualisations interactives accompagnant
+    la théorie H_φ — une formalisation spéculative de l'Unus Mundus de Jung et Pauli
+    comme espace de Hilbert structuré par le nombre d'or φ.</p>
+    <p>Cliquez sur un module pour l'ouvrir directement ici.
+    Le bouton <em>← Accueil</em> en haut à droite vous ramène à cette page à tout moment.</p>
+  </div>
+  <div class="grid">
+    <div class="card violet" onclick="showScreen('um')">
+      <div class="badge bv">Théorie centrale</div>
+      <p class="card-num">Module 01</p>
+      <h3 class="card-title">Unus Mundus comme H_φ</h3>
+      <p class="card-desc">Opérateur R &amp; H_φ — Fibonacci ontologique —
+      Archétypes comme modes propres — ER=EPR &amp; synchronicité —
+      Brisure 4→3 et dualité effondrement/déploiement.<br><br>
+      <span style="color:rgba(129,140,248,.45);font-size:12px;">6 onglets · curseurs animés</span></p>
+      <span class="card-arrow">→</span>
+    </div>
+    <div class="card green" onclick="showScreen('pm')">
+      <div class="badge bg">Connexions mathématiques</div>
+      <p class="card-num">Module 02</p>
+      <h3 class="card-title">Pièces manquantes — H_φ</h3>
+      <p class="card-desc">Cantor → H_φ — Klein V4 → H₂ — Kramers → synchronicité —
+      Berry → π₁(H_φ) — T⁴ → H_φ — Synthèse — Test P2 φ-MEA.<br><br>
+      <span style="color:rgba(52,211,153,.45);font-size:12px;">7 onglets · données publiées</span></p>
+      <span class="card-arrow">→</span>
+    </div>
+    <div class="card gold full">
+      <div class="badge bo">Publications · Zenodo</div>
+      <p class="card-num">Corpus publié — Mai 2026</p>
+      <h3 class="card-title">Publications associées</h3>
+      <p class="card-desc" style="max-width:680px;">
+        <a href="https://doi.org/10.5281/zenodo.20054634" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20054634</a> — Axiome, Archétype, Singularité, φ<br>
+        <a href="https://doi.org/10.5281/zenodo.20098372" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098372</a> — Réflexions personnelles sur la géométrie des espaces abstraits<br>
+        <a href="https://doi.org/10.5281/zenodo.20098274" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098274</a> — Unus Mundus comme H_φ<br>
+        <a href="https://doi.org/10.5281/zenodo.20113396" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20113396</a> — Rapport d'analyse Prédiction P2<br>
+        <a href="https://doi.org/10.5281/zenodo.20098853" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098853</a> — Comprendre la théorie H_φ (vulgarisation)<br><br>
+        <span style="color:#333340;font-size:12px;">Travail spéculatif · Non peer-reviewed · Toutes affirmations marquées comme hypothèses</span>
+      </p>
+    </div>
+  </div>
+  <p class="footnote">Contact : <a href="mailto:ajeprz@proton.me">ajeprz@proton.me</a>
+  &nbsp;·&nbsp; P1 : phase Berry = 2π/φ sur cristal de Penrose
+  &nbsp;·&nbsp; P2 : distribution φⁿ sur organoïdes MEA — Maxwell Biosystems, Zurich</p>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-um" class="screen">
+<h1>Unus Mundus comme H_φ — <em>Théorie psycho-cosmologique unifiée</em></h1>
+<p class="sub">Alexandre Joseph Etienne PEREZ · Lausanne, 10 mai 2026 · © Travail spéculatif</p>
+
+<div class="tabs">
+  <button class="tab on" data-m="0">① Opérateur R & H_φ</button>
+  <button class="tab" data-m="1">② Suite de Fibonacci ontologique</button>
+  <button class="tab" data-m="2">③ Archétypes & modes propres</button>
+  <button class="tab" data-m="3">④ ER=EPR & synchronicité</button>
+  <button class="tab" data-m="5">⑤ Brisure 4→3 — Dualité</button>
+  <button class="tab" data-m="4">⑥ Synthèse — L'Unus Mundus</button>
+</div>
+<canvas id="um-cv" width="900" height="600"></canvas>
+<div class="desc" id="um-desc"></div>
+<div class="ctrl" id="um-ctrl"></div>
+
+<script>
+(function(){
+var cv=document.getElementById('um-cv'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+var mode=0,frame=0,phi=(1+Math.sqrt(5))/2;
+
+var DESCS=[
+  "L'opérateur d'auto-référence R agit sur H_∞. Ses états propres φ-cohérents (R|ψ⟩ = φᵏ|ψ⟩) forment le sous-espace H_φ — l'Unus Mundus. Le curseur contrôle le niveau k. Plus k est élevé, plus la résonance est complexe et les valeurs propres φᵏ grandes.",
+  "La suite de Fibonacci est réinterprétée comme une suite ontologique d'espaces de Hilbert : H_{F_{n+1}} = H_{F_n} ⊕ H_{F_{n-1}}. Chaque niveau de réalité est la somme directe des deux précédents. H_φ = lim H_{F_n} est la limite — l'Unus Mundus. Observer comment la structure s'auto-organise vers φ.",
+  "Les archétypes jungiens sont les modes propres de R : |A_k⟩ avec valeur propre φᵏ. Soi (k=0, λ=1) est la singularité — l'état fondamental. Ombre (k=1, λ=φ), Anima (k=2, λ=φ²), Persona (k=3, λ=φ³). Le curseur fait évoluer Ψ(t) — l'état psychique global — et montre comment il modifie Λ.",
+  "Une synchronicité est un événement ER=EPR dans H_φ : deux systèmes — l'un psychique, l'autre physique — atteignent simultanément le même sous-espace H_k. La corrélation n'est pas causale : elle passe par H_φ comme une corrélation EPR passe par le ver ER. Le curseur contrôle le degré de cohérence φ.",
+  "Synthèse complète : singularité = |Soi⟩ = |A₀⟩, archétypes = modes propres φᵏ, Λ = valeur propre de Ĥ_UM, synchronicité = ER=EPR dans H_φ, α_φ = 1/φ ≈ 0.618. L'univers est le processus d'individuation de H_φ. La suite de Fibonacci est la récurrence ontologique dont H_φ est la limite."
+];
+
+document.querySelectorAll('.tab').forEach(function(b){
+  b.addEventListener('click',function(){
+    mode=parseInt(b.dataset.m);frame=0;
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    document.getElementById('um-desc').textContent=DESCS[mode];
+    buildCtrl();
+  });
+});
+document.getElementById('um-desc').textContent=DESCS[0];
+
+var sliderK=3, sliderPsi=0.5, sliderCoh=0.5, sliderA=0.5;
+function buildCtrl(){
+  var c=document.getElementById('um-ctrl');
+  if(mode===0){
+    c.innerHTML='<span>Niveau k</span><input type="range" id="um-sk" min="0" max="8" value="3" step="1"><span class="v" id="um-skv">k=3  φ³=4.24</span>';
+    document.getElementById('um-sk').oninput=function(){sliderK=+this.value;var pv=Math.pow(phi,sliderK);document.getElementById('um-skv').textContent='k='+sliderK+'  φ'+sliderK+'='+pv.toFixed(3);};
+  } else if(mode===2){
+    c.innerHTML='<span>État Ψ(t)</span><input type="range" id="um-sp" min="0" max="100" value="50"><span class="v" id="um-spv">Ψ=0.50</span>';
+    document.getElementById('um-sp').oninput=function(){sliderPsi=this.value/100;document.getElementById('um-spv').textContent='Ψ='+sliderPsi.toFixed(2);};
+  } else if(mode===3){
+    c.innerHTML='<span>Cohérence φ</span><input type="range" id="um-sc" min="0" max="100" value="50"><span class="v" id="um-scv">50%</span>';
+    document.getElementById('um-sc').oninput=function(){sliderCoh=this.value/100;document.getElementById('um-scv').textContent=Math.round(sliderCoh*100)+'%';};
+  } else if(mode===5){
+    c.innerHTML='<span>Animation</span><input type="range" id="um-sa" min="0" max="100" value="50"><span class="v" id="um-sav">50%</span>';
+    document.getElementById('um-sa').oninput=function(){sliderA=this.value/100;document.getElementById('um-sav').textContent=Math.round(sliderA*100)+'%';};
+  } else {
+    c.innerHTML='';
+  }
+}
+buildCtrl();
+
+function tx(t,x,y,col,sz,al){
+  ctx.fillStyle=col||'rgba(150,150,160,.7)';
+  ctx.font=(sz||11)+'px Arial,sans-serif';
+  ctx.textAlign=al||'center';
+  ctx.fillText(t,x,y);
+}
+
+// ── SCENE 0 : Opérateur R & H_φ ───────────────────────────────
+function scene0(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.012, k=sliderK;
+  var CX=W/2, CY=H/2;
+
+  // H_∞ représenté comme un plan infini en perspective
+  ctx.strokeStyle='rgba(99,102,241,.1)';ctx.lineWidth=.5;
+  for(var i=-8;i<=8;i++){
+    ctx.beginPath();ctx.moveTo(CX+i*50,60);ctx.lineTo(CX+i*120,H-60);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(CX-400,CY+i*28);ctx.lineTo(CX+400,CY+i*28);ctx.stroke();
+  }
+
+  // Label H_∞
+  tx('H_∞',50,30,'rgba(99,102,241,.4)',13);
+  tx('(espace de Hilbert fondamental)',50,44,'rgba(99,102,241,.3)',9);
+
+  // H_φ : ellipse centrale représentant le sous-espace propre
+  var rA=200, rB=110;
+  ctx.beginPath();ctx.ellipse(CX,CY,rA,rB,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(129,140,248,.06)';ctx.fill();
+  ctx.strokeStyle='rgba(129,140,248,.5)';ctx.lineWidth=2;ctx.stroke();
+  tx('H_φ  (Unus Mundus)',CX,CY-rB-12,'rgba(129,140,248,.75)',12);
+
+  // Vecteurs propres — spirale de Fibonacci dans H_φ
+  var nModes=Math.min(k+1,9);
+  var colors=['#fde68a','#f97316','#818cf8','#34d399','#f59e0b','#a78bfa','#6ee7b7','#fca5a5','#93c5fd'];
+  for(var j=0;j<=nModes;j++){
+    var angle=j/nModes*Math.PI*2+T*.2;
+    var r2=(30+j*20)*Math.min(1,rA/(30+nModes*20+10));
+    var px=CX+Math.cos(angle)*r2*(rA/rA);
+    var py=CY+Math.sin(angle)*r2*(rB/rA);
+    var eigenval=Math.pow(phi,j);
+    var col=colors[j%colors.length];
+
+    // Halo de taille proportionnelle à φʲ
+    var haloR=6+Math.min(j*4,40);
+    ctx.beginPath();ctx.arc(px,py,haloR,0,Math.PI*2);
+    ctx.fillStyle='rgba('+hexToRgb(col)+','+(0.08+j*.02)+')';ctx.fill();
+    ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);
+    ctx.fillStyle=col;ctx.fill();
+    tx('|A'+j+'⟩',px,py-10,col,9);
+    tx('φ'+j+'='+eigenval.toFixed(2),px,py+16,'rgba(200,200,220,.45)',8);
+  }
+
+  // Opérateur R représenté comme une transformation
+  var Rangle=T*.3+phi;
+  var Rx1=CX+Math.cos(Rangle)*80,Ry1=CY+Math.sin(Rangle)*45;
+  var Rx2=CX+Math.cos(Rangle+0.8)*80*phi,Ry2=CY+Math.sin(Rangle+0.8)*45*phi;
+  ctx.beginPath();ctx.moveTo(Rx1,Ry1);ctx.lineTo(Rx2,Ry2);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.arc(Rx1,Ry1,4,0,Math.PI*2);ctx.fillStyle='rgba(245,158,11,.6)';ctx.fill();
+  ctx.beginPath();ctx.arc(Rx2,Ry2,4,0,Math.PI*2);ctx.fillStyle='rgba(245,158,11,.9)';ctx.fill();
+
+  // Formule R
+  var fx=W-20,fy=H/2-60;
+  ctx.fillStyle='rgba(12,12,24,.85)';ctx.fillRect(fx-195,fy-16,195,110);
+  tx('R|ψ⟩ = φᵏ|ψ⟩',fx-98,fy+4,'rgba(245,158,11,.85)',13);
+  tx('k = '+k+'   φᵏ = '+Math.pow(phi,k).toFixed(3),fx-98,fy+22,'rgba(245,158,11,.6)',10);
+  tx('S_{n+1}/S_n → φ',fx-98,fy+42,'rgba(129,140,248,.65)',10);
+  tx('α_φ = 1/φ ≈ 0.618',fx-98,fy+60,'rgba(52,211,153,.65)',10);
+  tx('H_φ ⊗ H_φ = H_φ ⊕ 1',fx-98,fy+78,'rgba(249,115,22,.6)',10);
+
+  tx('Unus Mundus — H_φ est algébriquement clos sous l\'intrication',W/2,H-10,'rgba(129,140,248,.4)',10);
+}
+
+function hexToRgb(hex){
+  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return r+','+g+','+b;
+}
+
+// ── SCENE 1 : Suite de Fibonacci ontologique ──────────────────
+function scene1(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.008;
+
+  // Niveaux de Fibonacci
+  var levels=[
+    {n:0,F:0,dim:0,phys:'Néant structuré',psych:'Uroboros',col:'rgba(100,100,120,.5)'},
+    {n:1,F:1,dim:1,phys:'Singularité',psych:'Soi — |A₀⟩',col:'#fde68a'},
+    {n:2,F:1,dim:1,phys:'1ère brisure',psych:'Ombre',col:'#f97316'},
+    {n:3,F:2,dim:2,phys:'Géométrie',psych:'Triade',col:'#818cf8'},
+    {n:4,F:3,dim:3,phys:'Espace-temps',psych:'Quaternité',col:'#34d399'},
+    {n:5,F:5,dim:5,phys:'Vie',psych:'Quintessence',col:'#f59e0b'},
+    {n:6,F:8,dim:8,phys:'Système nerveux',psych:'Complexes',col:'#a78bfa'},
+    {n:7,F:13,dim:13,phys:'Langage',psych:'Persona',col:'#6ee7b7'},
+    {n:8,F:21,dim:21,phys:'Conscience',psych:'Individuation',col:'#93c5fd'},
+    {n:9,F:34,dim:34,phys:'Civilisation',psych:'Inconscient collectif',col:'#fca5a5'},
+    {n:10,F:55,dim:55,phys:'Noosphère',psych:'Unus Mundus naissant',col:'rgba(129,140,248,.9)'},
+  ];
+
+  var nL=levels.length;
+  var xL=55, xR=W-55, xRange=xR-xL;
+  var yBottom=H-35, yTop=55;
+
+  // Dessiner chaque niveau
+  levels.forEach(function(lv,i){
+    if(lv.F===0){
+      // Niveau 0 : ligne pointillée seulement
+      var y=yBottom-i*(yBottom-yTop)/(nL);
+      ctx.beginPath();ctx.moveTo(xL,y);ctx.lineTo(xR,y);
+      ctx.strokeStyle='rgba(80,80,100,.25)';ctx.lineWidth=.5;ctx.setLineDash([3,4]);ctx.stroke();ctx.setLineDash([]);
+      tx('F₀={∅}',xL-6,y+3,'rgba(80,80,100,.4)',9,'right');
+      return;
+    }
+
+    var y=yBottom-(i)*(yBottom-yTop)/(nL);
+    // Barre horizontale de largeur proportionnelle à F_n / F_max
+    var barW=Math.max(8,(lv.F/55)*(xRange*.85));
+    var barH=Math.max(4,Math.min(16, 4+lv.F*.4));
+
+    // Barre principale
+    var pulse=0.7+0.3*Math.sin(T*1.5+i*.6);
+    ctx.fillStyle=lv.col.replace('rgba','rgba').replace(/[\d.]+\)$/,(pulse*.7).toFixed(2)+')');
+    ctx.fillRect(xL,y-barH/2,barW,barH);
+    // Bord brillant
+    ctx.strokeStyle=lv.col;ctx.lineWidth=1;ctx.strokeRect(xL,y-barH/2,barW,barH);
+
+    // Index et formule
+    tx('F'+lv.n+'='+lv.F,xL-4,y+3,'rgba(200,200,220,.45)',8,'right');
+    tx(lv.phys,xL+barW+6,y-4,lv.col,9,'left');
+    tx(lv.psych,xL+barW+6,y+7,'rgba(180,180,200,.45)',8,'left');
+
+    // Flèche de récurrence depuis F_{n-2} et F_{n-1}
+    if(i>=3){
+      var yPrev1=yBottom-(i-1)*(yBottom-yTop)/(nL);
+      var yPrev2=yBottom-(i-2)*(yBottom-yTop)/(nL);
+      var xArrow=xL+Math.max(8,(levels[i-1].F/55)*(xRange*.85))+12;
+      ctx.beginPath();ctx.moveTo(xArrow,yPrev1);ctx.bezierCurveTo(xArrow+20,yPrev1,xArrow+20,y,xArrow+8,y);
+      ctx.strokeStyle='rgba(129,140,248,.15)';ctx.lineWidth=.8;ctx.stroke();
+    }
+  });
+
+  // Limite H_φ
+  var yPhi=yTop-10;
+  ctx.beginPath();ctx.moveTo(xL,yPhi);ctx.lineTo(xR,yPhi);
+  ctx.strokeStyle='rgba(129,140,248,.6)';ctx.lineWidth=2;ctx.setLineDash([8,4]);ctx.stroke();ctx.setLineDash([]);
+  tx('H_φ = lim H_{F_n}  (Unus Mundus)',W/2,yPhi-8,'rgba(129,140,248,.8)',12);
+  tx('φ = '+phi.toFixed(5)+'...',W/2,yPhi+10,'rgba(245,158,11,.55)',9);
+
+  // Récurrence
+  ctx.fillStyle='rgba(12,12,24,.8)';ctx.fillRect(W-210,H/2-30,200,58);
+  tx('H_{F_{n+1}} = H_{F_n} ⊕ H_{F_{n-1}}',W-110,H/2-10,'rgba(245,158,11,.8)',11);
+  tx('H_φ = lim_{n→∞} H_{F_n}',W-110,H/2+12,'rgba(129,140,248,.65)',10);
+  tx('F_{n+1}/F_n → φ',W-110,H/2+28,'rgba(52,211,153,.55)',9);
+
+  tx('Chaque niveau de réalité = somme directe des deux précédents — H_φ est la limite',W/2,H-10,'rgba(129,140,248,.4)',10);
+}
+
+// ── SCENE 2 : Archétypes & modes propres ─────────────────────
+function scene2(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.013;
+  var psi=sliderPsi;
+
+  // Archétypes principaux
+  var archetypes=[
+    {k:0,name:'Soi',lat:'Self',col:'#fde68a',desc:'Singularité |A₀⟩ = |Soi⟩\nλ₀ = φ⁰ = 1\nÉtat fondamental de H_φ'},
+    {k:1,name:'Ombre',lat:'Shadow',col:'#f97316',desc:'1ère brisure symétrie\nλ₁ = φ¹ ≈ 1.618\nQubit cosmologique'},
+    {k:2,name:'Anima',lat:'Anima/Animus',col:'#818cf8',desc:'Paire conjuguée intriquée\nλ₂ = φ² ≈ 2.618\nPaire EPR — spin-1'},
+    {k:3,name:'Persona',lat:'Persona',col:'#34d399',desc:'Interface bord/bulk\nλ₃ = φ³ ≈ 4.236\nHolographie AdS/CFT'},
+  ];
+
+  // Potentiel V(φ_champ, Ψ) — chapeau mexicain
+  var potCX=160, potCY=H/2+20, potR=110;
+
+  // Dessiner chapeau mexicain (potentiel de Higgs modifié)
+  var mu2=-(0.5+psi*1.0); // modifié par Ψ
+  for(var ix=-potR;ix<=potR;ix+=2){
+    var xn=ix/potR, V=mu2*xn*xn+xn*xn*xn*xn+0.3;
+    var Vmin=-0.5+mu2*mu2/4, Vmax=1.2;
+    var yV=potCY-((V-Vmin)/(Vmax-Vmin))*90;
+    if(Math.abs(yV-potCY)>130) continue;
+    ctx.fillStyle='rgba(129,140,248,'+(0.05+0.1*((ix+potR)/(2*potR)))+')';
+    ctx.fillRect(potCX+ix,yV,2,potCY+80-yV);
+  }
+  ctx.beginPath();
+  for(var ix=-potR;ix<=potR;ix+=1){
+    var xn=ix/potR, V=mu2*xn*xn+xn*xn*xn*xn+0.3;
+    var Vmin=-0.5+mu2*mu2/4, Vmax=1.2;
+    var yV=potCY-((V-Vmin)/(Vmax-Vmin))*90;
+    if(yV<potCY-120||yV>potCY+90){ix===-potR?null:null;continue;}
+    ix===-potR?ctx.moveTo(potCX+ix,yV):ctx.lineTo(potCX+ix,yV);
+  }
+  ctx.strokeStyle='rgba(129,140,248,.7)';ctx.lineWidth=2;ctx.stroke();
+
+  tx('V(φ, Ψ='+psi.toFixed(2)+')',potCX,potCY-125,'rgba(129,140,248,.6)',10);
+  tx('μ²(Ψ)='+mu2.toFixed(2),potCX,potCY-113,'rgba(129,140,248,.45)',9);
+
+  // Bille dans le potentiel
+  var ballX=mu2<0?(0.5+psi*.3):-0.05;
+  var bxn=ballX, bV=mu2*bxn*bxn+bxn*bxn*bxn*bxn+0.3;
+  var Vmin=-0.5+mu2*mu2/4, Vmax=1.2;
+  var byV=potCY-((bV-Vmin)/(Vmax-Vmin))*90;
+  ctx.beginPath();ctx.arc(potCX+bxn*potR,byV-8,7,0,Math.PI*2);ctx.fillStyle='#3b82f6';ctx.fill();
+  tx('Λ(Ψ)',potCX+bxn*potR,byV-22,'rgba(59,130,246,.7)',9);
+
+  // Λ_eff
+  var Lambda_eff=(0.5+psi*0.8).toFixed(3);
+  ctx.fillStyle='rgba(12,12,24,.8)';ctx.fillRect(potCX-80,potCY+60,160,32);
+  tx('Λ_eff = Λ₀ + (1/φ)·δΨ',potCX,potCY+72,'rgba(245,158,11,.7)',9);
+  tx('= '+Lambda_eff+' (Ψ='+psi.toFixed(2)+')',potCX,potCY+84,'rgba(245,158,11,.5)',9);
+
+  // Archétypes à droite
+  archetypes.forEach(function(a,i){
+    var cx=370+Math.floor(i/2)*220, cy=80+i%2*160+60;
+    // Halo pulsant
+    var pulse=0.5+0.5*Math.sin(T*1.3+i*phi);
+    ctx.beginPath();ctx.arc(cx,cy,28+pulse*8,0,Math.PI*2);
+    ctx.strokeStyle=a.col.replace('#','rgba(').replace(/^rgba\(/,'rgba(')+',.2)';
+    // simpler:
+    ctx.strokeStyle='rgba(200,200,255,'+(0.1+pulse*.08)+')';
+    ctx.lineWidth=2;ctx.stroke();
+
+    ctx.beginPath();ctx.arc(cx,cy,24,0,Math.PI*2);
+    ctx.fillStyle='rgba(8,8,18,.9)';ctx.fill();
+    ctx.strokeStyle=a.col;ctx.lineWidth=2;ctx.stroke();
+
+    // Étoile φᵏ
+    var eigenval=Math.pow(phi,a.k);
+    drawStar(ctx,cx,cy,20,eigenval,a.col,T+i*.8);
+
+    tx(a.name,cx,cy+40,a.col,10);
+    tx('k='+a.k+'  λ=φ'+a.k+'='+eigenval.toFixed(3),cx,cy+52,'rgba(180,180,200,.5)',8);
+    a.desc.split('\n').forEach(function(l,j){
+      tx(l,cx,cy+66+j*12,'rgba(140,140,160,.4)',8);
+    });
+
+    // Ligne vers potentiel (couplage V_archétype)
+    ctx.beginPath();ctx.moveTo(potCX+60,potCY);ctx.lineTo(cx-28,cy);
+    ctx.strokeStyle='rgba(100,100,140,.15)';ctx.lineWidth=1;ctx.setLineDash([3,4]);ctx.stroke();ctx.setLineDash([]);
+  });
+
+  // Couplage α_φ
+  ctx.fillStyle='rgba(12,12,24,.8)';ctx.fillRect(340,H-50,220,34);
+  tx('V_couplage = −(1/φ)·φᵏ·φ²_champ·Ψ',450,H-30,'rgba(52,211,153,.65)',9);
+
+  tx('Les archétypes sont les modes propres de R — Ψ contrôle la déformation du vide et Λ_eff',W/2,H-10,'rgba(129,140,248,.4)',10);
+}
+
+function drawStar(ctx,cx,cy,r,n,col,angle){
+  var pts=Math.max(3,Math.min(9,Math.round(n)));
+  ctx.beginPath();
+  for(var i=0;i<pts*2;i++){
+    var a=angle+i*Math.PI/pts-Math.PI/2;
+    var rr=i%2===0?r:r*.45;
+    var x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.stroke();
+}
+
+// ── SCENE 3 : ER=EPR & synchronicité ─────────────────────────
+function scene3(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.013, coh=sliderCoh;
+
+  // Deux systèmes : physique (gauche) et psychique (droite)
+  var Px=170,Py=H/2-30,Qx=730,Qy=H/2-30;
+
+  // Étoiles de fond
+  for(var i=0;i<60;i++){var sx=((i*137.5)%1)*W,sy=((i*91.3)%1)*H;ctx.fillStyle='rgba(255,255,255,'+(0.04+0.1*((i*53)%1))+')';ctx.beginPath();ctx.arc(sx,sy,.5,0,Math.PI*2);ctx.fill();}
+
+  // Ver ER dans H_φ (si cohérence suffisante)
+  if(coh>0.05){
+    var wW=coh*80;
+    ctx.beginPath();
+    ctx.moveTo(Px+35,Py-wW/2);
+    ctx.bezierCurveTo(W/2,Py-wW*1.4,W/2,Py-wW*1.4,Qx-35,Py-wW/2);
+    ctx.lineTo(Qx-35,Py+wW/2);
+    ctx.bezierCurveTo(W/2,Py+wW*1.4,W/2,Py+wW*1.4,Px+35,Py+wW/2);
+    ctx.closePath();
+    var g=ctx.createLinearGradient(Px,Py,Qx,Py);
+    g.addColorStop(0,'rgba(129,140,248,'+(coh*.4)+')');
+    g.addColorStop(.5,'rgba(129,140,248,'+(coh*.2)+')');
+    g.addColorStop(1,'rgba(52,211,153,'+(coh*.4)+')');
+    ctx.fillStyle=g;ctx.fill();
+    ctx.strokeStyle='rgba(129,140,248,'+(coh*.5)+')';ctx.lineWidth=1.5;ctx.stroke();
+    tx('Ver ER dans H_φ',W/2,Py-wW-14,'rgba(129,140,248,'+(coh*.8)+')',10);
+  }
+
+  // Système physique
+  ctx.beginPath();ctx.arc(Px,Py,32,0,Math.PI*2);ctx.fillStyle='rgba(5,5,14,.9)';ctx.fill();
+  ctx.strokeStyle='rgba(52,211,153,.7)';ctx.lineWidth=2;ctx.stroke();
+  tx('Système',Px,Py-4,'rgba(52,211,153,.8)',10);
+  tx('physique',Px,Py+8,'rgba(52,211,153,.7)',9);
+  // Particules orbitant
+  for(var i=0;i<6;i++){var a=T*1.2+i*Math.PI/3;var pr=22;ctx.beginPath();ctx.arc(Px+Math.cos(a)*pr,Py+Math.sin(a)*pr,2.5,0,Math.PI*2);ctx.fillStyle='rgba(52,211,153,0.5)';ctx.fill();}
+
+  // Système psychique
+  ctx.beginPath();ctx.arc(Qx,Qy,32,0,Math.PI*2);ctx.fillStyle='rgba(5,5,14,.9)';ctx.fill();
+  ctx.strokeStyle='rgba(245,158,11,.7)';ctx.lineWidth=2;ctx.stroke();
+  tx('Système',Qx,Qy-4,'rgba(245,158,11,.8)',10);
+  tx('psychique',Qx,Qy+8,'rgba(245,158,11,.7)',9);
+  // Archétype pulsant
+  for(var i=0;i<5;i++){var a=T*.8+i*Math.PI*2/5;var pr=22;ctx.beginPath();ctx.arc(Qx+Math.cos(a)*pr,Qy+Math.sin(a)*pr,2.5,0,Math.PI*2);ctx.fillStyle='rgba(245,158,11,0.5)';ctx.fill();}
+
+  // Corrélations EPR au-dessus (non causales)
+  var nLines=Math.floor(coh*12);
+  for(var i=0;i<nLines;i++){
+    var offset=(i-(nLines-1)/2)*18;
+    ctx.beginPath();
+    ctx.moveTo(Px+35,Py-110+offset);
+    ctx.bezierCurveTo(W/3,Py-160+offset,2*W/3,Py-160+offset,Qx-35,Py-110+offset);
+    ctx.strokeStyle='rgba(245,158,11,'+(0.12+coh*.15)+')';ctx.lineWidth=1;ctx.stroke();
+  }
+  if(coh>0.1) tx('Corrélation EPR — non causale — dans H_φ',W/2,Py-170,'rgba(245,158,11,'+(coh*.8)+')',10);
+
+  // Indicateur de synchronicité
+  var f_sync=(coh*coh/phi/phi).toFixed(4);
+  var near=coh>0.6;
+  if(near){
+    ctx.beginPath();ctx.arc(W/2,Py+80,38,0,Math.PI*2);ctx.strokeStyle='rgba(249,115,22,.8)';ctx.lineWidth=2.5;ctx.stroke();
+    tx('SYNCHRO-',W/2,Py+76,'rgba(249,115,22,.9)',9);
+    tx('NICITÉ',W/2,Py+90,'rgba(249,115,22,.9)',9);
+  }
+
+  // H_k partagé
+  var hk=Math.floor(coh*5);
+  tx('Sous-espace H_'+hk+' partagé',W/2,Py+130,'rgba(129,140,248,.6)',11);
+  tx('f_sync = |⟨ψ₁|P_k|ψ₂⟩|² / τ_φ = '+f_sync,W/2,Py+146,'rgba(129,140,248,.45)',9);
+
+  // Formule
+  ctx.fillStyle='rgba(12,12,24,.8)';ctx.fillRect(W/2-140,H-56,280,44);
+  tx('ΔO_phys · ΔO_psych ≥ φ/2 ≈ 0.809',W/2,H-36,'rgba(245,158,11,.75)',10);
+  tx('Constante de Planck de l\'Unus Mundus',W/2,H-20,'rgba(129,140,248,.5)',9);
+
+  tx('Synchronicité = ER=EPR dans H_φ — deux systèmes dans le même sous-espace H_k',W/2,H-8,'rgba(129,140,248,.35)',9);
+}
+
+// ── SCENE 4 : Synthèse ─────────────────────────────────────────
+function scene4(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.010;
+
+  // Nœuds de la synthèse
+  var nodes=[
+    {x:W/2,      y:52,   label:'Unus Mundus',sub:'H_φ (limite)',col:'rgba(245,158,11,.9)',k:'∞'},
+    {x:160,      y:160,  label:'Singularité',sub:'|A₀⟩=|Soi⟩, k=0',col:'rgba(253,230,138,.85)',k:'0'},
+    {x:740,      y:160,  label:'Énergie noire',sub:'Λ = val. propre Ĥ_UM',col:'rgba(52,211,153,.85)',k:'Λ'},
+    {x:160,      y:300,  label:'Archétypes',sub:'φᵏ — modes propres R',col:'rgba(129,140,248,.85)',k:'k'},
+    {x:740,      y:300,  label:'Synchronicité',sub:'ER=EPR dans H_φ',col:'rgba(249,115,22,.85)',k:'≡'},
+    {x:W/2,      y:430,  label:'α_φ = 1/φ',sub:'Couplage structurel',col:'rgba(167,139,250,.85)',k:'α'},
+  ];
+
+  // Fibonacci spiral en fond
+  var spiralX=W/2,spiralY=H/2,spiralR=1;
+  ctx.beginPath();
+  for(var i=0;i<600;i++){
+    var angle=i*.1+T*.05;
+    var r=spiralR*Math.pow(phi,i*.1*.3183);
+    if(r>250) break;
+    var x=spiralX+Math.cos(angle)*r,y=spiralY+Math.sin(angle)*r*.6;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle='rgba(129,140,248,.06)';ctx.lineWidth=1;ctx.stroke();
+
+  // Arêtes
+  var edges=[[0,1],[0,2],[0,3],[0,4],[0,5],[1,3],[2,4],[1,2],[3,5],[4,5],[3,4]];
+  edges.forEach(function(e){
+    var n1=nodes[e[0]],n2=nodes[e[1]];
+    var pulse=0.4+0.3*Math.sin(T*1.2+(e[0]+e[1])*.7);
+    ctx.beginPath();ctx.moveTo(n1.x,n1.y);ctx.lineTo(n2.x,n2.y);
+    ctx.strokeStyle='rgba(100,100,150,'+pulse*.18+')';ctx.lineWidth=1;ctx.stroke();
+  });
+
+  // Nœuds
+  nodes.forEach(function(n,i){
+    var pulse=0.5+0.5*Math.sin(T*1.1+i*phi);
+    // Halo
+    ctx.beginPath();ctx.arc(n.x,n.y,32+pulse*7,0,Math.PI*2);
+    ctx.strokeStyle=n.col.replace(/[\d.]+\)$/,(0.15+pulse*.08)+')');
+    ctx.lineWidth=1.5;ctx.stroke();
+    // Cercle
+    ctx.beginPath();ctx.arc(n.x,n.y,26,0,Math.PI*2);
+    ctx.fillStyle='rgba(5,5,14,.95)';ctx.fill();
+    ctx.strokeStyle=n.col;ctx.lineWidth=2;ctx.stroke();
+    // Symbole intérieur
+    tx(n.k,n.x,n.y+4,n.col,12);
+    // Labels sous le cercle (sauf nœud du bas)
+    if(i===5){
+      ctx.fillStyle='rgba(5,5,14,.88)';ctx.fillRect(n.x-52,n.y-88,104,30);
+      tx(n.label,n.x,n.y-74,n.col,10);
+      tx(n.sub,n.x,n.y-62,'rgba(160,160,175,.65)',8);
+    } else {
+      ctx.fillStyle='rgba(5,5,14,.88)';ctx.fillRect(n.x-52,n.y+46,104,30);
+      tx(n.label,n.x,n.y+60,n.col,10);
+      tx(n.sub,n.x,n.y+72,'rgba(160,160,175,.65)',8);
+    }
+  });
+
+  // Équation centrale
+  var eqY=H/2+20;
+  ctx.fillStyle='rgba(8,8,20,.92)';ctx.fillRect(W/2-145,eqY-22,290,50);
+  ctx.strokeStyle='rgba(245,158,11,.25)';ctx.lineWidth=1;ctx.strokeRect(W/2-145,eqY-22,290,50);
+  tx('H_φ ⊗ H_φ = H_φ ⊕ 1',W/2,eqY-4,'rgba(245,158,11,.88)',12);
+  tx('L\'Unus Mundus est clos sous l\'intrication',W/2,eqY+14,'rgba(129,140,248,.6)',9);
+
+  // Bande de bas
+  ctx.fillStyle='rgba(5,5,14,.88)';ctx.fillRect(0,H-18,W,18);
+  tx('L\'univers est le processus d\'individuation de H_φ — la suite de Fibonacci est la récurrence ontologique dont H_φ est la limite',W/2,H-5,'rgba(129,140,248,.55)',10);
+}
+
+// ── SCENE 5 : Brisure 4→3 — dualité effondrement/déploiement ────
+function scene5(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.009, anim=sliderA;
+
+  // Title
+  tx('Dualité Effondrement / Déploiement',W/2,24,'rgba(129,140,248,.65)',11);
+  tx('{Axiome, Archétype, Singularité, Fibonacci} = orbite de V4',W/2,38,'rgba(129,140,248,.45)',9);
+
+  // V4 symmetry : 4 nodes in diamond configuration
+  var CX=W/2, CY=H/2-20;
+  var dx=180, dy=110;
+
+  var nodes4=[
+    {x:CX,    y:CY-dy, label:'Axiome',     sub:'Limite logique',   col:'#818cf8', vsnt:'effondrement'},
+    {x:CX+dx, y:CY,    label:'Fibonacci',  sub:'Versant déploiement',col:'#f59e0b',vsnt:'deploiement'},
+    {x:CX,    y:CY+dy, label:'Singularité',sub:'Limite physique',   col:'#fde68a', vsnt:'effondrement'},
+    {x:CX-dx, y:CY,    label:'Archétype',  sub:'Archétype dominant',col:'#34d399', vsnt:'deploiement'},
+  ];
+
+  // V4 group action arrows (dashed)
+  var v4pairs=[[0,2],[1,3],[0,1],[2,3],[0,3],[1,2]];
+  v4pairs.forEach(function(p){
+    var n1=nodes4[p[0]],n2=nodes4[p[1]];
+    ctx.beginPath();ctx.moveTo(n1.x,n1.y);ctx.lineTo(n2.x,n2.y);
+    ctx.strokeStyle='rgba(100,100,150,.15)';ctx.lineWidth=1;ctx.setLineDash([3,4]);ctx.stroke();ctx.setLineDash([]);
+  });
+
+  // Brisure animation : état 4 (blanc) → état 3 (bleu)
+  // anim controls the symmetry breaking parameter ε
+  var eps = anim;  // 0 = white (V4 intact), 1 = blue (broken)
+  var breakColor = 'rgba('+Math.round(24+eps*5)+','+Math.round(58+eps*112)+','+Math.round(111+eps*137)+','+(0.4+eps*0.5)+')';
+
+  // Draw nodes
+  nodes4.forEach(function(n,i){
+    var pulse=0.5+0.5*Math.sin(T*1.2+i*phi);
+    // In state 4 (eps=0): all same; in state 3 (eps=1): Archétype (i=3) dominant
+    var isDominant=(i===3 && eps>0.3);
+    var isSubordinate=(i!==3 && eps>0.3);
+    var r= isDominant ? 30+pulse*8 : 26;
+    var alpha= isSubordinate ? 0.4+eps*0.2*Math.sin(T+i) : 1;
+
+    // Halo
+    ctx.beginPath();ctx.arc(n.x,n.y,r+8,0,Math.PI*2);
+    ctx.strokeStyle=n.col.replace('#','rgba(').replace(/^rgba\(.*$/,'rgba(200,200,255,'+(0.06+pulse*.05*(1-eps*0.5*(i!==3?1:0)))+')');
+    ctx.strokeStyle='rgba(200,200,255,'+(0.06+pulse*.05)+')';
+    ctx.lineWidth=1.5;ctx.stroke();
+
+    ctx.globalAlpha=alpha;
+    ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+    ctx.fillStyle='rgba(5,5,14,.92)';ctx.fill();
+    ctx.strokeStyle=isDominant?'rgba(52,211,153,.9)':n.col;
+    ctx.lineWidth=isDominant?3:2;ctx.stroke();
+    tx(n.label,n.x,n.y+(isDominant?-2:0),isDominant?'rgba(52,211,153,.95)':n.col,isDominant?11:10);
+    ctx.globalAlpha=1;
+
+    // Labels outside
+    var ly= n.y > CY ? n.y+r+18 : n.y-r-18;
+    var lal= n.y > CY ? 'top' : 'bottom';
+    ctx.fillStyle='rgba(5,5,14,.85)';ctx.fillRect(n.x-52,n.y > CY ? n.y+r+6 : n.y-r-26,104,20);
+    tx(n.sub,n.x,n.y > CY ? n.y+r+20 : n.y-r-12,'rgba(160,160,175,.6)',8);
+  });
+
+  // V4 label
+  tx('V4 = Z₂ × Z₂',CX,CY,'rgba(100,100,140,.6)',10);
+
+  // Brisure arrow — descendu pour ne plus chevaucher le nœud Singularité (à y=CY+dy=390)
+  var arrowY=H-90;
+  // State indicator — cercle plus grand (r=26) et texte mieux espacé
+  if(eps < 0.15){
+    ctx.fillStyle='rgba(255,255,255,.06)';ctx.beginPath();ctx.arc(W/2-220,arrowY,26,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='rgba(220,220,220,.3)';ctx.lineWidth=1.5;ctx.stroke();
+    tx('État 4',W/2-220,arrowY+4,'rgba(220,220,220,.85)',11);
+    tx('BLANC',W/2-220,arrowY+34,'rgba(200,200,200,.55)',9);
+    tx('V4 intact',W/2-220,arrowY+46,'rgba(150,150,150,.45)',8);
+  } else if(eps < 0.7){
+    ctx.beginPath();ctx.arc(W/2-220,arrowY,26,0,Math.PI*2);
+    ctx.fillStyle='rgba(50,100,160,.3)';ctx.fill();
+    ctx.strokeStyle='rgba(100,150,220,.5)';ctx.lineWidth=2;ctx.stroke();
+    tx('Brisure',W/2-220,arrowY+4,'rgba(100,150,220,.85)',11);
+    tx('ε > 0',W/2-220,arrowY+34,'rgba(100,150,220,.6)',9);
+    tx('V4 → {e,b}',W/2-220,arrowY+46,'rgba(100,150,220,.5)',8);
+  } else {
+    ctx.beginPath();ctx.arc(W/2-220,arrowY,26,0,Math.PI*2);
+    ctx.fillStyle='rgba(30,58,111,.6)';ctx.fill();
+    ctx.strokeStyle='rgba(52,211,153,.8)';ctx.lineWidth=2;ctx.stroke();
+    tx('État 3',W/2-220,arrowY+4,'rgba(52,211,153,.95)',11);
+    tx('BLEU',W/2-220,arrowY+34,'rgba(52,211,153,.7)',9);
+    tx('Archétype dominant',W/2-220,arrowY+46,'rgba(52,211,153,.5)',8);
+  }
+
+  // Arrow
+  ctx.beginPath();ctx.moveTo(W/2-196,arrowY);ctx.lineTo(W/2-130,arrowY);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W/2-130,arrowY);ctx.lineTo(W/2-140,arrowY-5);ctx.moveTo(W/2-130,arrowY);ctx.lineTo(W/2-140,arrowY+5);
+  ctx.stroke();
+
+  // H_∞ construction box
+  var bx=W/2-120, bw=340, bh=eps>0.5?80:50;
+  ctx.fillStyle='rgba(8,8,20,.9)';ctx.fillRect(bx,arrowY-bh/2,bw,bh);
+  ctx.strokeStyle='rgba(245,158,11,'+(0.1+eps*.4)+')';ctx.lineWidth=1;ctx.strokeRect(bx,arrowY-bh/2,bw,bh);
+  if(eps>0.5){
+    tx('H_∞ = colim(Hφ ⊗ H_Fn)',bx+bw/2,arrowY-10,'rgba(245,158,11,'+(eps*0.9)+')',11);
+    tx('Construit sans postulat',bx+bw/2,arrowY+6,'rgba(245,158,11,'+(eps*0.6)+')',9);
+    tx('ε = ⟨Φ|e₊⟩ > 0  par positivité du spectre de R',bx+bw/2,arrowY+22,'rgba(52,211,153,'+(eps*0.6)+')',9);
+  } else {
+    tx('H_∞ non constructible (ε=0, symétrie V4 intacte)',bx+bw/2,arrowY+4,'rgba(150,150,150,.5)',9);
+  }
+
+  // Ψ_ordre
+  tx('Ψ_ordre = exp(2πi/φ) ≈ exp(3.883 i)',W-20,arrowY-12,'rgba(129,140,248,.6)',9,'right');
+  tx('Paramètre d’ordre — transition topologique pure',W-20,arrowY+4,'rgba(129,140,248,.4)',8,'right');
+
+  tx('Ajustez le curseur : ε=0 → état 4 (blanc, V4 intact) | ε=1 → état 3 (bleu, Archétype dominant, H_∞ constructible)',W/2,H-8,'rgba(129,140,248,.4)',9);
+}
+
+
+function loop(){
+  ctx.clearRect(0,0,W,H);frame++;
+  if(mode===0) scene0();
+  else if(mode===1) scene1();
+  else if(mode===2) scene2();
+  else if(mode===3) scene3();
+  else if(mode===4) scene4();
+  else scene5();
+  requestAnimationFrame(loop);
+}
+loop();
+})();
+</script>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-pm" class="screen">
+<h1>Pièces manquantes — <em>H_φ & géométrie abstraite (PEREZ, 2026c)</em></h1>
+<p class="sub">Alexandre Joseph Etienne PEREZ · Lausanne, 10 mai 2026 · © Travail spéculatif</p>
+
+<div class="tabs">
+  <button class="tab on" data-m="0">① Cantor → H_φ</button>
+  <button class="tab" data-m="1">② Klein V4 → H_2</button>
+  <button class="tab" data-m="2">③ Kramers → synchronicité</button>
+  <button class="tab" data-m="3">④ Berry → π₁(H_φ)</button>
+  <button class="tab" data-m="4">⑤ T⁴ → H_φ</button>
+  <button class="tab" data-m="5">⑥ Synthèse des connexions</button>
+  <button class="tab" data-m="6">⑦ Test P2 — φ-MEA</button>
+</div>
+<canvas id="pm-cv" width="900" height="700"></canvas>
+<div class="desc" id="pm-desc"></div>
+<div class="ctrl" id="pm-ctrl"></div>
+
+<script>
+(function(){
+var cv=document.getElementById('pm-cv'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+var mode=0,frame=0,phi=(1+Math.sqrt(5))/2;
+var sliderA=0.5;
+
+var DESCS=[
+  "§4.1 PEREZ (2026c) — La section transverse de l'attracteur de Lorenz révèle un ensemble de Cantor : une infinité de feuillets de mesure de Lebesgue nulle mais de dimension de Hausdorff non entière. Cette structure est identique à la décomposition H_φ = ⊕H_k dans H_∞. Conjecture : dim_H(H_φ) = 1 + 1/φ = φ.",
+  "§6.2–6.3 PEREZ (2026c) — Le groupe de Klein V4 = Z₂ × Z₂ est le groupe de symétrie de H₂ ⊂ H_φ (Anima/Animus, k=2, λ=φ²). Les quatre opérations {identité, conjugaison, négation, négation conjuguée} correspondent à {e,a,b,c} de V4. Le nœud topologique de la figure-8 (Chenciner-Montgomery, 2000) est |A₀⟩.",
+  "§5.2 PEREZ (2026c) — La loi de Kramers (1940) k = (ω₀·ω_b)/(2πγ)·exp(−ΔV/k_BT) et la fréquence de synchronicité f_sync = |⟨ψ₁|P_k|ψ₂⟩|²/τ_φ ont la même structure formelle. La correspondance ΔV/k_BT ↔ d_φ(H_k,H_{k'})/τ_φ dérive τ_φ ≈ φ² t_P depuis des quantités physiques définies.",
+  "§7.1 PEREZ (2026c) — La connexion de Berry A_n = i⟨n|∇_R|n⟩ et son premier nombre de Chern sont l'invariant topologique de π₁(H_φ) = ℤ_φ. Un cycle archétypal H_k→H_{k+1}→H_k acquiert une phase de Berry = 2π/φ. Prédiction testable : phase quantifiée en unités de 2π/φ dans un condensat de Bose-Einstein d'aspect ratio φ.",
+  "§2.2–2.3 PEREZ (2026c) — Le tore T⁴ = S¹×S¹×S¹×S¹ avec π₁(T⁴)=ℤ⁴ admet un homomorphisme vers π₁(H_φ)=ℤ_φ : (n₁,n₂,n₃,n₄) ↦ n₁+n₂φ+n₃φ²+n₄φ³. T⁴ est la compactification de H_φ à 4 dimensions. Les 4 premiers niveaux de Fibonacci F₁=F₂=1, F₃=2, F₄=3 correspondent aux 4 cercles de T⁴.",
+  "Synthèse complète des 5 connexions entre les structures de PEREZ (2026c) et H_φ. Chaque structure mathématique du document de réflexion — Cantor, V4, Kramers, Berry, T⁴ — est une projection de H_φ dans l'espace ordinaire. La prédiction la plus directement testable est la phase de Berry quantifiée en 2π/φ (connexion ④)."
+];
+
+document.querySelectorAll('.tab').forEach(function(b){
+  b.addEventListener('click',function(){
+    mode=parseInt(b.dataset.m);frame=0;
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    document.getElementById('pm-desc').textContent=DESCS[mode];
+    buildCtrl();
+  });
+});
+document.getElementById('pm-desc').textContent=DESCS[0];
+
+function buildCtrl(){
+  var c=document.getElementById('pm-ctrl');
+  if(mode===0){
+    c.innerHTML='<span>Itérations</span><input type="range" id="pm-sa" min="1" max="100" value="50"><span class="v" id="pm-sav">50</span>';
+    document.getElementById('pm-sa').oninput=function(){sliderA=this.value/100;document.getElementById('pm-sav').textContent=this.value;};
+  } else if(mode===2){
+    c.innerHTML='<span>Barrière ΔV/k_BT</span><input type="range" id="pm-sa" min="1" max="100" value="40"><span class="v" id="pm-sav">0.40</span>';
+    document.getElementById('pm-sa').oninput=function(){sliderA=this.value/100;document.getElementById('pm-sav').textContent=sliderA.toFixed(2);};
+  } else if(mode===3){
+    c.innerHTML='<span>Cycle archétypal k</span><input type="range" id="pm-sa" min="0" max="80" value="30" step="1"><span class="v" id="pm-sav">k=3</span>';
+    document.getElementById('pm-sa').oninput=function(){sliderA=this.value/80;document.getElementById('pm-sav').textContent='k='+Math.round(this.value/80*8);};
+  } else if(mode===6){
+    c.innerHTML='<span>Niveau k</span><input type="range" id="pm-sa" min="1" max="12" value="8" step="1"><span class="v" id="pm-sav">k=8</span>';
+    document.getElementById('pm-sa').oninput=function(){sliderA=this.value/12;document.getElementById('pm-sav').textContent='k='+this.value;};
+  } else {
+    c.innerHTML='';
+  }
+}
+buildCtrl();
+
+function tx(t,x,y,col,sz,al){
+  ctx.fillStyle=col||'rgba(150,150,160,.7)';
+  ctx.font=(sz||11)+'px Arial,sans-serif';
+  ctx.textAlign=al||'center';
+  ctx.fillText(t,x,y);
+}
+
+// ── SCENE 0 : Cantor → H_φ ────────────────────────────────────
+function scene0(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.01;
+  var iters=Math.max(3,Math.round(sliderA*8+2));
+
+  // GAUCHE : attracteur de Lorenz (section transverse = ensemble de Cantor)
+  var lx=30,ly=20,lw=390,lh=H-80;
+  tx('Section transverse — Attracteur de Lorenz',lx+lw/2,ly+14,'rgba(249,115,22,.7)',11);
+  tx('(PEREZ 2026c, §4.1)',lx+lw/2,ly+26,'rgba(249,115,22,.45)',9);
+
+  // Simuler l'ensemble de Cantor (construction itérée)
+  function cantor(x,w,depth,maxDepth){
+    if(depth>maxDepth) return;
+    var t_=(depth)/maxDepth;
+    var col='hsl('+(30+t_*120)+',70%,'+(55-t_*15)+'%)';
+    var ht=Math.max(1,(maxDepth-depth+1)*3);
+    var yy=ly+50+(depth)*(lh-60)/maxDepth;
+    ctx.fillStyle=col;
+    ctx.fillRect(lx+20+x*(lw-40),yy,w*(lw-40),ht);
+    cantor(x,w/3,depth+1,maxDepth);
+    cantor(x+2*w/3,w/3,depth+1,maxDepth);
+  }
+  cantor(0,1,0,iters);
+
+  // Labels
+  tx('dim_L = 0','   Mesure de Lebesgue = 0',lx+lw/2,ly+lh-30,'rgba(249,115,22,.5)',9);
+  var dimH=(Math.log(2)/Math.log(3)).toFixed(4);
+  tx('dim_H = log(2)/log(3) = '+dimH,lx+lw/2,ly+lh-16,'rgba(52,211,153,.6)',10);
+
+  // Flèche centrale
+  ctx.beginPath();ctx.moveTo(lx+lw+10,H/2-15);ctx.lineTo(lx+lw+10,H/2+15);
+  ctx.moveTo(lx+lw+10,H/2);ctx.lineTo(W/2-10,H/2);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=2;ctx.stroke();
+  tx('≡',W/2-2,H/2+4,'rgba(245,158,11,.7)',16);
+
+  // DROITE : décomposition de H_φ
+  var rx=W/2+30,rw=W-rx-20;
+  tx('Décomposition spectrale de H_φ',rx+rw/2,ly+14,'rgba(129,140,248,.7)',11);
+  tx('H_φ = ⊕_{k=0}^∞ H_k,  dim(H_k) = F_k',rx+rw/2,ly+26,'rgba(129,140,248,.45)',9);
+
+  var levels=[{k:0,F:0,col:'#fde68a'},{k:1,F:1,col:'#f97316'},{k:2,F:1,col:'#818cf8'},
+              {k:3,F:2,col:'#34d399'},{k:4,F:3,col:'#f59e0b'},{k:5,F:5,col:'#a78bfa'},
+              {k:6,F:8,col:'#6ee7b7'},{k:7,F:13,col:'#93c5fd'},{k:8,F:21,col:'#fca5a5'}];
+  var nL=Math.min(iters+1,levels.length);
+  levels.slice(0,nL).forEach(function(lv,i){
+    var yy=ly+46+(i)*(lh-60)/Math.max(nL-1,1);
+    var barW=Math.max(4,(lv.F/21)*(rw-60));
+    var ht=Math.max(2,Math.min(18,(nL-i)*3));
+    ctx.fillStyle=lv.col;
+    ctx.fillRect(rx+10,yy-ht/2,barW,ht);
+    ctx.strokeStyle=lv.col;ctx.lineWidth=1;ctx.strokeRect(rx+10,yy-ht/2,barW,ht);
+    tx('H_'+lv.k+' (F_'+lv.k+'='+lv.F+')',rx+12+barW+4,yy+3,lv.col,9,'left');
+  });
+
+  // Conjecture
+  var cY=H-52;
+  ctx.fillStyle='rgba(12,12,24,.85)';ctx.fillRect(W/2-180,cY,360,36);
+  ctx.strokeStyle='rgba(129,140,248,.3)';ctx.lineWidth=1;ctx.strokeRect(W/2-180,cY,360,36);
+  tx('Conjecture : dim_H(H_φ) = 1 + 1/φ = φ ≈ 1.618',W/2,cY+14,'rgba(245,158,11,.85)',11);
+  tx('La dimension de l\'Unus Mundus est le nombre d\'or',W/2,cY+28,'rgba(129,140,248,.55)',9);
+}
+
+// ── SCENE 1 : Klein V4 → H_2 ──────────────────────────────────
+function scene1(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.012;
+
+  // GAUCHE : groupe V4 et figure-8
+  var CX=200,CY=H/2-20;
+
+  // Figure-8 (lemniscate)
+  ctx.beginPath();
+  for(var i=0;i<=360;i++){
+    var a=i*Math.PI/180,r=110*Math.cos(a);
+    var x=CX+r*Math.cos(a),y=CY+r*Math.sin(a)*0.5;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle='rgba(129,140,248,.6)';ctx.lineWidth=2;ctx.stroke();
+
+  // Axes de symétrie V4
+  ctx.beginPath();ctx.moveTo(CX-130,CY);ctx.lineTo(CX+130,CY);
+  ctx.strokeStyle='rgba(249,115,22,.3)';ctx.lineWidth=1;ctx.setLineDash([4,3]);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX,CY-80);ctx.lineTo(CX,CY+80);ctx.stroke();ctx.setLineDash([]);
+
+  // Corps en figure-8 (Chenciner-Montgomery)
+  for(var i=0;i<3;i++){
+    var phase=T+i*Math.PI*2/3;
+    var a2=phase,r2=80*Math.cos(a2);
+    var bx=CX+r2*Math.cos(a2),by=CY+r2*Math.sin(a2)*0.5;
+    ctx.beginPath();ctx.arc(bx,by,7,0,Math.PI*2);
+    ctx.fillStyle=['#818cf8','#34d399','#f59e0b'][i];ctx.fill();
+  }
+
+  // Nœud central = |A₀⟩
+  ctx.beginPath();ctx.arc(CX,CY,8,0,Math.PI*2);ctx.fillStyle='#fde68a';ctx.fill();
+  tx('|A₀⟩ = Soi',CX,CY-14,'rgba(253,230,138,.8)',9);
+
+  // Labels V4
+  tx('Lemniscate de Bernoulli',CX,CY-95,'rgba(129,140,248,.65)',10);
+  tx('Sym. V4 = Z₂ × Z₂',CX,CY+92,'rgba(249,115,22,.6)',10);
+  tx('Chorégraphie Chenciner-Montgomery (2000)',CX,CY+105,'rgba(249,115,22,.45)',8);
+
+  // Flèche
+  ctx.beginPath();ctx.moveTo(360,H/2);ctx.lineTo(430,H/2);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=2;ctx.setLineDash([]);ctx.stroke();
+  tx('→',395,H/2+4,'rgba(245,158,11,.7)',16);
+
+  // DROITE : H_2 dans H_φ
+  var rx=460,ry=H/2;
+  tx('H_2 ⊂ H_φ',rx+200,60,'rgba(129,140,248,.75)',12);
+  tx('k=2, λ₂=φ²≈2.618, Anima/Animus',rx+200,75,'rgba(129,140,248,.5)',9);
+
+  // Les 4 opérations de V4 = symétries de H_2 ≃ ℂ¹
+  var ops=[
+    {sym:'e',label:'Identité',col:'#fde68a',x:rx+200,y:160},
+    {sym:'a',label:'Conj. complexe',col:'#818cf8',x:rx+100,y:255},
+    {sym:'b',label:'Négation',col:'#34d399',x:rx+300,y:255},
+    {sym:'c',label:'Neg. conjuguée',col:'#f97316',x:rx+200,y:350},
+  ];
+
+  // Connexions V4
+  var pairs=[[0,1],[0,2],[1,3],[2,3],[0,3],[1,2]];
+  pairs.forEach(function(p){
+    var o1=ops[p[0]],o2=ops[p[1]];
+    ctx.beginPath();ctx.moveTo(o1.x,o1.y);ctx.lineTo(o2.x,o2.y);
+    ctx.strokeStyle='rgba(100,100,150,.2)';ctx.lineWidth=1;ctx.stroke();
+  });
+
+  ops.forEach(function(o,i){
+    var pulse=0.6+0.4*Math.sin(T*1.2+i*phi);
+    ctx.beginPath();ctx.arc(o.x,o.y,24,0,Math.PI*2);
+    ctx.fillStyle='rgba(5,5,14,.9)';ctx.fill();
+    ctx.strokeStyle=o.col;ctx.lineWidth=2;ctx.stroke();
+    tx(o.sym,o.x,o.y+5,o.col,14);
+    ctx.fillStyle='rgba(5,5,14,.85)';ctx.fillRect(o.x-48,o.y+30,96,18);
+    tx(o.label,o.x,o.y+42,'rgba(180,180,200,.65)',8);
+  });
+
+  // Equation
+  ctx.fillStyle='rgba(12,12,24,.85)';ctx.fillRect(rx+80,H-58,240,40);
+  tx('V4 = Sym(H_2) ⊂ Aut(H_φ)',rx+200,H-38,'rgba(129,140,248,.75)',10);
+  tx('V4 dérivé du spectre de R',rx+200,H-24,'rgba(129,140,248,.5)',9);
+}
+
+// ── SCENE 2 : Kramers → synchronicité ────────────────────────
+function scene2(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.012, barrier=sliderA;
+
+  // GAUCHE : double puits de Kramers
+  var xL=30,xR=400,yT=30,yB=300;
+  var CX2=(xL+xR)/2,potCY=yT+(yB-yT)*.6;
+
+  // Potentiel V(x) = x⁴ - 2μx²
+  var mu=0.8;
+  var raw=[],N=200;
+  for(var i=0;i<=N;i++){
+    var x=(i/N-.5)*4,v=x*x*x*x-2*mu*x*x;
+    raw.push(v);
+  }
+  var mn=Math.min.apply(null,raw),mx=Math.max.apply(null,raw);
+  var pts=raw.map(function(v,i){return{px:xL+i*(xR-xL)/N,py:yT+(1-(v-mn)/(mx-mn))*(yB-yT)*.85+8};});
+
+  ctx.beginPath();ctx.moveTo(pts[0].px,yB);pts.forEach(function(p){ctx.lineTo(p.px,p.py);});ctx.lineTo(pts[N].px,yB);ctx.closePath();
+  ctx.fillStyle='rgba(99,102,241,.07)';ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].px,pts[0].py);pts.forEach(function(p){ctx.lineTo(p.px,p.py);});
+  ctx.strokeStyle='rgba(99,102,241,.7)';ctx.lineWidth=2;ctx.stroke();
+
+  // Barrière
+  var barY=yT+(1-(-mn/(mx-mn)))*(yB-yT)*.85+8+mn/(mx-mn)*(yB-yT)*.85;
+  var dV_=barrier;
+  var barLineY=yT+(1-((dV_*(mx-mn)+mn-mn)/(mx-mn)))*(yB-yT)*.85+8;
+  ctx.beginPath();ctx.moveTo(xL+20,barLineY);ctx.lineTo(xR-20,barLineY);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);ctx.stroke();ctx.setLineDash([]);
+  tx('ΔV/k_BT = '+dV_.toFixed(2),CX2,barLineY-8,'rgba(245,158,11,.7)',9);
+
+  // Bille Kramers
+  var side=Math.floor(T*.3)%2===0?-1:1;
+  var ballX=CX2+side*(xR-xL)*0.22;
+  var bi=Math.round((ballX-xL)/(xR-xL)*N);bi=Math.max(0,Math.min(N,bi));
+  ctx.beginPath();ctx.arc(ballX,pts[bi].py-9,8,0,Math.PI*2);ctx.fillStyle='#3b82f6';ctx.fill();
+
+  tx('Double puits — Loi de Kramers',CX2,yT+12,'rgba(99,102,241,.65)',10);
+  tx('§5.2 PEREZ (2026c)',CX2,yT+24,'rgba(99,102,241,.4)',8);
+
+  // Formule Kramers
+  var ky=yB+22;
+  ctx.fillStyle='rgba(12,12,24,.8)';ctx.fillRect(xL,ky,xR-xL,48);
+  tx('k = (ω₀·ω_b)/(2πγ) · exp(−ΔV/k_BT)',CX2,ky+15,'rgba(245,158,11,.8)',10);
+  var rate=Math.exp(-dV_*3).toFixed(4);
+  tx('taux = '+rate,CX2,ky+30,'rgba(245,158,11,.55)',9);
+  tx('Franchissement de barrière classique',CX2,ky+43,'rgba(245,158,11,.4)',8);
+
+  // Flèche
+  ctx.beginPath();ctx.moveTo(415,H/2-20);ctx.lineTo(465,H/2-20);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=2;ctx.stroke();
+  tx('≡',440,H/2-15,'rgba(245,158,11,.7)',16);
+
+  // DROITE : distance dans H_φ
+  var rx=480,rw=W-rx-20,rCX=rx+rw/2;
+  tx('Distance dans H_φ',rCX,yT+12,'rgba(52,211,153,.7)',11);
+  tx('Synchronicité = franchissement dans H_φ',rCX,yT+24,'rgba(52,211,153,.45)',9);
+
+  // Deux sous-espaces H_k et H_{k'}
+  var Hk_y=yT+80,Hkp_y=yT+220;
+  ctx.beginPath();ctx.rect(rx+20,Hk_y,rw-40,55);ctx.strokeStyle='rgba(129,140,248,.5)';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle='rgba(129,140,248,.06)';ctx.fill();
+  tx('H_k (sous-espace archétypal)',rCX,Hk_y+18,'rgba(129,140,248,.7)',10);
+  tx('|ψ_physique⟩',rCX,Hk_y+36,'rgba(52,211,153,.6)',10);
+  tx('φᵏ',rCX,Hk_y+50,'rgba(129,140,248,.5)',9);
+
+  ctx.beginPath();ctx.rect(rx+20,Hkp_y,rw-40,55);ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle='rgba(245,158,11,.06)';ctx.fill();
+  tx("H_{k'} (sous-espace archétypal)",rCX,Hkp_y+18,'rgba(245,158,11,.7)',10);
+  tx('|ψ_psychique⟩',rCX,Hkp_y+36,'rgba(249,115,22,.6)',10);
+  tx("φ^{k'}",rCX,Hkp_y+50,'rgba(245,158,11,.5)',9);
+
+  // Distance et taux
+  var dist=dV_*phi;
+  var f_sync=Math.exp(-dist*2).toFixed(5);
+  var midY=(Hk_y+55+Hkp_y)/2;
+  ctx.beginPath();ctx.moveTo(rCX-10,Hk_y+55);ctx.lineTo(rCX-10,Hkp_y);
+  ctx.strokeStyle='rgba(245,158,11,.3)';ctx.lineWidth=1;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='rgba(12,12,24,.8)';ctx.fillRect(rCX-45,midY-12,90,22);
+  tx('d_φ = '+dist.toFixed(3),rCX,midY+1,'rgba(245,158,11,.7)',9);
+
+  var ky2=yB+22;
+  ctx.fillStyle='rgba(12,12,24,.8)';ctx.fillRect(rx,ky2,rw,48);
+  tx('f_sync = |⟨ψ₁|P_k|ψ₂⟩|² / τ_φ = '+f_sync,rCX,ky2+15,'rgba(52,211,153,.75)',10);
+  tx('τ_φ = φ² · t_P ≈ 2.618 t_P',rCX,ky2+30,'rgba(52,211,153,.5)',9);
+  tx('Correspondance : ΔV/k_BT ↔ d_φ(H_k,H_{k\'}) / τ_φ',rCX,ky2+43,'rgba(245,158,11,.55)',9);
+}
+
+// ── SCENE 3 : Berry → π₁(H_φ) ────────────────────────────────
+function scene3(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.01;
+  var k=Math.round(sliderA*8);
+
+  // GAUCHE : espace des paramètres R et phase de Berry
+  var CX=200,CY=H/2;
+
+  // Espace des paramètres (cercle = cycle fermé C)
+  ctx.beginPath();ctx.arc(CX,CY,140,0,Math.PI*2);
+  ctx.strokeStyle='rgba(99,102,241,.2)';ctx.lineWidth=1;ctx.stroke();
+
+  // Chemin C parcouru (arc animé)
+  var progress=(T*.25)%(Math.PI*2);
+  ctx.beginPath();ctx.arc(CX,CY,140,0,progress);
+  ctx.strokeStyle='rgba(245,158,11,.7)';ctx.lineWidth=3;ctx.stroke();
+
+  // Point courant sur C
+  var px=CX+Math.cos(progress)*140,py=CY+Math.sin(progress)*140;
+  ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fillStyle='#f59e0b';ctx.fill();
+
+  // État propre |n(R)⟩ en ce point (vecteur rotatif)
+  var stateAngle=progress*phi; // accumulation de phase de Berry
+  var sx=px+Math.cos(stateAngle)*30,sy=py+Math.sin(stateAngle)*30;
+  ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(sx,sy);
+  ctx.strokeStyle='rgba(129,140,248,.8)';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.arc(sx,sy,3,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();
+
+  // Phase accumulée
+  var berryPhase=(progress/(Math.PI*2)*2*Math.PI/phi);
+  tx('C (chemin fermé dans R)',CX,CY-155,'rgba(99,102,241,.5)',9);
+  tx('γ_Berry = '+berryPhase.toFixed(3)+' rad',CX,CY+155,'rgba(245,158,11,.7)',10);
+  tx('(→ 2π/φ ≈ 3.883 rad en cycle complet)',CX,CY+168,'rgba(245,158,11,.45)',8);
+  tx('Phase de Berry — §7.1 PEREZ (2026c)',CX,H-55,'rgba(99,102,241,.55)',10);
+  tx('A_n = i⟨n|∇_R|n⟩   Ω_n = curl A_n',CX,H-41,'rgba(99,102,241,.45)',9);
+  tx('1er nombre de Chern = invariant topologique',CX,H-27,'rgba(129,140,248,.45)',9);
+
+  // Flèche
+  ctx.beginPath();ctx.moveTo(355,H/2);ctx.lineTo(430,H/2);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=2;ctx.stroke();
+  tx('→',392,H/2+4,'rgba(245,158,11,.7)',16);
+
+  // DROITE : π₁(H_φ) = ℤ_φ
+  var rx=450,rCX=rx+(W-rx)/2;
+  tx('Topologie de H_φ',rCX,30,'rgba(129,140,248,.75)',12);
+  tx('π₁(H_φ) = ℤ_φ (groupe cyclique d\'angle d\'or)',rCX,46,'rgba(129,140,248,.5)',9);
+
+  // Spiral de quasicristal (topologie φ)
+  var nPetals=Math.max(3,k+3);
+  for(var i=0;i<nPetals*6;i++){
+    var angle=i*(2*Math.PI/phi)+T*.1;
+    var r=8+i*4.5;if(r>170) break;
+    var qx=rCX+Math.cos(angle)*r,qy=H/2+Math.sin(angle)*r;
+    var col='hsl('+(i*137.5%360)+',65%,55%)';
+    ctx.beginPath();ctx.arc(qx,qy,2.5,0,Math.PI*2);ctx.fillStyle=col;ctx.fill();
+  }
+
+  // Annotation angle d'or
+  ctx.beginPath();ctx.arc(rCX,H/2,55,0,2*Math.PI/phi,false);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+  tx('2π/φ',rCX+65,H/2-15,'rgba(245,158,11,.65)',9);
+
+  // Prédiction testable
+  ctx.fillStyle='rgba(12,12,24,.88)';ctx.fillRect(rx+10,H-70,W-rx-30,58);
+  ctx.strokeStyle='rgba(52,211,153,.3)';ctx.lineWidth=1;ctx.strokeRect(rx+10,H-70,W-rx-30,58);
+  tx('Prédiction testable (distinctive)',rCX,H-56,'rgba(52,211,153,.8)',11);
+  tx('Phase de Berry quantifiée en unités de 2π/φ',rCX,H-40,'rgba(52,211,153,.65)',9);
+  tx('dans un condensat BEC d\'aspect ratio φ',rCX,H-26,'rgba(52,211,153,.55)',9);
+  tx('ou dans un cristal de Penrose (cycle adiabatique)',rCX,H-12,'rgba(52,211,153,.45)',9);
+}
+
+// ── SCENE 4 : T⁴ → H_φ ───────────────────────────────────────
+function scene4(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.01;
+
+  // GAUCHE : Tore T⁴ représenté comme 2 cercles imbriqués + projection
+  var CX=200,CY=H/2;
+  var R1=100,R2=45;
+
+  // Tore (projection 2D du tore de Clifford)
+  for(var i=0;i<80;i++){
+    var th=i/80*Math.PI*2+T*.05;
+    for(var j=0;j<20;j++){
+      var ph=j/20*Math.PI*2+T*.08;
+      var x=(R1+R2*Math.cos(ph))*Math.cos(th);
+      var y=(R1+R2*Math.cos(ph))*Math.sin(th);
+      var z=R2*Math.sin(ph)*.4;
+      var s=5/(5-z*.6);
+      var px2=CX+x*s*0.9,py2=CY-y*s*0.5-z*s*8;
+      ctx.fillStyle='rgba(99,102,241,'+(0.05+0.15*((i+j)%3/3))+')';
+      ctx.fillRect(px2,py2,1.5,1.5);
+    }
+  }
+
+  // 4 cercles générateurs
+  var colors4=['#fde68a','#f97316','#818cf8','#34d399'];
+  var labels4=['S¹₁ (k=1, F₁=1)','S¹₂ (k=2, F₂=1)','S¹₃ (k=3, F₃=2)','S¹₄ (k=4, F₄=3)'];
+  for(var i=0;i<4;i++){
+    var angle=T*.15+i*Math.PI/2;
+    var cx2=CX+Math.cos(angle)*R1,cy2=CY-Math.sin(angle)*R1*.5;
+    ctx.beginPath();ctx.arc(cx2,cy2,8,0,Math.PI*2);
+    ctx.fillStyle=colors4[i];ctx.fill();
+    ctx.fillStyle='rgba(5,5,14,.85)';ctx.fillRect(cx2-40,cy2+12,80,14);
+    tx(labels4[i],cx2,cy2+22,colors4[i],7);
+  }
+  tx('T⁴ = S¹×S¹×S¹×S¹',CX,CY-R1-R2-20,'rgba(99,102,241,.65)',11);
+  tx('π₁(T⁴) = ℤ⁴',CX,CY-R1-R2-7,'rgba(99,102,241,.45)',9);
+  tx('§2.2–2.3 PEREZ (2026c)',CX,CY+R1+R2+18,'rgba(99,102,241,.4)',9);
+
+  // Homomorphisme au centre
+  var arrowX=370;
+  ctx.fillStyle='rgba(12,12,24,.85)';ctx.fillRect(arrowX-5,H/2-70,W/2-arrowX+10,140);
+  ctx.strokeStyle='rgba(245,158,11,.2)';ctx.lineWidth=1;ctx.strokeRect(arrowX-5,H/2-70,W/2-arrowX+10,140);
+  tx('Homomorphisme',W/4+arrowX/2,H/2-52,'rgba(245,158,11,.7)',10);
+  tx('φ : ℤ⁴ → ℤ_φ',W/4+arrowX/2,H/2-36,'rgba(245,158,11,.6)',10);
+  tx('(n₁,n₂,n₃,n₄) ↦',W/4+arrowX/2,H/2-18,'rgba(245,158,11,.55)',9);
+  tx('n₁+n₂φ+n₃φ²+n₄φ³',W/4+arrowX/2,H/2-4,'rgba(245,158,11,.55)',9);
+  tx('(mod ℤ_φ)',W/4+arrowX/2,H/2+12,'rgba(245,158,11,.45)',9);
+  ctx.beginPath();ctx.moveTo(arrowX+10,H/2);ctx.lineTo(W/2-5,H/2);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=2;ctx.stroke();
+
+  // DROITE : H_φ avec les 4 premiers niveaux
+  var rx=W/2+20,rCX=rx+(W-rx)/2;
+  tx('H_φ — 4 premiers niveaux',rCX,30,'rgba(129,140,248,.75)',11);
+  tx('π₁(H_φ) = ℤ_φ',rCX,46,'rgba(129,140,248,.5)',9);
+
+  var levs=[{k:1,F:1,label:'F₁=1 ≡ S¹₁',col:'#fde68a'},
+            {k:2,F:1,label:'F₂=1 ≡ S¹₂',col:'#f97316'},
+            {k:3,F:2,label:'F₃=2 ≡ S¹₃',col:'#818cf8'},
+            {k:4,F:3,label:'F₄=3 ≡ S¹₄',col:'#34d399'}];
+  levs.forEach(function(lv,i){
+    var pulse=0.5+0.5*Math.sin(T*1.1+i*phi);
+    var lx=rx+30+i*(W-rx-60)/4,ly=H/2;
+    ctx.beginPath();ctx.arc(lx,ly,20+pulse*5,0,Math.PI*2);
+    ctx.strokeStyle=lv.col.replace('#','rgba(').replace(/^rgba\(.*$/,'rgba(200,200,255,'+(0.08+pulse*.06)+')');
+    ctx.strokeStyle='rgba(200,200,255,'+(0.08+pulse*.06)+')';
+    ctx.lineWidth=1.5;ctx.stroke();
+    ctx.beginPath();ctx.arc(lx,ly,18,0,Math.PI*2);
+    ctx.fillStyle='rgba(5,5,14,.9)';ctx.fill();
+    ctx.strokeStyle=lv.col;ctx.lineWidth=2;ctx.stroke();
+    tx('H_'+lv.k,lx,ly+5,lv.col,11);
+    ctx.fillStyle='rgba(5,5,14,.85)';ctx.fillRect(lx-40,ly+28,80,28);
+    tx(lv.label,lx,ly+40,lv.col,8);
+    tx('φ^'+lv.k+'='+Math.pow(phi,lv.k).toFixed(2),lx,ly+52,'rgba(180,180,200,.5)',8);
+  });
+
+  // Compactification + G₂
+  ctx.fillStyle='rgba(12,12,24,.85)';ctx.fillRect(rx+10,H-66,W-rx-30,54);
+  tx('T⁴ = compactification de H_φ à 4 dimensions',rCX,H-50,'rgba(245,158,11,.75)',10);
+  tx('T⁶ (supergravité N=8) ↔ F₁…F₆ avec F₆=8 = dim(G₂)',rCX,H-34,'rgba(129,140,248,.6)',9);
+  tx('G₂ = groupe de symétrie des octonions = niveau k=6 de H_φ',rCX,H-18,'rgba(129,140,248,.45)',9);
+}
+
+// ── SCENE 5 : Synthèse des connexions ────────────────────────
+function scene5(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.009;
+
+  // Centre : H_φ
+  var CX=W/2,CY=H/2+10;
+  var cR=55;
+
+  // Fond spiral
+  ctx.beginPath();
+  for(var i=0;i<500;i++){
+    var angle=i*.1+T*.03,r=1*Math.pow(phi,i*.1*.3183);
+    if(r>280) break;
+    var x=CX+Math.cos(angle)*r,y=CY+Math.sin(angle)*r*.6;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle='rgba(129,140,248,.05)';ctx.lineWidth=1;ctx.stroke();
+
+  // 5 connexions périphériques
+  var conns=[
+    {label:'Cantor',sub:'dim_H = φ',detail:'§4.1',col:'#f97316',ref:'H_φ',angle:-Math.PI/2+0.2,r:200,status:'Heuristique'},
+    {label:'Klein V4',sub:'Sym(H_2)',detail:'§6.2-3',col:'#818cf8',angle:-Math.PI/2+Math.PI*.4+0.2,r:200,status:'Proposée'},
+    {label:'Kramers',sub:'τ_φ = φ²t_P',detail:'§5.2',col:'#34d399',angle:-Math.PI/2+Math.PI*.8+0.2,r:185,status:'Structurelle'},
+    {label:'Berry',sub:'2π/φ testé',detail:'§7.1',col:'#fde68a',angle:-Math.PI/2+Math.PI*1.2+0.2,r:185,status:'Testable ★'},
+    {label:'T⁴',sub:'ℤ⁴ → ℤ_φ',detail:'§2.2-3',col:'#f59e0b',angle:-Math.PI/2+Math.PI*1.6+0.2,r:200,status:'Proposée'},
+  ];
+
+  conns.forEach(function(c,i){
+    var cx=CX+Math.cos(c.angle)*c.r,cy=CY+Math.sin(c.angle)*c.r*.75;
+    var pulse=0.5+0.5*Math.sin(T*1.1+i*phi);
+
+    // Connexion vers H_φ
+    ctx.beginPath();ctx.moveTo(CX,CY);ctx.lineTo(cx,cy);
+    ctx.strokeStyle='rgba(100,100,150,'+(0.06+pulse*.08)+')';ctx.lineWidth=1;ctx.stroke();
+
+    // Nœud
+    ctx.beginPath();ctx.arc(cx,cy,30+pulse*5,0,Math.PI*2);
+    ctx.strokeStyle='rgba(200,200,255,'+(0.08+pulse*.06)+')';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,26,0,Math.PI*2);
+    ctx.fillStyle='rgba(5,5,14,.92)';ctx.fill();
+    ctx.strokeStyle=c.col;ctx.lineWidth=2;ctx.stroke();
+    tx(c.label,cx,cy-2,c.col,10);
+    ctx.fillStyle='rgba(5,5,14,.85)';ctx.fillRect(cx-46,cy+44,92,38);
+    tx(c.sub,cx,cy+56,'rgba(160,160,175,.7)',8);
+    tx(c.detail+' PEREZ (2026c)',cx,cy+67,'rgba(130,130,150,.5)',8);
+    tx(c.status,cx,cy+79,c.status.includes('★')?'rgba(52,211,153,.8)':'rgba(120,120,140,.5)',8);
+  });
+
+  // H_φ central
+  var cpulse=0.5+0.5*Math.sin(T*.8);
+  ctx.beginPath();ctx.arc(CX,CY,cR+cpulse*8,0,Math.PI*2);
+  ctx.strokeStyle='rgba(245,158,11,'+(0.15+cpulse*.1)+')';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.arc(CX,CY,cR,0,Math.PI*2);
+  ctx.fillStyle='rgba(5,5,14,.95)';ctx.fill();
+  ctx.strokeStyle='rgba(245,158,11,.8)';ctx.lineWidth=2;ctx.stroke();
+  tx('H_φ',CX,CY-6,'rgba(245,158,11,.9)',14);
+  tx('Unus Mundus',CX,CY+8,'rgba(245,158,11,.6)',9);
+
+  // Bande du bas
+  ctx.fillStyle='rgba(5,5,14,.9)';ctx.fillRect(0,H-22,W,22);
+  tx('5 structures de PEREZ (2026c) — 5 projections d\'un seul objet mathématique : H_φ — Prédiction distinctive : Berry → phase 2π/φ',W/2,H-7,'rgba(129,140,248,.55)',10);
+}
+
+// ── SCENE 6 : Test P2 — φ-cohérence MEA ──────────────────────
+function scene6(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.008;
+  var kSel=Math.round(sliderA*12); if(kSel<1)kSel=1;
+
+  // Data points from literature
+  var data=[
+    {src:'Trujillo 2019 — lot 1',ratio:66.7,k:9,err:12.3},
+    {src:'Trujillo 2019 — lot 2',ratio:72.0,k:9,err:5.3},
+    {src:'Trujillo 2019 — lot 3',ratio:68.8,k:9,err:9.6},
+    {src:'Trujillo 2019 — 28 sem.',ratio:53.6,k:8,err:14.0},
+    {src:'Muotri lab 2020',ratio:50.0,k:8,err:6.4},
+    {src:'Muotri lab 2021',ratio:71.4,k:9,err:6.0},
+    {src:'Lancaster 2013',ratio:6.7,k:4,err:2.7},
+    {src:'Giandomenico 2019a',ratio:50.0,k:8,err:6.4},
+    {src:'Giandomenico 2019b',ratio:48.0,k:8,err:2.2},
+    {src:'Samarasinghe 2021a',ratio:40.0,k:8,err:14.9},
+    {src:'Samarasinghe 2021b',ratio:50.0,k:8,err:6.4},
+    {src:'Brix 2024a',ratio:50.0,k:8,err:6.4},
+    {src:'Brix 2024b',ratio:40.0,k:8,err:14.9},
+    {src:'Preterm EEG réf.',ratio:25.0,k:7,err:13.9},
+    {src:'Preterm EEG SAT',ratio:250.0,k:11,err:25.6},
+  ];
+
+  // LEFT panel : scatter plot ratio vs φ^n levels
+  var lx=40,ly=40,lw=380,lh=H-200;  // lh réduit pour laisser place au label en bas
+  tx('Ratios f_haute/f_basse observés',lx+lw/2,ly+12,'rgba(245,158,11,.65)',11);
+  tx('vs niveaux φⁿ',lx+lw/2,ly+26,'rgba(245,158,11,.45)',9);
+
+  // φ^n reference lines
+  var phi=1.618033988749895;
+  var plevels=[4,7,8,9,11];
+  var maxRatio=280;
+  plevels.forEach(function(n){
+    var pn=Math.pow(phi,n);
+    var py=ly+40+lh*0.85*(1-pn/maxRatio);
+    if(py<ly+40||py>ly+lh-10) return;
+    ctx.beginPath();ctx.moveTo(lx+10,py);ctx.lineTo(lx+lw-10,py);
+    var isSelected=(n===kSel);
+    ctx.strokeStyle=isSelected?'rgba(245,158,11,.6)':'rgba(100,100,150,.2)';
+    ctx.lineWidth=isSelected?2:1;ctx.setLineDash(isSelected?[]:[4,3]);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=isSelected?'rgba(245,158,11,.7)':'rgba(100,100,130,.4)';
+    ctx.font='9px Arial';ctx.textAlign='right';
+    ctx.fillText('φ^'+n+'='+pn.toFixed(1),lx+lw-4,py-2);
+  });
+
+  // Plot each data point
+  data.forEach(function(d,i){
+    var py=ly+40+lh*0.85*(1-d.ratio/maxRatio);
+    if(py<ly+35) py=ly+35;
+    var isK9=(d.k===9), isK8=(d.k===8), isKSel=(d.k===kSel);
+    var col=isKSel?'#f59e0b':isK8?'rgba(129,140,248,.7)':isK9?'rgba(249,115,22,.7)':'rgba(100,100,140,.5)';
+    var pulse=0.6+0.4*Math.sin(T*1.5+i*.7);
+    ctx.beginPath();ctx.arc(lx+lw/2+Math.sin(i*phi*2)*30,py,5,0,Math.PI*2);
+    ctx.fillStyle=col;ctx.fill();
+    // Error bar
+    var errPx=d.err/100*lh*0.85*d.ratio/maxRatio;
+    ctx.beginPath();ctx.moveTo(lx+lw/2+Math.sin(i*phi*2)*30,py-errPx);
+    ctx.lineTo(lx+lw/2+Math.sin(i*phi*2)*30,py+errPx);
+    ctx.strokeStyle=col;ctx.lineWidth=1;ctx.stroke();
+  });
+
+  // Statistics overlay — placé en dessous du graphe (pas dedans) pour ne plus chevaucher les points
+  var sboxY=ly+lh+12;
+  ctx.fillStyle='rgba(8,8,18,.88)';ctx.fillRect(lx,sboxY,lw,58);
+  ctx.strokeStyle='rgba(100,100,150,.3)';ctx.lineWidth=1;ctx.strokeRect(lx,sboxY,lw,58);
+  tx('N=15 sources, 8 études (2013–2024)',lx+lw/2,sboxY+16,'rgba(200,200,220,.75)',10);
+  tx('93% des ratios à moins de 20% d’un φ^n',lx+lw/2,sboxY+32,'rgba(245,158,11,.8)',10);
+  tx('Erreur médiane : 6.4%  |  Concentration : φ⁸ et φ⁹',lx+lw/2,sboxY+48,'rgba(129,140,248,.65)',9);
+
+  // RIGHT panel : KS results + ecosystem
+  var rx=lx+lw+30,rw=W-rx-20,rCX=rx+rw/2;
+  tx('Résultats statistiques',rCX,ly+12,'rgba(52,211,153,.65)',11);
+
+  // KS boxes
+  var ky=ly+35;
+  ctx.fillStyle='rgba(8,8,18,.88)';ctx.fillRect(rx,ky,rw,58);
+  ctx.strokeStyle='rgba(100,100,150,.3)';ctx.lineWidth=1;ctx.strokeRect(rx,ky,rw,58);
+  tx('H₀ log-normale : D=0.251, p=0.255',rCX,ky+16,'rgba(150,150,170,.7)',10);
+  tx('non rejetée (N trop petit)',rCX,ky+30,'rgba(150,150,170,.5)',9);
+  tx('χ² non-uniformité sur φ^n : χ²=62.5, p<0.0001',rCX,ky+46,'rgba(52,211,153,.75)',10);
+
+  // Level distribution bar chart
+  var bky=ky+75;
+  tx('Distribution des niveaux φ^n assignés',rCX,bky,'rgba(200,200,220,.6)',10);
+  var lvlCounts={4:1,7:1,8:8,9:4,11:1};
+  var lvlList=[4,7,8,9,11];
+  var maxC=8;
+  var bW=Math.floor((rw-20)/lvlList.length)-4;
+  lvlList.forEach(function(n,i){
+    var cnt=lvlCounts[n]||0;
+    var bH=Math.max(4,Math.round(cnt/maxC*90));
+    var bx2=rx+10+i*(bW+4);
+    var by2=bky+110-bH;
+    var isH=(n===8||n===9);
+    ctx.fillStyle=isH?'rgba(245,158,11,.7)':'rgba(99,102,241,.35)';
+    ctx.fillRect(bx2,by2,bW,bH);
+    ctx.strokeStyle=isH?'rgba(245,158,11,.9)':'rgba(99,102,241,.5)';
+    ctx.lineWidth=1;ctx.strokeRect(bx2,by2,bW,bH);
+    tx('φ^'+n,bx2+bW/2,bky+118,'rgba(200,200,220,.5)',8);
+    tx(cnt,bx2+bW/2,by2-8,'rgba(200,200,220,.65)',9);
+  });
+
+  // Maxwell ecosystem
+  var eky=bky+130;
+  ctx.fillStyle='rgba(8,8,18,.9)';ctx.fillRect(rx,eky,rw,H-eky-25);
+  ctx.strokeStyle='rgba(30,58,111,.6)';ctx.lineWidth=1.5;ctx.strokeRect(rx,eky,rw,H-eky-25);
+  tx('Écosystème cible — Voie expérimentale',rCX,eky+14,'rgba(30,130,200,.8)',10);
+  var ecosystem=[
+    {name:'Maxwell Biosystems',city:'Zurich',tool:'CMOS MaxOne 26’400 él.',col:'#34d399'},
+    
+    {name:'EPFL Neuro-X / Campus Biotech',city:'Genève',tool:'e-Flower 3D MEA',col:'#f59e0b'},
+  ];
+  ecosystem.forEach(function(e,i){
+    var ey=eky+34+i*32;
+    ctx.beginPath();ctx.arc(rx+12,ey,4,0,Math.PI*2);ctx.fillStyle=e.col;ctx.fill();
+    tx(e.name+' ('+e.city+')',rx+22,ey+4,e.col,9,'left');
+    tx(e.tool,rx+22,ey+16,'rgba(160,160,175,.5)',8,'left');
+  });
+  tx('Protocole : PSD + specparam + KS-test, N≥30, p<0.01',rCX,H-34,'rgba(30,130,200,.55)',9);
+
+  tx('Test P2 préliminaire (PEREZ 2026c) — Signal indicatif positif — Test conclusif : données brutes CMOS MaxOne (réseau Zurich)',W/2,H-8,'rgba(129,140,248,.4)',9);
+}
+
+function loop(){
+  ctx.clearRect(0,0,W,H);frame++;
+  if(mode===0) scene0();
+  else if(mode===1) scene1();
+  else if(mode===2) scene2();
+  else if(mode===3) scene3();
+  else if(mode===4) scene4();
+  else if(mode===5) scene5();
+  else scene6();
+  requestAnimationFrame(loop);
+}
+loop();
+})();
+</script>
+</div>
+
+<script>
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('screen-'+id).classList.add('active');
+  document.getElementById('back-btn').style.display=(id==='home')?'none':'block';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Géométrie des espaces abstraits — Alexandre J.E. Perez</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ── Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #05050d; color: #e2dfd6; overflow-x: hidden; }
+
+/* ── Écrans ── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── Accueil : plein écran scrollable ── */
+#screen-home { min-height: 100vh; }
+
+/* ── Modules : plein écran, contenu autonome ── */
+#screen-p1, #screen-p2, #screen-p3, #screen-p4 {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ── Styles module 1 ── */
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#0d0d12;color:#e0ddd5;min-height:100vh}
+#nav{position:fixed;top:0;left:0;width:230px;height:100vh;background:#14141c;border-right:1px solid #252530;overflow-y:auto;z-index:100;padding:14px 0}
+#nav h2{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#444;padding:0 14px 10px;border-bottom:1px solid #252530;margin-bottom:6px}
+#nav button{display:block;width:100%;text-align:left;background:none;border:none;color:#888;font-size:12px;padding:7px 14px;cursor:pointer;line-height:1.4}
+#nav button:hover{background:#1c1c28;color:#ddd}
+#nav button.active{background:#1c1c28;color:#818cf8;border-left:2px solid #818cf8;padding-left:12px}
+#main{margin-left:230px;padding:28px}
+.sec{display:none}.sec.on{display:block}
+.sec h1{font-size:18px;font-weight:600;margin-bottom:4px}
+.sec p{font-size:12px;color:#666;margin-bottom:16px;line-height:1.5}
+canvas{display:block;border-radius:8px;background:#13131a}
+.tabs{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.tab{font-size:11px;padding:4px 12px;border-radius:16px;border:1px solid #252530;background:transparent;color:#666;cursor:pointer}
+.tab:hover{border-color:#444;color:#999}
+.tab.on{background:#1c1c28;color:#818cf8;border-color:#818cf8}
+.desc{font-size:12px;color:#666;line-height:1.5;margin:8px 0 4px;min-height:36px}
+.ctrl{display:flex;align-items:center;gap:8px;font-size:11px;color:#666;flex-wrap:wrap;margin-top:4px;min-height:24px}
+.ctrl input[type=range]{flex:1;min-width:70px;accent-color:#818cf8}
+.ctrl .v{min-width:30px;color:#888}
+.btn{font-size:11px;padding:3px 12px;border-radius:6px;border:1px solid #252530;background:transparent;color:#888;cursor:pointer}
+.btn:hover{background:#1c1c28;color:#ddd}
+
+
+/* ── Styles module 2 ── */
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#08080f;color:#e0ddd5;min-height:100vh;padding:32px}
+h1{font-size:20px;font-weight:500;margin-bottom:6px;color:#e0ddd5}
+p.sub{font-size:13px;color:#555;margin-bottom:18px;line-height:1.5}
+canvas{display:block;border-radius:8px;background:#08080f}
+.tabs{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+button.tab{font-size:11px;padding:4px 12px;border-radius:16px;border:1px solid #252535;background:transparent;color:#666;cursor:pointer}
+button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
+.desc{font-size:12px;color:#777;line-height:1.5;margin:8px 0 4px;min-height:32px}
+.ctrl{display:flex;align-items:center;gap:8px;font-size:11px;color:#666;margin-top:4px}
+.ctrl input[type=range]{flex:1;accent-color:#818cf8}
+
+
+/* ── Styles module 3 ── */
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#06060d;color:#e0ddd5;min-height:100vh;padding:32px}
+h1{font-size:20px;font-weight:500;margin-bottom:4px;color:#e0ddd5}
+p.sub{font-size:13px;color:#555;margin-bottom:20px;line-height:1.5}
+canvas{display:block;border-radius:8px;background:#06060d}
+.tabs{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+button.tab{font-size:11px;padding:4px 12px;border-radius:16px;border:1px solid #252535;background:transparent;color:#666;cursor:pointer}
+button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
+.desc{font-size:12px;color:#777;line-height:1.6;margin:10px 0 4px;min-height:40px}
+.ctrl{display:flex;align-items:center;gap:8px;font-size:11px;color:#666;margin-top:6px;flex-wrap:wrap}
+.ctrl input[type=range]{flex:1;min-width:80px;accent-color:#818cf8}
+.ctrl .v{min-width:36px;color:#888}
+
+
+/* ── Styles module 4 ── */
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#05050c;color:#e0ddd5;min-height:100vh;padding:32px}
+h1{font-size:20px;font-weight:500;margin-bottom:4px}
+p.sub{font-size:13px;color:#555;margin-bottom:20px;line-height:1.5}
+canvas{display:block;border-radius:8px;background:#05050c}
+.tabs{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+button.tab{font-size:11px;padding:4px 12px;border-radius:16px;border:1px solid #252535;background:transparent;color:#666;cursor:pointer}
+button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
+.desc{font-size:12px;color:#777;line-height:1.6;margin:10px 0 4px;min-height:40px}
+.ctrl{display:flex;align-items:center;gap:8px;font-size:11px;color:#666;margin-top:6px;flex-wrap:wrap}
+.ctrl input[type=range]{flex:1;min-width:80px;accent-color:#818cf8}
+.ctrl .v{min-width:36px;color:#888}
+
+
+</style>
+</head>
+<body>
+
+
+<div id="back-btn" style="display:none;position:fixed;top:20px;right:24px;z-index:9999;">
+  <button onclick="show('home')" style="
+    font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1.5px;
+    text-transform:uppercase;background:rgba(5,5,13,.88);backdrop-filter:blur(8px);
+    border:1px solid rgba(129,140,248,.35);color:#818cf8;padding:8px 16px;
+    border-radius:20px;cursor:pointer;transition:border-color .2s,color .2s;"
+    onmouseover="this.style.borderColor='#818cf8';this.style.color='#c7d0ff'"
+    onmouseout="this.style.borderColor='rgba(129,140,248,.35)';this.style.color='#818cf8'">
+    ← Accueil
+  </button>
+</div>
+
+
+<!-- ══ ACCUEIL ══ -->
+<div id="screen-home" class="screen active">
+
+<div id="home-screen" style="
+  max-width:820px;margin:0 auto;padding:64px 32px 48px;
+  font-family:'EB Garamond',Georgia,serif;color:#e2dfd6;">
+
+  <p style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:3px;
+     text-transform:uppercase;color:#818cf8;opacity:.7;margin-bottom:18px;">
+    Visualisations interactives — 4 modules
+  </p>
+
+  <h1 style="font-size:clamp(26px,3.5vw,42px);font-weight:400;line-height:1.2;margin-bottom:8px;">
+    Géométrie des espaces abstraits<br>
+    <em style="font-style:italic;color:#818cf8;">&amp; physique fondamentale</em>
+  </h1>
+
+  <p style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1px;
+     color:#555566;margin-bottom:28px;">
+    <strong style="color:rgba(220,218,210,.5);font-weight:400;">Alexandre Joseph Etienne PEREZ</strong>
+    &nbsp;·&nbsp; Lausanne, le 10 mai 2026 &nbsp;·&nbsp; © 2026 — Usage recherche
+  </p>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,#818cf8,transparent);
+       opacity:.3;margin-bottom:28px;"></div>
+
+  <div style="font-size:16px;line-height:1.8;color:rgba(226,223,214,.72);
+       max-width:680px;margin-bottom:44px;">
+    <p>Ce portail rassemble quatre modules de visualisations interactives accompagnant
+    la réflexion personnelle sur la géométrie des espaces abstraits et la physique fondamentale.
+    Chaque module explore des structures mathématiques — attracteurs, repliements, symétries,
+    catastrophes, vide quantique — et leurs connexions profondes avec la physique contemporaine.</p>
+    <p style="margin-top:12px;">
+    Cliquez sur un module ci-dessous pour l'ouvrir. Un bouton <em>Retour à l'accueil</em>
+    vous ramène ici à tout moment.</p>
+  </div>
+
+  <!-- Grille des 4 modules -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:780px;">
+
+    <div onclick="show('p1')" style="background:#0b0b18;border:1px solid rgba(129,140,248,.18);
+         border-radius:12px;padding:22px;cursor:pointer;position:relative;overflow:hidden;
+         transition:border-color .2s,transform .18s;"
+         onmouseover="this.style.borderColor='#818cf8';this.style.transform='translateY(-3px)'"
+         onmouseout="this.style.borderColor='rgba(129,140,248,.18)';this.style.transform='translateY(0)'">
+      <p style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;
+         text-transform:uppercase;color:#818cf8;opacity:.75;margin-bottom:8px;">Module 01</p>
+      <h3 style="font-family:'EB Garamond',serif;font-size:18px;font-weight:400;
+         color:#e2dfd6;line-height:1.3;margin-bottom:7px;">Géométrie des espaces abstraits</h3>
+      <p style="font-size:12.5px;line-height:1.55;color:#555566;">
+        Tore 4D, attracteurs, repliement chaotique (Hénon), double puits, symétries de Klein,
+        géométrie chromatique, brisure spontanée et catastrophes de Thom.</p>
+      <span style="position:absolute;bottom:16px;right:18px;color:#818cf8;font-size:15px;">→</span>
+    </div>
+
+    <div onclick="show('p2')" style="background:#0b0b18;border:1px solid rgba(52,211,153,.18);
+         border-radius:12px;padding:22px;cursor:pointer;position:relative;overflow:hidden;
+         transition:border-color .2s,transform .18s;"
+         onmouseover="this.style.borderColor='#34d399';this.style.transform='translateY(-3px)'"
+         onmouseout="this.style.borderColor='rgba(52,211,153,.18)';this.style.transform='translateY(0)'">
+      <p style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;
+         text-transform:uppercase;color:#34d399;opacity:.75;margin-bottom:8px;">Module 02</p>
+      <h3 style="font-family:'EB Garamond',serif;font-size:18px;font-weight:400;
+         color:#e2dfd6;line-height:1.3;margin-bottom:7px;">Expansion de l'univers</h3>
+      <p style="font-size:12.5px;line-height:1.55;color:#555566;">
+        Divergence exponentielle (analogue Lyapunov), horizon cosmologique, destin thermodynamique,
+        destins cosmiques et catastrophes de Thom.</p>
+      <span style="position:absolute;bottom:16px;right:18px;color:#34d399;font-size:15px;">→</span>
+    </div>
+
+    <div onclick="show('p3')" style="background:#0b0b18;border:1px solid rgba(245,158,11,.18);
+         border-radius:12px;padding:22px;cursor:pointer;position:relative;overflow:hidden;
+         transition:border-color .2s,transform .18s;"
+         onmouseover="this.style.borderColor='#f59e0b';this.style.transform='translateY(-3px)'"
+         onmouseout="this.style.borderColor='rgba(245,158,11,.18)';this.style.transform='translateY(0)'">
+      <p style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;
+         text-transform:uppercase;color:#f59e0b;opacity:.75;margin-bottom:8px;">Module 03</p>
+      <h3 style="font-family:'EB Garamond',serif;font-size:18px;font-weight:400;
+         color:#e2dfd6;line-height:1.3;margin-bottom:7px;">Trous noirs &amp; Hawking</h3>
+      <p style="font-size:12.5px;line-height:1.55;color:#555566;">
+        Trou noir comme attracteur, horizon comme bifurcation catastrophique, rayonnement
+        de Hawking, évaporation, paradoxe de l'information, effet Unruh.</p>
+      <span style="position:absolute;bottom:16px;right:18px;color:#f59e0b;font-size:15px;">→</span>
+    </div>
+
+    <div onclick="show('p4')" style="background:#0b0b18;border:1px solid rgba(249,115,22,.18);
+         border-radius:12px;padding:22px;cursor:pointer;position:relative;overflow:hidden;
+         transition:border-color .2s,transform .18s;"
+         onmouseover="this.style.borderColor='#f97316';this.style.transform='translateY(-3px)'"
+         onmouseout="this.style.borderColor='rgba(249,115,22,.18)';this.style.transform='translateY(0)'">
+      <p style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;
+         text-transform:uppercase;color:#f97316;opacity:.75;margin-bottom:8px;">Module 04</p>
+      <h3 style="font-family:'EB Garamond',serif;font-size:18px;font-weight:400;
+         color:#e2dfd6;line-height:1.3;margin-bottom:7px;">Complémentarité — Holographie — ER=EPR</h3>
+      <p style="font-size:12.5px;line-height:1.55;color:#555566;">
+        Complémentarité de Susskind, holographie S=A/4l²<sub>P</sub>,
+        AdS/CFT, ER=EPR et émergence de l'espace-temps par l'intrication.</p>
+      <span style="position:absolute;bottom:16px;right:18px;color:#f97316;font-size:15px;">→</span>
+    </div>
+
+  </div>
+
+  <!-- Bloc Publications -->
+  <div style="margin-top:36px;max-width:780px;">
+    <div style="background:#0b0b18;border:1px solid rgba(245,158,11,.18);
+         border-radius:12px;padding:22px;">
+      <p style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;
+         text-transform:uppercase;color:#f59e0b;opacity:.75;margin-bottom:8px;">Publications · Zenodo</p>
+      <p style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:1.5px;
+         text-transform:uppercase;color:#555566;margin-bottom:10px;">Corpus PEREZ 2026 — Mai 2026</p>
+      <h3 style="font-family:'EB Garamond',serif;font-size:18px;font-weight:400;
+         color:#e2dfd6;line-height:1.3;margin-bottom:14px;">Publications associées</h3>
+      <p style="font-size:12.5px;line-height:1.9;color:#555566;">
+        <a href="https://doi.org/10.5281/zenodo.20054634" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20054634</a> — Axiome, Archétype, Singularité, φ<br>
+        <a href="https://doi.org/10.5281/zenodo.20098372" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098372</a> — Réflexions personnelles sur la géométrie des espaces abstraits<br>
+        <a href="https://doi.org/10.5281/zenodo.20098274" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098274</a> — Unus Mundus comme H_φ<br>
+        <a href="https://doi.org/10.5281/zenodo.20113396" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20113396</a> — Rapport d'analyse Prédiction P2<br>
+        <a href="https://doi.org/10.5281/zenodo.20098853" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098853</a> — Comprendre la théorie H_φ (vulgarisation)
+      </p>
+      <p style="margin-top:14px;font-size:11px;color:#333340;">
+        Travail spéculatif · Non peer-reviewed · Toutes affirmations marquées comme hypothèses
+      </p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══ MODULE 1 ══ -->
+<div id="screen-p1" class="screen">
+<nav id="nav">
+  <h2>Visualisations</h2>
+  <button class="nb active" data-s="s0">① Tore 4D</button>
+  <button class="nb" data-s="s1">② Attracteurs</button>
+  <button class="nb" data-s="s2">③ Repliement</button>
+  <button class="nb" data-s="s3">④ Double puits</button>
+  <button class="nb" data-s="s4">⑤ Symétries Klein</button>
+  <button class="nb" data-s="s5">⑥ Géométrie chromatique</button>
+  <button class="nb" data-s="s6">⑦ Brisure & Catastrophe</button>
+</nav>
+<main id="main">
+
+<div class="sec on" id="s0">
+  <h1>Le tore à quatre dimensions</h1>
+  <p>T⁴ = S¹×S¹×S¹×S¹ — quatre cercles indépendants.</p>
+  <div class="tabs">
+    <button class="tab on" data-m="0">① Cercle 1D</button>
+    <button class="tab" data-m="1">② Tore 2D</button>
+    <button class="tab" data-m="2">③ Tore 3D</button>
+    <button class="tab" data-m="3">④ Tore 4D</button>
+  </div>
+  <canvas id="c0" width="860" height="380"></canvas>
+  <div class="desc" id="d0"></div>
+  <div class="ctrl" id="k0"></div>
+</div>
+
+<div class="sec" id="s1">
+  <h1>Attracteurs dans l'espace de phase</h1>
+  <p>Point fixe, cycle limite, attracteur étrange de Lorenz.</p>
+  <div class="tabs">
+    <button class="tab on" data-m="0">① Point fixe</button>
+    <button class="tab" data-m="1">② Cycle limite</button>
+    <button class="tab" data-m="2">③ Lorenz</button>
+  </div>
+  <canvas id="c1" width="860" height="380"></canvas>
+  <div class="desc" id="d1"></div>
+  <div class="ctrl" id="k1"></div>
+</div>
+
+<div class="sec" id="s2">
+  <h1>Le repliement (folding)</h1>
+  <p>Étirement + repliement = chaos déterministe. Fer à cheval de Smale, application du boulanger.</p>
+  <div class="tabs">
+    <button class="tab on" data-m="0">① Étire & replie</button>
+    <button class="tab" data-m="1">② Fer à cheval</button>
+    <button class="tab" data-m="2">③ Boulanger</button>
+    <button class="tab" data-m="3">④ Fractal</button>
+  </div>
+  <canvas id="c2" width="780" height="340"></canvas>
+  <div class="desc" id="d2"></div>
+  <div class="ctrl" id="k2"></div>
+</div>
+
+<div class="sec" id="s3">
+  <h1>Le double puits de potentiel</h1>
+  <p>V(x)=x⁴/4−μx²/2 — deux états stables, barrière, effet tunnel.</p>
+  <div class="tabs">
+    <button class="tab on" data-m="0">① Paysage</button>
+    <button class="tab" data-m="1">② Effet tunnel</button>
+    <button class="tab" data-m="2">③ Bifurcation</button>
+    <button class="tab" data-m="3">④ Bruit thermique</button>
+  </div>
+  <canvas id="c3" width="860" height="380"></canvas>
+  <div class="desc" id="d3"></div>
+  <div class="ctrl" id="k3"></div>
+</div>
+
+<div class="sec" id="s4">
+  <h1>Symétries discrètes — groupe de Klein V₄</h1>
+  <p>Z₂×Z₂ — involution centrale, nœud topologique, chorégraphie 3 corps.</p>
+  <div class="tabs">
+    <button class="tab on" data-m="0">① Involution</button>
+    <button class="tab" data-m="1">② Groupe Klein</button>
+    <button class="tab" data-m="2">③ Nœud topologique</button>
+    <button class="tab" data-m="3">④ Chorégraphie</button>
+  </div>
+  <canvas id="c4" width="860" height="380"></canvas>
+  <div class="desc" id="d4"></div>
+  <div class="ctrl" id="k4"></div>
+</div>
+
+<div class="sec" id="s5">
+  <h1>Géométrie chromatique de phase</h1>
+  <p>Phase de Berry, brisure séquentielle G→H→K, fondamental non dégénéré.</p>
+  <div class="tabs">
+    <button class="tab on" data-m="0">① Effondrement</button>
+    <button class="tab" data-m="1">② Brisure 2 étapes</button>
+    <button class="tab" data-m="2">③ Fondamental unique</button>
+    <button class="tab" data-m="3">④ Phase de Berry</button>
+  </div>
+  <canvas id="c5" width="860" height="380"></canvas>
+  <div class="desc" id="d5"></div>
+  <div class="ctrl" id="k5"></div>
+</div>
+
+<div class="sec" id="s6">
+  <h1>Brisure spontanée, catastrophes de Thom, vide quantique</h1>
+  <p>Le même saut à trois échelles.</p>
+  <div class="tabs">
+    <button class="tab on" data-m="0">① Brisure spontanée</button>
+    <button class="tab" data-m="1">② Catastrophe Thom</button>
+    <button class="tab" data-m="2">③ Vide quantique</button>
+    <button class="tab" data-m="3">④ Les trois ensemble</button>
+  </div>
+  <canvas id="c6" width="860" height="380"></canvas>
+  <div class="desc" id="d6"></div>
+  <div class="ctrl" id="k6"></div>
+</div>
+
+</main>
+<script>
+// Navigation
+document.querySelectorAll('.nb').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.sec').forEach(x=>x.classList.remove('on'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.s).classList.add('on');
+}));
+
+function tx(ctx,t,x,y,col,sz,al){
+  ctx.fillStyle=col||'rgba(150,150,160,0.8)';
+  ctx.font=(sz||11)+'px Arial,sans-serif';
+  ctx.textAlign=al||'center';
+  ctx.fillText(t,x,y);
+}
+
+function tabs(secId, cb){
+  document.querySelectorAll('#'+secId+' .tab').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#'+secId+' .tab').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    cb(parseInt(b.dataset.m));
+  }));
+}
+
+// ── S0 : TORE 4D ──────────────────────────────────────────────
+(function(){
+  const cv=document.getElementById('c0'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  let m=0,f=0,a1=0,a2=0;
+  const D=['Un point sur un cercle — 1 angle α suffit pour se repérer. Brique de base du tore.',
+    'Deux cercles indépendants : α pour le grand tour, β pour le petit. 2 angles → surface du beignet.',
+    'Le tore 3D — le beignet. Si on déroulait sa surface : un rectangle dont les bords opposés se collent.',
+    'Tore 4D : deux cercles dans deux plans perpendiculaires. Projection 2D. Violet = cercle α, vert = cercle β.'];
+  tabs('s0',n=>{m=n;f=0;document.getElementById('d0').textContent=D[n];});
+  document.getElementById('d0').textContent=D[0];
+  document.getElementById('k0').innerHTML='<span>α</span><input type="range" id="a1r" min="0" max="360" value="0"><span class="v" id="a1v">0°</span><span style="margin-left:12px">β</span><input type="range" id="a2r" min="0" max="360" value="0"><span class="v" id="a2v">0°</span>';
+  document.getElementById('a1r').oninput=function(){a1=this.value*Math.PI/180;document.getElementById('a1v').textContent=this.value+'°'};
+  document.getElementById('a2r').oninput=function(){a2=this.value*Math.PI/180;document.getElementById('a2v').textContent=this.value+'°'};
+  function p3(x,y,z){const s=5/(5-z*.6);return[W/2+x*s*85,H/2-y*s*85];}
+  function go(){
+    ctx.clearRect(0,0,W,H);f++;
+    const t=f*.022+a1;
+    if(m===0){
+      const R=120;
+      ctx.beginPath();ctx.arc(W/2,H/2,R,0,Math.PI*2);ctx.strokeStyle='rgba(129,140,248,.2)';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.beginPath();ctx.arc(W/2+Math.cos(t)*R,H/2+Math.sin(t)*R,9,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();
+      tx(ctx,'α='+Math.round((t%(Math.PI*2))/(Math.PI*2)*360)+'°',W/2,H/2+R+24,'rgba(129,140,248,.7)');
+    } else if(m===1){
+      for(let i=0;i<55;i++)for(let j=0;j<55;j++){
+        const th=i/55*Math.PI*2,ph=j/55*Math.PI*2;
+        const x=(120+40*Math.cos(ph))*Math.cos(th),y=(120+40*Math.cos(ph))*Math.sin(th),z=40*Math.sin(ph)*.4;
+        const pp=p3(x/85,y/85,z/85);
+        ctx.beginPath();ctx.arc(pp[0],pp[1],1.4,0,Math.PI*2);
+        ctx.fillStyle='rgba(129,140,248,'+(0.09+.07*Math.abs(Math.sin(th+ph)))+')';ctx.fill();
+      }
+      const gx=(120+40*Math.cos(t+a2))*Math.cos(t),gy=(120+40*Math.cos(t+a2))*Math.sin(t),gz=40*Math.sin(t+a2)*.4;
+      const pp=p3(gx/85,gy/85,gz/85);
+      ctx.beginPath();ctx.arc(pp[0],pp[1],8,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+    } else if(m===2){
+      const pts=[];
+      for(let i=0;i<50;i++)for(let j=0;j<28;j++){
+        const u=i/50*Math.PI*2+t*.25+a1,v=j/28*Math.PI*2+t*.4+a2;
+        const xr=(120+42*Math.cos(v))*Math.cos(u)/85,yr=(120+42*Math.cos(v))*Math.sin(u)/85,zr=42*Math.sin(v)/85;
+        // rotation autour de l'axe Y par a2
+        const cosA=Math.cos(a2),sinA=Math.sin(a2);
+        const xf=xr*cosA+zr*sinA,zf=-xr*sinA+zr*cosA;
+        pts.push({x:xf,y:yr,z:zf});
+      }
+      pts.sort((a,b)=>a.z-b.z);
+      pts.forEach(p=>{const pp=p3(p.x,p.y,p.z);ctx.beginPath();ctx.arc(pp[0],pp[1],2,0,Math.PI*2);ctx.fillStyle='rgba(52,211,153,'+(0.4+.3*(p.z+.5)/1.2)+')';ctx.fill();});
+    } else {
+      for(let i=0;i<30;i++)for(let j=0;j<30;j++){
+        const a=i/30*Math.PI*2,b=j/30*Math.PI*2;
+        const x1=Math.cos(a+t*.4),y1=Math.sin(a+t*.4),x2=Math.cos(b+t*.28),y2=Math.sin(b+t*.28);
+        const cam=2,px=(x1*Math.cos(a1)+x2*Math.sin(a2)),py=y1,pz=(x2*Math.cos(a2)-x1*Math.sin(a1)),pw=y2;
+        const sc=cam/(cam+pw*.4),sx=W/2+px*sc*90,sy=H/2-(py*sc*Math.cos(.4)-pz*sc*Math.sin(.4))*90;
+        const al=0.14+Math.abs(pz*.3+pw*.2)*.4;
+        ctx.beginPath();ctx.arc(sx,sy,1.8,0,Math.PI*2);
+        ctx.fillStyle=(.5+.5*Math.sin(a))>.5?'rgba(129,140,248,'+al+')':'rgba(52,211,153,'+al+')';ctx.fill();
+      }
+    }
+    requestAnimationFrame(go);
+  }
+  go();
+})();
+
+// ── S1 : ATTRACTEURS ──────────────────────────────────────────
+(function(){
+  const cv=document.getElementById('c1'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  let m=0,f=0,p1=.15,lor=[];
+  const D=['Toutes les trajectoires convergent vers le même point. Exposant de Lyapunov λ<0.',
+    'Le système tourne indéfiniment sur le même cycle. Modèle : van der Pol, rythme cardiaque.',
+    'Attracteur de Lorenz (1963) : λ₁≈+0.906. Deux trajectoires quasi-identiques divergent exponentiellement.'];
+  function initLor(){lor=[{x:.1,y:0,z:0,tr:[],c:'#818cf8'},{x:.101,y:0,z:0,tr:[],c:'#34d399'},{x:.1,y:.001,z:0,tr:[],c:'#f97316'}];}
+  initLor();
+  function buildK(){
+    const k=document.getElementById('k1');
+    if(m<2){k.innerHTML='<span>'+(m===0?'Friction':'Attraction')+'</span><input type="range" id="p1r" min="1" max="40" value="15"><span class="v" id="p1v">0.15</span>';document.getElementById('p1r').oninput=function(){p1=this.value/100;document.getElementById('p1v').textContent=p1.toFixed(2);f=0;};}
+    else k.innerHTML='<span style="color:#555">3 trajectoires quasi-identiques — observer la divergence</span>';
+  }
+  tabs('s1',n=>{m=n;f=0;p1=.15;if(n===2)initLor();document.getElementById('d1').textContent=D[n];buildK();});
+  document.getElementById('d1').textContent=D[0];buildK();
+  function stepL(p){const s=10,r=28,b=8/3,dt=.006;p.x+=s*(p.y-p.x)*dt;p.y+=(p.x*(r-p.z)-p.y)*dt;p.z+=(p.x*p.y-b*p.z)*dt;p.tr.push({x:p.x,y:p.y,z:p.z});if(p.tr.length>500)p.tr.shift();}
+  function projL(x,y,z){
+    // Centrage : x oscille ~[-20,20], y ~[-30,30], z ~[0,50]
+    // On centre z autour de 25 (milieu de sa plage)
+    const px=W/2+(x*Math.cos(.3)-y*Math.sin(.3))*7.5;
+    const py=H/2-(z-25)*7.5+y*2;
+    return[px,py];
+  }
+  function go(){
+    ctx.clearRect(0,0,W,H);f++;
+    if(m===0){
+      const CX=W/2,CY=H/2,R=150;
+      ctx.strokeStyle='rgba(129,140,248,.07)';ctx.lineWidth=1;
+      for(let r=20;r<=R;r+=20){ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);ctx.stroke();}
+      for(let i=0;i<14;i++){
+        let x=CX+Math.cos(i/14*Math.PI*2)*R,y=CY+Math.sin(i/14*Math.PI*2)*R;
+        const steps=Math.min(f,Math.round(60/Math.max(.05,p1)));
+        ctx.beginPath();ctx.moveTo(x,y);
+        for(let s=0;s<steps;s++){x+=(CX-x)*(.06+p1*.3);y+=(CY-y)*(.06+p1*.3);ctx.lineTo(x,y);}
+        ctx.strokeStyle='rgba(129,140,248,.55)';ctx.lineWidth=1;ctx.stroke();
+        ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();
+      }
+      ctx.beginPath();ctx.arc(CX,CY,6,0,Math.PI*2);ctx.fillStyle='#f97316';ctx.fill();
+      tx(ctx,'attracteur (point fixe)',CX,CY-14,'rgba(249,115,22,.7)');
+    } else if(m===1){
+      const CX=W/2,CY=H/2,Rt=115;
+      ctx.strokeStyle='rgba(52,211,153,.1)';ctx.lineWidth=.5;
+      for(let r=20;r<=190;r+=20){ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);ctx.stroke();}
+      [26,62,105,150,190].forEach((r0,i)=>{
+        let x=CX+Math.cos(i/5*Math.PI*2)*r0,y=CY+Math.sin(i/5*Math.PI*2)*r0;
+        const steps=Math.min(f,Math.round(80/Math.max(.05,p1)));
+        ctx.beginPath();ctx.moveTo(x,y);
+        for(let s=0;s<steps;s++){const d=Math.sqrt((x-CX)**2+(y-CY)**2),a=Math.atan2(y-CY,x-CX),nd=d-(d-Rt)*p1*.4;x=CX+Math.cos(a+.06)*nd;y=CY+Math.sin(a+.06)*nd;ctx.lineTo(x,y);}
+        ctx.strokeStyle='rgba(52,211,153,.6)';ctx.lineWidth=1;ctx.stroke();
+        ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+      });
+      ctx.beginPath();ctx.arc(CX,CY,Rt,0,Math.PI*2);ctx.strokeStyle='#34d399';ctx.lineWidth=2;ctx.setLineDash([6,4]);ctx.stroke();ctx.setLineDash([]);
+      tx(ctx,'attracteur (cycle limite)',W/2,CY-Rt-10,'rgba(52,211,153,.7)');
+    } else {
+      for(let k=0;k<5;k++)lor.forEach(p=>stepL(p));
+      lor.forEach(p=>{
+        if(p.tr.length<2)return;
+        const L=p.tr.length,rgb=p.c==='#818cf8'?'129,140,248':p.c==='#34d399'?'52,211,153':'249,115,22';
+        for(let i=1;i<L;i++){
+          const a=projL(p.tr[i-1].x,p.tr[i-1].y,p.tr[i-1].z),b=projL(p.tr[i].x,p.tr[i].y,p.tr[i].z);
+          ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);
+          ctx.strokeStyle='rgba('+rgb+','+(0.07+.55*(i/L))+')';ctx.lineWidth=i>L-20?1.5:.8;ctx.stroke();
+        }
+        const l=p.tr[L-1],pl=projL(l.x,l.y,l.z);
+        ctx.beginPath();ctx.arc(pl[0],pl[1],3,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();
+      });
+      tx(ctx,'3 trajectoires quasi-identiques — divergence exponentielle',W/2,H-12,'rgba(129,140,248,.5)');
+    }
+    requestAnimationFrame(go);
+  }
+  go();
+})();
+
+// ── S2 : FOLDING ──────────────────────────────────────────────
+(function(){
+  const cv=document.getElementById('c2'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  let m=0,f=0,step=0;
+  const D=['Étirement (points s\'éloignent) + repliement (système borné) répétés → structure feuilletée infinie.',
+    'Fer à cheval de Smale (1960) : carré étiré, replié, replacé. ∞ itérations → ensemble de Cantor.',
+    'Application du boulanger : étire, coupe, empile. Après N applications : 2^N bandes. Entropie = log 2.',
+    'Section transverse de l\'attracteur : dimension de Hausdorff entre 1 et 2. Zoom : structure auto-similaire.'];
+
+  function buildK(){
+    const k=document.getElementById('k2');
+    if(m===0||m===1){
+      const max=m===0?4:4;
+      k.innerHTML='<button class="btn" id="pv">← Préc.</button><button class="btn" id="nx">Suiv. →</button><span id="si" style="margin-left:8px;color:#555;font-size:11px">étape 0/'+max+'</span>';
+      document.getElementById('nx').onclick=()=>{if(step<max){step++;document.getElementById('si').textContent='étape '+step+'/'+max;}};
+      document.getElementById('pv').onclick=()=>{if(step>0){step--;document.getElementById('si').textContent='étape '+step+'/'+max;}};
+    } else if(m===2){
+      k.innerHTML='<button class="btn" id="pv">← Préc.</button><button class="btn" id="nx">Pétrir →</button><span id="si" style="margin-left:8px;color:#555;font-size:11px">pétrissage 0/6</span>';
+      document.getElementById('nx').onclick=()=>{if(step<6){step++;document.getElementById('si').textContent='pétrissage '+step+'/6';}};
+      document.getElementById('pv').onclick=()=>{if(step>0){step--;document.getElementById('si').textContent='pétrissage '+step+'/6';}};
+    } else {
+      k.innerHTML='<span>Zoom</span><input type="range" id="zmr" min="1" max="8" value="1" step="1"><span class="v" id="zmv">1×</span>';
+      document.getElementById('zmr').oninput=function(){document.getElementById('zmv').textContent=this.value+'×';};
+    }
+  }
+  tabs('s2',n=>{m=n;step=0;f=0;document.getElementById('d2').textContent=D[n];buildK();});
+  document.getElementById('d2').textContent=D[0];buildK();
+
+  // Dessine un rectangle coloré en dégradé
+  function cRect(x,y,w,h,n){
+    for(let i=0;i<n;i++){ctx.fillStyle='hsl('+(250+i*80/n)+',55%,40%)';ctx.fillRect(x+i*w/n,y,w/n+.5,h);}
+    ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=.5;ctx.strokeRect(x,y,w,h);
+  }
+
+  // Fer à cheval : tracé en un seul path continu pour éviter les coupures
+  function horseshoe(cx,cy){
+    const r=70,thick=22,legH=70;
+    // Arc seul : de PI à 2*PI (demi-cercle inférieur, ouverture vers le bas = forme U)
+    // Les jambes partent des extrémités (cx-r,cy) et (cx+r,cy) vers le bas
+    ctx.lineWidth=thick;ctx.lineCap='round';ctx.lineJoin='round';
+    // On trace arc + jambes gauche + jambes droite en 3 paths distincts
+    // mais en s'assurant que les jonctions sont couvertes par le lineCap round
+    // Arc inférieur : centre cy-legH, de PI à 2PI
+    ctx.beginPath();
+    ctx.arc(cx,cy-legH,r,Math.PI,2*Math.PI);
+    ctx.strokeStyle='hsl(270,55%,42%)';
+    ctx.stroke();
+    // Jambe gauche : couvre le joint avec l'arc en partant un peu DANS l'arc
+    ctx.beginPath();
+    ctx.moveTo(cx-r,cy-legH-thick/2);
+    ctx.lineTo(cx-r,cy);
+    ctx.strokeStyle='hsl(250,55%,42%)';
+    ctx.stroke();
+    // Jambe droite
+    ctx.beginPath();
+    ctx.moveTo(cx+r,cy-legH-thick/2);
+    ctx.lineTo(cx+r,cy);
+    ctx.strokeStyle='hsl(310,55%,42%)';
+    ctx.stroke();
+  }
+
+  function go(){
+    ctx.clearRect(0,0,W,H);f++;
+    const CX=W/2,CY=H/2;
+    if(m===0){
+      const labels=['État initial','Étirement ×2 horizontal','Compression verticale','Repliement en fer à cheval','Résultat : contenu mélangé'];
+      tx(ctx,labels[step]||labels[0],CX,24,'rgba(129,140,248,.8)',13);
+      if(step===0) cRect(CX-80,CY-55,160,110,8);
+      else if(step===1){cRect(CX-175,CY-27,350,55,16);tx(ctx,'← étirement →',CX,CY+48,'rgba(129,140,248,.5)',10);}
+      else if(step===2) cRect(CX-175,CY-14,350,28,16);
+      else if(step===3) horseshoe(CX,CY+55);
+      else {
+        cRect(CX-80,CY-55,160,110,8);
+        ctx.globalAlpha=.28;cRect(CX-80,CY-55,160,110,8);ctx.globalAlpha=1;
+        tx(ctx,'même zone — contenu totalement mélangé',CX,CY+85,'rgba(249,115,22,.7)',11);
+      }
+    } else if(m===1){
+      const SX=70,SY=50,SW=210,SH=210;
+      ctx.strokeStyle='rgba(129,140,248,.25)';ctx.lineWidth=.5;ctx.setLineDash([4,3]);ctx.strokeRect(SX,SY,SW,SH);ctx.setLineDash([]);
+      tx(ctx,'itération '+step,SX+SW/2,SY-10,'rgba(129,140,248,.6)',11);
+      if(step===0){
+        cRect(SX,SY,SW,SH,8);
+        ctx.beginPath();ctx.arc(SX+55,SY+105,5,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();
+        ctx.beginPath();ctx.arc(SX+61,SY+109,5,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+        tx(ctx,'2 points proches →',SX+SW+10,SY+55,'rgba(129,140,248,.4)',10,'left');
+      } else if(step===1){
+        cRect(SX,SY,SW*2.1,SH*.37,14);
+        tx(ctx,'étiré ×2',SX+SW*1.05,SY-10,'rgba(129,140,248,.6)',11);
+      } else if(step===2){
+        horseshoe(SX+SW/2,SY+SH/2+60);
+        tx(ctx,'replié en fer à cheval',SX+SW/2,SY+SH+16,'rgba(129,140,248,.6)',11);
+      } else if(step===3){
+        cRect(SX,SY,SW,SH,8);
+        ctx.beginPath();ctx.arc(SX+38,SY+38,5,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();
+        ctx.beginPath();ctx.arc(SX+SW-28,SY+SH-36,5,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+        tx(ctx,'points séparés !',SX+SW+10,SY+55,'rgba(249,115,22,.7)',10,'left');
+      } else {
+        const nb=Math.pow(2,3);
+        for(let i=0;i<nb;i++){ctx.fillStyle='hsl('+(250+i*80/nb)+',55%,40%)';ctx.fillRect(SX+2,SY+SH*i/nb+1,SW-4,SH/nb-2);}
+        ctx.strokeStyle='rgba(129,140,248,.2)';ctx.lineWidth=.5;ctx.strokeRect(SX,SY,SW,SH);
+        tx(ctx,'3 iter. → 8 bandes → ∞ = ensemble de Cantor',SX+SW/2,SY+SH+16,'rgba(129,140,248,.6)',11);
+      }
+    } else if(m===2){
+      const SX=110,SY=55,SW=190,SH=190,gN=14;
+      let pts=[];
+      for(let i=0;i<gN;i++)for(let j=0;j<gN;j++)pts.push({x:i/gN,y:j/gN,c:'hsl('+((i*gN+j)*360/(gN*gN)%360)+',60%,44%)'});
+      const bk=p=>p.x<.5?{x:2*p.x,y:p.y/2,c:p.c}:{x:2*p.x-1,y:p.y/2+.5,c:p.c};
+      for(let k=0;k<step;k++)pts=pts.map(bk);
+      ctx.save();ctx.beginPath();ctx.rect(SX,SY,SW,SH);ctx.clip();
+      pts.forEach(p=>{ctx.fillStyle=p.c;ctx.fillRect(SX+p.x*SW,SY+p.y*SH,SW/gN+.5,SH/gN+.5);});
+      ctx.restore();
+      ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=.5;ctx.strokeRect(SX,SY,SW,SH);
+      tx(ctx,'pétrissage '+step+' → '+Math.pow(2,step)+' bandes',SX+SW/2,SY+SH+16,'rgba(52,211,153,.7)',11);
+    } else {
+      // Attracteur de Henon — fenetre adaptative
+      // W et H lus depuis le canvas (780x340)
+      // px = mg + (hx-wx0)/(wx1-wx0) * (W-2*mg)
+      // py = (H-mg) - (hy-wy0)/(wy1-wy0) * (H-2*mg)
+
+      const zm = +(document.getElementById('zmr') ? document.getElementById('zmr').value : 1);
+      const mg = 18;
+
+      // Fenetres [wx0, wx1, wy0, wy1, label]
+      // Bornes calculees sur 500k points reels de l'attracteur
+      // zm=1 : bbox globale + marge 0.02
+      // zm=2-8 : bande verte hx=[0.443,1.129] hy=[0.087,0.141], zoom progressif en y
+      const WIN = {
+        1: [-1.305, 1.293, -0.406, 0.402, 'Vue globale — 4 bandes'],
+        2: [ 0.443, 1.129,  0.082, 0.146, 'x2 — bande verte'],
+        3: [ 0.443, 1.129,  0.083, 0.145, 'x3 — bande verte'],
+        4: [ 0.443, 1.129,  0.084, 0.144, 'x4 — feuillets'],
+        5: [ 0.443, 1.129,  0.085, 0.143, 'x5 — feuillets'],
+        6: [ 0.443, 1.129,  0.086, 0.142, 'x6 — feuillets fins'],
+        7: [ 0.443, 1.129,  0.087, 0.141, 'x7 — sous-feuillets'],
+        8: [ 0.443, 1.129,  0.087, 0.141, 'x8 — Cantor'],
+      };
+      const ww = WIN[zm] || WIN[1];
+      const wx0=ww[0], wx1=ww[1], wy0=ww[2], wy1=ww[3], zlbl=ww[4];
+
+      // Fonctions de projection — utilise W et H de la closure
+      const rngX = wx1 - wx0;
+      const rngY = wy1 - wy0;
+      const drawW = W - 2*mg;
+      const drawH = H - 2*mg;
+
+      // Couleur par bande
+      function ptCol(hy) {
+        if (hy >= 0.176 && hy <= 0.200) {
+          if (zm >= 2) return null;
+          return 'hsla(45,90%,64%,0.7)';
+        }
+        if (hy > 0.141 && hy < 0.176) return null;
+        if (hy >= 0.087 && hy <= 0.141) {
+          if (zm === 8) {
+            if (hy >= 0.124) return 'hsla(95,82%,68%,0.7)';
+            if (hy >= 0.105) return null;
+            return 'hsla(155,78%,50%,0.7)';
+          }
+          return 'hsla(130,76%,58%,0.7)';
+        }
+        if (hy > -0.063 && hy < 0.087) return null;
+        if (hy >= -0.105 && hy <= -0.063) {
+          if (zm >= 2) return null;
+          return 'hsla(210,80%,64%,0.7)';
+        }
+        if (hy > -0.212 && hy < -0.105) return null;
+        if (hy >= -0.390 && hy <= -0.212) {
+          if (zm >= 2) return null;
+          return 'hsla(280,70%,60%,0.7)';
+        }
+        return null;
+      }
+
+      // Buffer offscreen
+      if (!go._hs) go._hs = { buf: null, hx: 0.63135, hy: 0.18941, zm: -1 };
+      const hs = go._hs;
+      if (hs.zm !== zm) {
+        hs.buf = document.createElement('canvas');
+        hs.buf.width = W; hs.buf.height = H;
+        hs.hx = 0.63135; hs.hy = 0.18941; hs.zm = zm;
+      }
+      const bc = hs.buf.getContext('2d');
+
+      for (let i = 0; i < 2000; i++) {
+        const nx = 1 - 1.4*hs.hx*hs.hx + hs.hy;
+        const ny = 0.3*hs.hx;
+        hs.hx = nx; hs.hy = ny;
+        const c = ptCol(hs.hy);
+        if (!c) continue;
+        // Verifier que le point est dans la fenetre
+        if (hs.hx < wx0 || hs.hx > wx1 || hs.hy < wy0 || hs.hy > wy1) continue;
+        const px = mg + (hs.hx - wx0) / rngX * drawW;
+        const py = (H - mg) - (hs.hy - wy0) / rngY * drawH;
+        bc.fillStyle = c;
+        bc.fillRect(px, py, 0.8, 0.8);
+      }
+
+      ctx.drawImage(hs.buf, 0, 0);
+      tx(ctx, 'Henon a=1.4 b=0.3 — dim.Hausdorff=1.26 — ' + zlbl, CX, 14, 'rgba(175,170,255,.88)', 11);
+    }
+    requestAnimationFrame(go);
+  }
+  go();
+})();
+
+// ── S3 : DOUBLE PUITS ─────────────────────────────────────────
+(function(){
+  const cv=document.getElementById('c3'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  let m=0,f=0,bar=.55,en=.35,bif=.3,ns=.18,parts=[];
+  const D=[
+    'Deux puits separés par une barriere. Energie < barriere : piégée. Energie > barriere : peut franchir.',
+    'Effet tunnel quantique : la fonction onde filtre a travers la barriere meme sans energie suffisante.',
+    'Bifurcation : incliner le paysage declenche un basculement brutal irreversible — hysteresis.',
+    'Bruit thermique — loi de Kramers : tau proportionnel a exp(DeltaV/kT). Doubler la barriere = temps exponentiel.'
+  ];
+  function initP(){parts=[];for(let i=0;i<10;i++)parts.push({x:Math.random()<.5?.18+Math.random()*.14:.68+Math.random()*.14,v:(Math.random()-.5)*.004,h:210+Math.floor(Math.random()*80)});}
+  initP();
+  function buildK(){
+    const k=document.getElementById('k3');
+    if(m===0){k.innerHTML='<span>Barriere</span><input type="range" id="b3" min="10" max="90" value="55"><span class="v" id="b3v">0.55</span><span style="margin-left:10px">Energie</span><input type="range" id="e3" min="5" max="95" value="35"><span class="v" id="e3v">0.35</span>';document.getElementById('b3').oninput=function(){bar=this.value/100;document.getElementById('b3v').textContent=bar.toFixed(2);};document.getElementById('e3').oninput=function(){en=this.value/100;document.getElementById('e3v').textContent=en.toFixed(2);};}
+    else if(m===1){k.innerHTML='<span>Barriere</span><input type="range" id="b3b" min="20" max="80" value="55"><span class="v" id="b3bv">0.55</span>';document.getElementById('b3b').oninput=function(){bar=this.value/100;document.getElementById('b3bv').textContent=bar.toFixed(2);};}
+    else if(m===2){k.innerHTML='<span>Parametre</span><input type="range" id="bf3" min="1" max="99" value="30"><span class="v" id="bf3v">0.30</span>';document.getElementById('bf3').oninput=function(){bif=this.value/100;document.getElementById('bf3v').textContent=bif.toFixed(2);};}
+    else{k.innerHTML='<span>Bruit</span><input type="range" id="ns3" min="1" max="60" value="18"><span class="v" id="ns3v">0.18</span>';document.getElementById('ns3').oninput=function(){ns=this.value/100;document.getElementById('ns3v').textContent=ns.toFixed(2);initP();};}
+  }
+  tabs('s3',n=>{m=n;f=0;document.getElementById('d3').textContent=D[n];buildK();if(n===3)initP();});
+  document.getElementById('d3').textContent=D[0];buildK();
+  function pV(x,b,asy){const u=(x-.5)*4;return u*u*u*u-2*(b*1.6)*u*u+(asy||0)*u*1.2;}
+  function getPts(b,asy,xL,xR,yT,yB){const raw=[];for(let i=0;i<=160;i++)raw.push(pV(i/160,b,asy));const mn=Math.min(...raw),mx=Math.max(...raw);return raw.map((v,i)=>({px:xL+i*(xR-xL)/160,py:yT+(1-(v-mn)/(mx-mn))*(yB-yT)*.88+4}));}
+  function gY(pts,px){let b=pts[0],d=9999;pts.forEach(p=>{const dd=Math.abs(p.px-px);if(dd<d){d=dd;b=p;}});return b.py;}
+  function dPot(pts,col,lw){ctx.beginPath();ctx.moveTo(pts[0].px,pts[0].py);pts.forEach(p=>ctx.lineTo(p.px,p.py));ctx.strokeStyle=col;ctx.lineWidth=lw||2.5;ctx.stroke();}
+  function go(){
+    ctx.clearRect(0,0,W,H);f++;
+    const xL=65,xR=650,yT=38,yB=295;
+    if(m===0){
+      const pts=getPts(bar,0,xL,xR,yT,yB);
+      ctx.beginPath();ctx.moveTo(pts[0].px,yB);pts.forEach(p=>ctx.lineTo(p.px,p.py));ctx.lineTo(pts[pts.length-1].px,yB);ctx.closePath();ctx.fillStyle=bar>.5?'rgba(249,115,22,.07)':'rgba(129,140,248,.07)';ctx.fill();
+      dPot(pts,bar>.5?'#f97316':'#818cf8',2.5);
+      const eY=yB-en*(yB-yT)*.88-5,ok=en>=bar*.75;
+      ctx.beginPath();ctx.setLineDash([6,4]);ctx.moveTo(xL,eY);ctx.lineTo(xR,eY);ctx.strokeStyle=ok?'#34d399':'#f59e0b';ctx.lineWidth=1.5;ctx.stroke();ctx.setLineDash([]);
+      tx(ctx,ok?'peut franchir':'piégée',xR-4,eY-6,ok?'rgba(52,211,153,.8)':'rgba(245,158,11,.8)',10,'right');
+      ctx.beginPath();ctx.arc(xL+.25*(xR-xL),gY(pts,xL+.25*(xR-xL))-11,9,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();
+      if(ok){ctx.globalAlpha=.32;ctx.beginPath();ctx.arc(xL+.75*(xR-xL),gY(pts,xL+.75*(xR-xL))-11,9,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();ctx.globalAlpha=1;}
+    } else if(m===1){
+      const pts=getPts(bar,0,xL,xR,yT,yB);dPot(pts,'#818cf8',2.5);
+      const eY=yB-bar*.42*(yB-yT)*.88-5,lP=xL+.22*(xR-xL),rP=xL+.78*(xR-xL);
+      ctx.beginPath();ctx.setLineDash([6,4]);ctx.moveTo(xL,eY);ctx.lineTo(xR,eY);ctx.strokeStyle='#f59e0b';ctx.lineWidth=1.5;ctx.stroke();ctx.setLineDash([]);
+      ctx.beginPath();ctx.arc(lP,gY(pts,lP)-11,9,0,Math.PI*2);ctx.fillStyle='#f59e0b';ctx.fill();
+      tx(ctx,'classique : bloque',lP,gY(pts,lP)+18,'rgba(245,158,11,.7)',10);
+      const t=f*.03;ctx.beginPath();
+      for(let i=0;i<=120;i++){const w=lP+i*(rP-lP)/120,n=i/120,d=Math.exp(-Math.abs(n-.5)*6)*.7,wy=eY-Math.sin(n*Math.PI*3-t*2)*d*25-5;i===0?ctx.moveTo(w,wy):ctx.lineTo(w,wy);}
+      ctx.strokeStyle='rgba(52,211,153,.85)';ctx.lineWidth=2;ctx.stroke();
+      ctx.globalAlpha=.28+.22*Math.sin(t*1.6);ctx.beginPath();ctx.arc(rP,gY(pts,rP)-11,9,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();ctx.globalAlpha=1;
+      tx(ctx,'quantique : tunnel !',rP,gY(pts,rP)+18,'rgba(52,211,153,.8)',10);
+    } else if(m===2){
+      const asy=(bif-.5)*1.8,pts=getPts(.55,asy,xL,xR,yT,yB);
+      dPot(pts,Math.abs(asy)<.1?'#a78bfa':asy>0?'#f97316':'#818cf8',2.5);
+      const lY=gY(pts,xL+.25*(xR-xL)),rY=gY(pts,xL+.75*(xR-xL)),ld=lY>rY;
+      ctx.beginPath();ctx.arc(ld?xL+.25*(xR-xL):xL+.75*(xR-xL),(ld?lY:rY)-12,10,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();
+      tx(ctx,Math.abs(asy)<.1?'zone critique':'puits '+(ld?'gauche':'droit')+' favori',W/2,25,'rgba(249,115,22,.7)',12);
+    } else {
+      const pts=getPts(.55,0,xL,xR,yT,yB);dPot(pts,'#818cf8',2.5);
+      const raw=[];for(let k=0;k<=100;k++)raw.push(pV(k/100,.55,0));const mn=Math.min(...raw),mx=Math.max(...raw);
+      parts.forEach(p=>{
+        p.v+=(Math.random()-.5)*ns*.02;p.v*=.96;
+        const v0=(pV(p.x,.55,0)-mn)/(mx-mn),v1=(pV(Math.min(1,p.x+.005),.55,0)-mn)/(mx-mn);
+        p.v-=(v1-v0)*.55;p.x=Math.max(.04,Math.min(.96,p.x+p.v));
+        ctx.beginPath();ctx.arc(xL+p.x*(xR-xL),gY(pts,xL+p.x*(xR-xL))-8,6,0,Math.PI*2);ctx.fillStyle='hsl('+p.h+',60%,55%)';ctx.globalAlpha=.82;ctx.fill();ctx.globalAlpha=1;
+      });
+      tx(ctx,'loi de Kramers : tau ~ exp(DeltaV/kT)',W/2,22,'rgba(129,140,248,.7)',12);
+    }
+    requestAnimationFrame(go);
+  }
+  go();
+})();
+
+// ── S4 : KLEIN / FIGURE-8 ─────────────────────────────────────
+(function(){
+  const cv=document.getElementById('c4'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  let m=0,f=0;
+  const D=['Involution centrale : A et A\' toujours a l\'oppose du centre. f(f(A))=A.',
+    'Groupe de Klein Z2xZ2 : 4 symetries coexistent. Combiner deux donne la troisieme.',
+    'Centre = noeud topologique obligatoire. Toute deformation preservant V4 maintient le croisement.',
+    'Choregraphie Chenciner-Montgomery (2000) : 3 masses identiques sur la meme figure-8, decalees de T/3.'];
+  tabs('s4',n=>{m=n;f=0;document.getElementById('d4').textContent=D[n];document.getElementById('k4').innerHTML='';});
+  document.getElementById('d4').textContent=D[0];
+  function f8(t){const s=Math.sin(t),c=Math.cos(t),d=1+s*s;return{x:c/d,y:s*c/d};}
+  function f8p(t,cx,cy,sc){const p=f8(t);return{x:cx+p.x*sc,y:cy-p.y*sc};}
+  function df8(cx,cy,sc,col,lw,al){ctx.beginPath();for(let i=0;i<=300;i++){const p=f8p(i/300*Math.PI*2,cx,cy,sc);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.globalAlpha=al||1;ctx.stroke();ctx.globalAlpha=1;}
+  function go(){
+    ctx.clearRect(0,0,W,H);f++;
+    const cx=W/2,cy=H/2,sc=155,t=f*.022;
+    if(m===0){
+      df8(cx,cy,sc,'rgba(129,140,248,.18)',1.5);
+      ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.fillStyle='#f97316';ctx.fill();
+      const p=f8p(t,cx,cy,sc),q={x:2*cx-p.x,y:2*cy-p.y};
+      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='rgba(129,140,248,.22)';ctx.lineWidth=1;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+      ctx.beginPath();ctx.arc(p.x,p.y,9,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();
+      ctx.beginPath();ctx.arc(q.x,q.y,9,0,Math.PI*2);ctx.fillStyle='rgba(129,140,248,.38)';ctx.fill();
+      tx(ctx,'A',p.x+(p.x>cx?13:-13),p.y,'#818cf8',11,p.x>cx?'left':'right');
+      tx(ctx,"A'",q.x+(q.x>cx?13:-13),q.y,'rgba(129,140,248,.5)',11,q.x>cx?'left':'right');
+      tx(ctx,'f(f(A)) = A',cx,H-12,'rgba(129,140,248,.45)',11);
+    } else if(m===1){
+      df8(cx,cy,sc,'rgba(129,140,248,.15)',1.5);
+      ctx.strokeStyle='rgba(220,90,50,.25)';ctx.lineWidth=.5;ctx.setLineDash([5,4]);
+      ctx.beginPath();ctx.moveTo(cx-195,cy);ctx.lineTo(cx+195,cy);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx,cy-175);ctx.lineTo(cx,cy+175);ctx.stroke();ctx.setLineDash([]);
+      const p0=f8p(t,cx,cy,sc);
+      [[p0,'#818cf8','id'],[{x:p0.x,y:2*cy-p0.y},'#34d399','sym H'],[{x:2*cx-p0.x,y:p0.y},'#f97316','sym V'],[{x:2*cx-p0.x,y:2*cy-p0.y},'#f59e0b','rot 180']].forEach(([pt,c,lb])=>{
+        ctx.beginPath();ctx.arc(pt.x,pt.y,7,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();
+        tx(ctx,lb,pt.x+(pt.x>cx?11:-11),pt.y,c,10,pt.x>cx?'left':'right');
+      });
+      tx(ctx,'Z2xZ2 : 4 elements, tous d\'ordre 2',cx,H-12,'rgba(129,140,248,.45)',11);
+    } else if(m===2){
+      const N=270,pts=[];for(let i=0;i<=N;i++)pts.push(f8p(i/N*Math.PI*2,cx,cy,sc));
+      const half=Math.floor(N/2),gap=16;
+      ctx.beginPath();for(let i=0;i<=half;i++)i===0?ctx.moveTo(pts[i].x,pts[i].y):ctx.lineTo(pts[i].x,pts[i].y);ctx.strokeStyle='rgba(129,140,248,.55)';ctx.lineWidth=2.5;ctx.stroke();
+      ctx.beginPath();let fp=true;for(let i=half;i<=N;i++){const p=pts[i],dc=Math.sqrt((p.x-cx)**2+(p.y-cy)**2);if(dc<gap){fp=true;continue;}fp?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);fp=false;}ctx.strokeStyle='rgba(249,115,22,.7)';ctx.lineWidth=2.5;ctx.stroke();
+      ctx.beginPath();ctx.arc(cx,cy,7,0,Math.PI*2);ctx.fillStyle='#f59e0b';ctx.fill();
+      ctx.beginPath();ctx.arc(cx,cy,13,0,Math.PI*2);ctx.strokeStyle='rgba(245,158,11,.38)';ctx.lineWidth=1.5;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+      tx(ctx,'noeud obligatoire',cx,cy+24,'rgba(245,158,11,.8)',11);
+      tx(ctx,'impossible a contourner sans briser V4',cx,H-12,'rgba(129,140,248,.45)',11);
+    } else {
+      df8(cx,cy,sc,'rgba(129,140,248,.18)',1.5);
+      const T=Math.PI*2,cols=['#818cf8','#34d399','#f97316'],rgbs=['129,140,248','52,211,153','249,115,22'];
+      [0,T/3,2*T/3].forEach((off,bi)=>{
+        ctx.beginPath();
+        for(let k=42;k>=0;k--){const tt=(t*.9+off-k*.045+T*10)%T,pp=f8p(tt,cx,cy,sc);k===42?ctx.moveTo(pp.x,pp.y):ctx.lineTo(pp.x,pp.y);}
+        ctx.strokeStyle='rgba('+rgbs[bi]+',.42)';ctx.lineWidth=2.5;ctx.stroke();
+        const cur=f8p((t*.9+off)%T,cx,cy,sc);ctx.beginPath();ctx.arc(cur.x,cur.y,10,0,Math.PI*2);ctx.fillStyle=cols[bi];ctx.fill();
+      });
+      ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.fillStyle='#f59e0b';ctx.fill();
+      tx(ctx,'3 corps — meme trajectoire — decales de T/3',cx,H-12,'rgba(129,140,248,.45)',11);
+    }
+    requestAnimationFrame(go);
+  }
+  go();
+})();
+
+// ── S5 : CHROMATIQUE ──────────────────────────────────────────
+(function(){
+  const cv=document.getElementById('c5'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  let m=0,f=0,pr={bp:.5,an:.4,ph:.6},coll=false,colling=false,cT=0,tgt=1;
+  const D=['Superposition : plusieurs orbites coexistent. Cliquer sur une orbite pour l\'effondrement.',
+    'Brisure sequentielle U(1)→Z_N→{1}. Curseur pour traverser les deux ruptures.',
+    'Fondamental non degenere : une seule vallee minimale. Phase statique univoque.',
+    'Phase de Berry gamma=contour A.dq. Couleur = phase geometrique accumulee.'];
+  cv.addEventListener('click',e=>{
+    if(m!==0)return;const r=cv.getBoundingClientRect(),mx=(e.clientX-r.left)*(W/r.width),my=(e.clientY-r.top)*(H/r.height);
+    const cx=W/2,cy=H/2,rads=[54,94,130],d=Math.sqrt((mx-cx)**2+(my-cy)**2);
+    let b=0,bd=9999;rads.forEach((rv,i)=>{const dd=Math.abs(d-rv);if(dd<bd){bd=dd;b=i;}});
+    if(bd<28){colling=true;coll=false;cT=0;tgt=b;}
+  });
+  function buildK(){
+    const k=document.getElementById('k5');
+    if(m===0)k.innerHTML='<span style="color:#555">Cliquer sur une orbite pour l\'effondrement</span>';
+    else if(m===1){k.innerHTML='<span>Brisure</span><input type="range" id="bp5" min="0" max="100" value="50"><span class="v" id="bp5v">0.50</span>';document.getElementById('bp5').oninput=function(){pr.bp=this.value/100;document.getElementById('bp5v').textContent=pr.bp.toFixed(2);};}
+    else if(m===2){k.innerHTML='<span>Anharmonicite</span><input type="range" id="an5" min="0" max="100" value="40"><span class="v" id="an5v">0.40</span>';document.getElementById('an5').oninput=function(){pr.an=this.value/100;document.getElementById('an5v').textContent=pr.an.toFixed(2);};}
+    else{k.innerHTML='<span>Phase Berry</span><input type="range" id="ph5" min="0" max="100" value="60"><span class="v" id="ph5v">0.60</span>';document.getElementById('ph5').oninput=function(){pr.ph=this.value/100;document.getElementById('ph5v').textContent=pr.ph.toFixed(2);};}
+  }
+  tabs('s5',n=>{m=n;f=0;coll=false;colling=false;cT=0;document.getElementById('d5').textContent=D[n];buildK();});
+  document.getElementById('d5').textContent=D[0];buildK();
+  function go(){
+    ctx.clearRect(0,0,W,H);f++;
+    const cx=W/2,cy=H/2,t=f*.022,rads=[54,94,130],cols=['#818cf8','#34d399','#f97316'],rgbs=['129,140,248','52,211,153','249,115,22'],wts=[.6,.3,.1],ns=['w1','w2','w3'];
+    if(m===0){
+      ctx.strokeStyle='rgba(100,100,120,.15)';ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(cx-165,cy);ctx.lineTo(cx+165,cy);ctx.stroke();ctx.beginPath();ctx.moveTo(cx,cy-165);ctx.lineTo(cx,cy+165);ctx.stroke();
+      if(!colling&&!coll){
+        wts.forEach((w,i)=>{
+          ctx.beginPath();ctx.ellipse(cx,cy,rads[i],rads[i],0,0,Math.PI*2);
+          ctx.strokeStyle='rgba('+rgbs[i]+','+w+')';ctx.lineWidth=1.5+w*2;ctx.stroke();
+          const px=cx+Math.cos(t*(i+1))*rads[i],py=cy-Math.sin(t*(i+1))*rads[i];
+          ctx.beginPath();ctx.arc(px,py,4+w*5,0,Math.PI*2);
+          ctx.fillStyle='rgba('+rgbs[i]+','+w+')';ctx.fill();
+        });
+        // Légendes dans un panneau à droite, bien séparées
+        const lx=cx+rads[2]+22, lyBase=cy-52;
+        wts.forEach((w,i)=>{
+          ctx.beginPath();ctx.arc(lx,lyBase+i*38,6,0,Math.PI*2);ctx.fillStyle=cols[i];ctx.fill();
+          tx(ctx,ns[i],lx+12,lyBase+i*38+1,cols[i],11,'left');
+          tx(ctx,'|ψ|²='+(w*100|0)+'%',lx+12,lyBase+i*38+14,'rgba('+rgbs[i]+',.6)',10,'left');
+        });
+        tx(ctx,'cliquer sur une orbite',cx,H-12,'rgba(129,140,248,.38)',11);
+      } else if(colling){
+        cT=Math.min(1,cT+.035);const e2=1-Math.pow(1-cT,3);
+        wts.forEach((w,i)=>{const a=i===tgt?(.25+e2*.75):(w*(1-e2));if(a<.01)return;ctx.beginPath();ctx.ellipse(cx,cy,rads[i],rads[i],0,0,Math.PI*2);ctx.strokeStyle='rgba('+rgbs[i]+','+a+')';ctx.lineWidth=i===tgt?2.5+e2*1.5:1;ctx.stroke();});
+        const px=cx+Math.cos(t*(tgt+1))*rads[tgt],py=cy-Math.sin(t*(tgt+1))*rads[tgt];ctx.beginPath();ctx.arc(px,py,8,0,Math.PI*2);ctx.fillStyle=cols[tgt];ctx.globalAlpha=.3+e2*.7;ctx.fill();ctx.globalAlpha=1;
+        if(cT>=1){coll=true;colling=false;}
+      } else {
+        ctx.beginPath();ctx.ellipse(cx,cy,rads[tgt],rads[tgt],0,0,Math.PI*2);ctx.strokeStyle=cols[tgt];ctx.lineWidth=3;ctx.stroke();
+        const px=cx+Math.cos(t*(tgt+1))*rads[tgt],py=cy-Math.sin(t*(tgt+1))*rads[tgt];ctx.beginPath();ctx.arc(px,py,8,0,Math.PI*2);ctx.fillStyle=cols[tgt];ctx.fill();
+        tx(ctx,'effondrement complet -> etat propre '+ns[tgt],cx,H-12,'rgba(129,140,248,.55)',11);
+      }
+    } else if(m===1){
+      const cx2=190,R=115,N=6,bp=pr.bp,a1=Math.max(0,1-bp*2.2);
+      if(a1>.02){ctx.beginPath();ctx.arc(cx2,cy,R,0,Math.PI*2);ctx.strokeStyle='rgba(129,140,248,'+a1+')';ctx.lineWidth=2;ctx.stroke();}
+      const a2=Math.min(1,Math.max(0,bp*2.2-.15));
+      for(let i=0;i<N;i++){const ang=i/N*Math.PI*2+t*.25;ctx.beginPath();ctx.arc(cx2+Math.cos(ang)*R,cy+Math.sin(ang)*R,4+a2*6,0,Math.PI*2);ctx.fillStyle='rgba(52,211,153,'+a2+')';ctx.fill();}
+      const a3=Math.min(1,Math.max(0,bp*2.2-1.1));
+      if(a3>.02){const ca=t*.25;ctx.beginPath();ctx.arc(cx2+Math.cos(ca)*R,cy+Math.sin(ca)*R,12,0,Math.PI*2);ctx.fillStyle='rgba(249,115,22,'+a3+')';ctx.fill();}
+      const lx=360,ly=28,lw=460,lh=H-55;ctx.fillStyle='rgba(18,18,26,.7)';ctx.fillRect(lx,ly,lw,lh);
+      tx(ctx,'Brisure en deux etapes',lx+lw/2,ly+16,'rgba(129,140,248,.7)',12);
+      ctx.fillStyle='rgba(129,140,248,.1)';ctx.fillRect(lx+6,ly+24,lw-12,52);tx(ctx,'Etape 1 : U(1) -> Z6 (symetrie continue -> discrete)',lx+lw/2,ly+50,'rgba(129,140,248,.7)',11);
+      ctx.fillStyle='rgba(52,211,153,.1)';ctx.fillRect(lx+6,ly+84,lw-12,52);tx(ctx,'Etape 2 : Z6 -> {1} (6 sites -> 1 fondamental)',lx+lw/2,ly+110,'rgba(52,211,153,.7)',11);
+      const stg=bp<.28?'symetrie intacte U(1)':bp<.55?'etape 1 en cours':bp<.82?'etape 2 en cours':'brisure complete -> {1}';
+      tx(ctx,stg,lx+lw/2,ly+160,'rgba(245,158,11,.8)',11);
+    } else if(m===2){
+      const an=pr.an,NX=70,NY=54,cw=(W-58)/NX,ch=(H-48)/NY;
+      for(let i=0;i<NX;i++)for(let j=0;j<NY;j++){const q=(i/NX-.5)*4.2,p=(j/NY-.5)*4.2,V=.5*(q*q+p*p)+an*(q**4+p**4)*.06,n=Math.min(1,V/5);ctx.fillStyle='hsla('+(240-n*188)+',54%,'+(67-n*31)+'%,.77)';ctx.fillRect(29+i*cw,17+j*ch,cw+.5,ch+.5);}
+      [.5,1.1,1.8,2.7,3.8].forEach(r=>{ctx.beginPath();ctx.ellipse(cx,cy,r*37/(1+an*.3),r*37/(1+an*.3),0,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=.8;ctx.stroke();});
+      ctx.beginPath();ctx.arc(cx,cy,9,0,Math.PI*2);ctx.fillStyle='rgba(255,210,70,.95)';ctx.fill();
+      tx(ctx,'|0> fondamental unique',cx,cy+25,'rgba(255,218,80,.9)',11);
+    } else {
+      const ph=pr.ph,NX=82,NY=62,cw=(W-54)/NX,ch=(H-44)/NY;
+      for(let i=0;i<NX;i++)for(let j=0;j<NY;j++){const q=(i/NX-.5)*5,p=(j/NY-.5)*5,r=Math.sqrt(q*q+p*p),ang=Math.atan2(p,q),berry=r*r*.5*ph,hue=(ang/(Math.PI*2)*360+360+berry*38+f*.3)%360;ctx.fillStyle='hsla('+hue+',52%,'+(64-r*5)+'%,.67)';ctx.fillRect(27+i*cw,15+j*ch,cw+.5,ch+.5);}
+      [1,2,3].forEach(n=>{const r=n*37;for(let k=0;k<115;k++){const a0=k/115*Math.PI*2,a1=(k+1)/115*Math.PI*2,hue=(a0/(Math.PI*2)*360+r*r*ph*.012+f*.4)%360;ctx.beginPath();ctx.arc(cx,cy,r,a0,a1);ctx.strokeStyle='hsla('+hue+',82%,65%,.88)';ctx.lineWidth=n===1?3:n===2?2:1.5;ctx.stroke();}tx(ctx,'n='+n,cx+r+4,cy-2,'rgba(255,255,255,.65)',10,'left');});
+      ctx.beginPath();ctx.arc(cx+37*Math.cos(t),cy-37*Math.sin(t),8,0,Math.PI*2);ctx.fillStyle='rgba(255,218,70,.95)';ctx.fill();
+      ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.88)';ctx.fill();
+    }
+    requestAnimationFrame(go);
+  }
+  go();
+})();
+
+// ── S6 : BRISURE / THOM / VIDE ────────────────────────────────
+(function(){
+  const cv=document.getElementById('c6'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  let m=0,f=0,bar=.55,bif=.3,ns=.4,spd=1,bX=.5,bV=0,fell=false,vac=[],thomSide=0,wasNear=false;
+  const D=['Regle comprimee : avant le seuil, un etat stable. Au-dela : deux etats, choix spontane.',
+    'Catastrophe de la fronce (Thom) : le point vert parcourt le plan de controle. Traverser la courbe jaune = saut instantane.',
+    'Vide quantique : fluctuations permanentes. Cliquer Bulle pour creer une bulle de vide s\'etendant a c.',
+    'Les trois simultanément : vide qui fluctue, potentiel qui se deforme, point de Thom en mouvement.'];
+  function buildK(){
+    const k=document.getElementById('k6');
+    if(m===0){k.innerHTML='<span>Compression</span><input type="range" id="c6p" min="0" max="100" value="30"><span class="v" id="c6v">0.30</span>';document.getElementById('c6p').oninput=function(){const v=this.value/100;document.getElementById('c6v').textContent=v.toFixed(2);bar=v;if(v>.5&&!fell){fell=true;bX=Math.random()<.5?.22:.78;}if(v<=.5){fell=false;bX=.5;bV=0;}};}
+    else if(m===1){k.innerHTML='<span>Vitesse</span><input type="range" id="c6p" min="10" max="100" value="50"><span class="v" id="c6v">1.0x</span>';document.getElementById('c6p').oninput=function(){spd=this.value/50;document.getElementById('c6v').textContent=spd.toFixed(1)+'x';};}
+    else if(m===2){k.innerHTML='<span>Energie</span><input type="range" id="c6p" min="0" max="100" value="40"><span class="v" id="c6v">0.40</span><button class="btn" id="bub" style="margin-left:8px">Bulle</button>';document.getElementById('c6p').oninput=function(){ns=this.value/100;document.getElementById('c6v').textContent=ns.toFixed(2);};document.getElementById('bub').onclick=()=>vac.push({x:W/2+(Math.random()-.5)*150,y:H/2+(Math.random()-.5)*85,r:0});}
+    else{k.innerHTML='<span>Vitesse</span><input type="range" id="c6p" min="10" max="100" value="50"><span class="v" id="c6v">1.0x</span>';document.getElementById('c6p').oninput=function(){spd=this.value/50;document.getElementById('c6v').textContent=spd.toFixed(1)+'x';};}
+  }
+  tabs('s6',n=>{m=n;f=0;bX=.5;bV=0;fell=false;vac=[];document.getElementById('d6').textContent=D[n];buildK();});
+  document.getElementById('d6').textContent=D[0];buildK();
+  function pV(x,b,asy){const u=(x-.5)*4;return u*u*u*u-2*(b*1.6)*u*u+(asy||0)*u*1.2;}
+  function getPts(b,asy,xL,xR,yT,yB){const raw=[];for(let i=0;i<=160;i++)raw.push(pV(i/160,b,asy));const mn=Math.min(...raw),mx=Math.max(...raw);return raw.map((v,i)=>({px:xL+i*(xR-xL)/160,py:yT+(1-(v-mn)/(mx-mn))*(yB-yT)*.88+4}));}
+  function gY(pts,px){let b=pts[0],d=9999;pts.forEach(p=>{const dd=Math.abs(p.px-px);if(dd<d){d=dd;b=p;}});return b.py;}
+  function dPot(pts,col,lw){ctx.beginPath();ctx.moveTo(pts[0].px,pts[0].py);pts.forEach(p=>ctx.lineTo(p.px,p.py));ctx.strokeStyle=col;ctx.lineWidth=lw||2.5;ctx.stroke();}
+  function go(){
+    ctx.clearRect(0,0,W,H);f++;
+    if(m===0){
+      const xL=65,xR=680,yT=38,yB=305,pts=getPts(bar,0,xL,xR,yT,yB);
+      ctx.beginPath();ctx.moveTo(pts[0].px,yB);pts.forEach(p=>ctx.lineTo(p.px,p.py));ctx.lineTo(pts[pts.length-1].px,yB);ctx.closePath();ctx.fillStyle=bar>.5?'rgba(249,115,22,.07)':'rgba(129,140,248,.07)';ctx.fill();
+      dPot(pts,bar>.5?'#f97316':'#818cf8',2.5);
+      if(!fell)bX=.5+Math.sin(f*.04)*.01*(1-bar*1.8);
+      else{const raw=[];for(let k=0;k<=100;k++)raw.push(pV(k/100,bar,0));const mn=Math.min(...raw),mx=Math.max(...raw);const v0=(pV(bX,bar,0)-mn)/(mx-mn),v1=(pV(Math.min(1,bX+.005),bar,0)-mn)/(mx-mn);bV-=(v1-v0)*.55;bV*=.92;bX=Math.max(.05,Math.min(.95,bX+bV));}
+      ctx.beginPath();ctx.arc(xL+bX*(xR-xL),gY(pts,xL+bX*(xR-xL))-10,9,0,Math.PI*2);ctx.fillStyle=bar>.5?'#f97316':'#818cf8';ctx.fill();
+      ctx.beginPath();ctx.setLineDash([5,4]);ctx.moveTo((xL+xR)/2,yT+8);ctx.lineTo((xL+xR)/2,yB);ctx.strokeStyle='rgba(245,158,11,.3)';ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([]);
+      tx(ctx,bar<=.5?'un seul etat stable':'deux etats — brisure spontanee',(xL+xR)/2,yB+18,bar<=.5?'rgba(129,140,248,.55)':'rgba(249,115,22,.6)',11);
+    } else if(m===1){
+      const dx=315,dy=18,dw=375,dh=315,ocx=dx+dw/2,ocy=dy+dh*.55;
+      ctx.fillStyle='rgba(18,18,26,.6)';ctx.fillRect(dx,dy,dw,dh);
+      tx(ctx,'plan de controle — fronce de Thom',dx+dw/2,dy+13,'rgba(129,140,248,.55)',11);
+      ctx.strokeStyle='rgba(100,100,130,.18)';ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(dx+10,ocy);ctx.lineTo(dx+dw-10,ocy);ctx.stroke();ctx.beginPath();ctx.moveTo(ocx,dy+22);ctx.lineTo(ocx,dy+dh-10);ctx.stroke();
+      ctx.beginPath();let fp=true;for(let i=0;i<=120;i++){const u=(i/120-.5)*2.4,vv=-u*u*u*3,px=ocx+u*60,py=ocy-vv*48;if(py<dy+24||py>dy+dh-12){fp=true;continue;}fp?ctx.moveTo(px,py):ctx.lineTo(px,py);fp=false;}ctx.strokeStyle='rgba(245,158,11,.9)';ctx.lineWidth=2.2;ctx.stroke();
+      const tot=400/spd,prog=(f%tot)/tot;
+      let ua,va;
+      if(prog<.5){const p2=prog/.5;ua=-1+p2*1.6;va=.5-p2*1.1;}else{const p3=(prog-.5)/.5;ua=.6+p3*.8;va=-.6+p3*1.1;}
+      for(let k=0;k<22;k++){const kp=((f-k*1.5)%tot+tot)%tot/tot;let ku,kv;if(kp<.5){const pp=kp/.5;ku=-1+pp*1.6;kv=.5-pp*1.1;}else{const pp=(kp-.5)/.5;ku=.6+pp*.8;kv=-.6+pp*1.1;}ctx.beginPath();ctx.arc(ocx+ku*60,ocy-kv*48,1.8,0,Math.PI*2);ctx.fillStyle='rgba(52,211,153,'+(0.5*(1-k/22))+')';ctx.fill();}
+      const apx=ocx+ua*60,apy=ocy-va*48;ctx.beginPath();ctx.arc(apx,apy,7,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+      const near=Math.abs(va-(-ua*ua*ua*3))<.18&&Math.abs(ua)<1;
+      if(near){ctx.beginPath();ctx.arc(apx,apy,15,0,Math.PI*2);ctx.strokeStyle='rgba(249,115,22,.7)';ctx.lineWidth=2;ctx.stroke();tx(ctx,'SAUT !',apx,apy-20,'rgba(249,115,22,.95)',12);}
+      const xL=18,xR=295,yT=22,yB=308,ctrl=Math.max(.05,Math.min(.95,.5+ua*.32)),pts2=getPts(ctrl,0,xL,xR,yT,yB);
+      ctx.beginPath();ctx.moveTo(pts2[0].px,yB);pts2.forEach(p=>ctx.lineTo(p.px,p.py));ctx.lineTo(pts2[pts2.length-1].px,yB);ctx.closePath();ctx.fillStyle=near?'rgba(249,115,22,.1)':ctrl>.5?'rgba(249,115,22,.06)':'rgba(129,140,248,.06)';ctx.fill();
+      dPot(pts2,near?'#f97316':ctrl>.5?'rgba(249,115,22,.8)':'rgba(129,140,248,.8)',2.2);
+      // Memorise le cote lors du saut, ne change que quand ctrl repasse sous 0.5
+      if(ctrl<=.5){thomSide=0;wasNear=false;}
+      else if(near&&!wasNear){thomSide=(ua>0?1:-1);wasNear=true;}
+      else if(!near){wasNear=false;}
+      const bp2=ctrl>.5?(thomSide!==0?(thomSide>0?.76:.24):(ua>0?.76:.24)):.5;
+      ctx.beginPath();ctx.arc(xL+bp2*(xR-xL),gY(pts2,xL+bp2*(xR-xL))-9,7,0,Math.PI*2);ctx.fillStyle=near?'#f97316':ctrl>.5?'rgba(249,115,22,.85)':'rgba(129,140,248,.85)';ctx.fill();
+    } else if(m===2){
+      const t=f*.018;ctx.fillStyle='hsl('+(220+ns*38)+',40%,'+(10+ns*6)+'%)';ctx.fillRect(0,0,W,H);
+      const nF=Math.floor(8+ns*18);for(let i=0;i<nF;i++){const fx=((i*137.5+t*18)%1)*W,fy=((i*91.3+t*11)%1)*H,lt=((i*53.7+t*7)%1),al=Math.sin(lt*Math.PI)*.55,sz=2+lt*3,sp=6+lt*8;ctx.beginPath();ctx.arc(fx,fy,sz,0,Math.PI*2);ctx.fillStyle='rgba(129,140,248,'+al+')';ctx.fill();ctx.beginPath();ctx.arc(fx+sp*Math.cos(i*2.3),fy+sp*Math.sin(i*2.3),sz,0,Math.PI*2);ctx.fillStyle='rgba(249,115,22,'+(al*.8)+')';ctx.fill();}
+      vac.forEach(b=>b.r+=2.4);vac=vac.filter(b=>b.r<Math.max(W,H)*1.4);
+      vac.forEach(b=>{ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fillStyle='rgba(52,211,153,.14)';ctx.fill();ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.strokeStyle='rgba(52,211,153,.7)';ctx.lineWidth=3;ctx.stroke();if(b.r>38&&b.r<125)tx(ctx,'nouveau vide',b.x,b.y,'rgba(52,211,153,.85)',11);});
+      ctx.fillStyle='rgba(0,0,0,.32)';ctx.fillRect(12,H-96,220,80);
+      ctx.beginPath();ctx.moveTo(20,H-65);ctx.lineTo(118,H-65);ctx.strokeStyle='rgba(249,115,22,.85)';ctx.lineWidth=2;ctx.stroke();tx(ctx,'vide actuel',69,H-53,'rgba(249,115,22,.85)',10);
+      ctx.beginPath();ctx.moveTo(20,H-30);ctx.lineTo(118,H-30);ctx.strokeStyle='rgba(52,211,153,.85)';ctx.lineWidth=2;ctx.stroke();tx(ctx,'vide de plus basse energie',69,H-18,'rgba(52,211,153,.85)',10);
+    } else {
+      const t=f*.014*spd;ctx.fillStyle='hsl('+(230+Math.sin(t*.55)*14)+',34%,8%)';ctx.fillRect(0,0,W,H);
+      for(let i=0;i<15;i++){const fx=((i*97.3+t*8)%1)*W,fy=((i*63.7+t*5.5)%1)*H,a=Math.sin(((i*43+t*3)%1)*Math.PI)*.19;ctx.beginPath();ctx.arc(fx,fy,2,0,Math.PI*2);ctx.fillStyle='rgba(129,140,248,'+a+')';ctx.fill();}
+      const cx2=W/2-95,cy=H/2,ctrl=.3+.45*Math.sin(t*.38+1),xL=cx2-175,xR=cx2+175,yT=cy-100,yB=cy+62,pts=getPts(ctrl,0,xL,xR,yT,yB);
+      dPot(pts,ctrl>.5?'rgba(249,115,22,.75)':'rgba(129,140,248,.75)',2.2);
+      const side=Math.sin(t*.38+1)>0?0:1,ss=side===0?0:Math.floor(pts.length/2),se=side===0?Math.floor(pts.length/2):pts.length;
+      let mpy=9999,mi=ss;for(let i=ss;i<se;i++)if(pts[i].py<mpy){mpy=pts[i].py;mi=i;}
+      ctx.beginPath();ctx.arc(pts[mi].px,mpy-9,8,0,Math.PI*2);ctx.fillStyle=ctrl>.5?'rgba(249,115,22,.9)':'rgba(129,140,248,.9)';ctx.fill();
+      const bx=W-172,by=26,bw=160,bh=H-55,ocx2=bx+bw/2,ocy2=by+bh*.52;
+      ctx.fillStyle='rgba(0,0,0,.26)';ctx.fillRect(bx,by,bw,bh);tx(ctx,'espace de Thom',ocx2,by+13,'rgba(255,255,255,.38)',9);
+      ctx.beginPath();let fp=true;for(let i=0;i<=80;i++){const u=(i/80-.5)*2,vv=-u*u*u*3.2,px3=ocx2+u*46,py3=ocy2-vv*34;if(py3<by+22||py3>by+bh-9){fp=true;continue;}fp?ctx.moveTo(px3,py3):ctx.lineTo(px3,py3);fp=false;}ctx.strokeStyle='rgba(245,158,11,.78)';ctx.lineWidth=1.8;ctx.stroke();
+      // Synchronise avec ctrl : meme phase t*.38+1 pour que le saut soit simultane
+      const uth=Math.sin(t*.38+1)*1.05,vth=Math.cos(t*.38+1)*.58;
+      for(let k=1;k<=18;k++){const kt=t-k*.08,ku=Math.sin(kt*.38+1)*1.05,kv=Math.cos(kt*.38+1)*.58,kpx=Math.max(bx+8,Math.min(bx+bw-8,ocx2+ku*46)),kpy=Math.max(by+24,Math.min(by+bh-10,ocy2-kv*34));ctx.beginPath();ctx.arc(kpx,kpy,1.8,0,Math.PI*2);ctx.fillStyle='rgba(52,211,153,'+(0.48*(1-k/18))+')';ctx.fill();}
+      const tpx=Math.max(bx+8,Math.min(bx+bw-8,ocx2+uth*46)),tpy=Math.max(by+24,Math.min(by+bh-10,ocy2-vth*34));
+      ctx.beginPath();ctx.arc(tpx,tpy,6,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+      tx(ctx,'vide fluctue',72,H-30,'rgba(129,140,248,.5)',10,'left');tx(ctx,'brisure spontanee',cx2+95,H-30,'rgba(249,115,22,.55)',10);tx(ctx,'saut de Thom',W-18,H-30,'rgba(245,158,11,.55)',10,'right');
+    }
+    requestAnimationFrame(go);
+  }
+  go();
+})();
+</script>
+</div>
+
+<!-- ══ MODULE 2 ══ -->
+<div id="screen-p2" class="screen">
+<h1>Expansion de l'univers & visualisations mathématiques</h1>
+<p class="sub">Liens entre l'expansion accélérée, l'horizon cosmologique, et nos visualisations : attracteurs, double puits, catastrophes de Thom.</p>
+
+<div class="tabs">
+  <button class="tab on" data-m="0">① Expansion & divergence</button>
+  <button class="tab" data-m="1">② Horizon observable</button>
+  <button class="tab" data-m="2">③ Puits cosmique</button>
+  <button class="tab" data-m="3">④ Catastrophe de Thom</button>
+</div>
+<canvas id="cv_p2" width="900" height="380"></canvas>
+<div class="desc" id="desc_p2"></div>
+<div class="ctrl" id="ctrl_p2"></div>
+
+<script>
+(function(){
+var cv=document.getElementById('cv_p2'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+var mode=0,frame=0,lambda=0.5,speed=1;
+var galaxies=[];
+
+function initGalaxies(){
+  galaxies=[];
+  for(var i=0;i<65;i++){
+    var r=28+Math.random()*190,a=Math.random()*Math.PI*2;
+    galaxies.push({x0:W/2+Math.cos(a)*r,y0:H/2+Math.sin(a)*r,
+      size:0.8+Math.random()*2,
+      col:'hsl('+(200+Math.random()*80)+',55%,'+(52+Math.random()*22)+'%)'});
+  }
+}
+initGalaxies();
+
+var DESCS=[
+  'Comme dans l\'attracteur de Lorenz, deux galaxies initialement proches (violet et vert) divergent exponentiellement — mais c\'est l\'espace lui-même qui s\'étire. L\'énergie noire Λ amplifie cette divergence sans cesse, comme un exposant de Lyapunov toujours positif. Plus Λ est grand, plus la séparation s\'accélère.',
+  'La ligne rouge est l\'horizon cosmologique : au-delà, les galaxies s\'éloignent plus vite que la lumière. Tout ce qui franchit cet horizon disparaît à jamais de l\'univers observable. Comme un attracteur chaotique qui "oublie" ses conditions initiales, l\'univers perd irrémédiablement l\'information sur ses régions les plus lointaines.',
+  'Le destin thermodynamique vu comme un paysage de potentiel. La bille bleue (notre univers actuel) glisse inexorablement vers le Big Freeze — densité nulle, température zéro. Contrairement au double puits classique, il n\'y a pas de deuxième puits stable : descente sans retour. Λ contrôle la pente de cette descente.',
+  'Les destins cosmiques (Big Freeze, Big Rip, rebond quantique) correspondent à différentes régions du plan de contrôle de Thom. Nos mesures actuelles placent l\'univers près de la courbe de bifurcation jaune. Un léger changement de Λ pourrait théoriquement faire basculer le destin vers un Big Rip — saut catastrophique irréversible.'
+];
+
+document.querySelectorAll('#screen-p2 .tab').forEach(function(b){
+  b.addEventListener('click',function(){
+    mode=parseInt(b.dataset.m);frame=0;
+    document.querySelectorAll('#screen-p2 .tab').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    document.getElementById('desc_p2').textContent=DESCS[mode];
+    buildCtrl();
+    if(mode===0) initGalaxies();
+  });
+});
+document.getElementById('desc_p2').textContent=DESCS[0];
+
+function buildCtrl(){
+  var c=document.getElementById('ctrl_p2');
+  if(mode===0){
+    c.innerHTML='<span>Énergie noire Λ</span><input type="range" id="lam" min="1" max="100" value="50"><span id="lamv" style="min-width:30px">0.50</span>';
+    document.getElementById('lam').oninput=function(){lambda=this.value/100;document.getElementById('lamv').textContent=lambda.toFixed(2);initGalaxies();};
+  } else if(mode===1){
+    c.innerHTML='<span>Vitesse expansion</span><input type="range" id="spd" min="10" max="100" value="50"><span id="spdv" style="min-width:30px">1.0×</span>';
+    document.getElementById('spd').oninput=function(){speed=this.value/50;document.getElementById('spdv').textContent=speed.toFixed(1)+'×';};
+  } else if(mode===2){
+    c.innerHTML='<span>Constante cosmologique Λ</span><input type="range" id="lam2" min="0" max="100" value="50"><span id="lam2v" style="min-width:30px">0.50</span>';
+    document.getElementById('lam2').oninput=function(){lambda=this.value/100;document.getElementById('lam2v').textContent=lambda.toFixed(2);};
+  } else {
+    c.innerHTML='<span style="color:#444;font-size:11px">Le point vert parcourt le plan de contrôle cosmologique — observer les sauts catastrophiques</span>';
+  }
+}
+buildCtrl();
+
+function tx(t,x,y,col,sz,al){
+  ctx.fillStyle=col||'rgba(150,150,160,.7)';
+  ctx.font=(sz||11)+'px Arial,sans-serif';
+  ctx.textAlign=al||'center';
+  ctx.fillText(t,x,y);
+}
+
+function potV(x,ctrl){var u=(x-.5)*4;return u*u*u*u-2*(ctrl*1.6)*u*u;}
+function getPts(ctrl,xL,xR,yT,yB){
+  var raw=[],N=160;
+  for(var i=0;i<=N;i++) raw.push(potV(i/N,ctrl));
+  var mn=Math.min.apply(null,raw),mx=Math.max.apply(null,raw);
+  return raw.map(function(v,i){return{px:xL+i*(xR-xL)/N,py:yT+(1-(v-mn)/(mx-mn))*(yB-yT)*.88+4};});
+}
+function getY(pts,px){var b=pts[0],d=9999;pts.forEach(function(p){var dd=Math.abs(p.px-px);if(dd<d){d=dd;b=p;}});return b.py;}
+
+function scene0(){
+  ctx.fillStyle='#08080f';ctx.fillRect(0,0,W,H);
+  for(var i=0;i<90;i++){
+    var sx=((i*137.5)%1)*W,sy=((i*91.3)%1)*H;
+    ctx.fillStyle='rgba(255,255,255,'+(0.07+0.18*((i*53)%1))+')';
+    ctx.beginPath();ctx.arc(sx,sy,0.6,0,Math.PI*2);ctx.fill();
+  }
+  var t=frame*.010*speed;
+  var scale=1+lambda*t*0.45;
+  galaxies.forEach(function(g){
+    var nx=W/2+(g.x0-W/2)*scale,ny=H/2+(g.y0-H/2)*scale;
+    if(nx<-20||nx>W+20||ny<-20||ny>H+20) return;
+    ctx.beginPath();ctx.arc(nx,ny,g.size,0,Math.PI*2);
+    ctx.fillStyle=g.col;ctx.globalAlpha=0.8;ctx.fill();ctx.globalAlpha=1;
+  });
+  var g1x=W/2+60,g1y=H/2+22,g2x=W/2+63,g2y=H/2+22;
+  var t1x=W/2+(g1x-W/2)*scale,t1y=H/2+(g1y-H/2)*scale;
+  var t2x=W/2+(g2x-W/2)*scale,t2y=H/2+(g2y-H/2)*scale;
+  ctx.beginPath();ctx.arc(t1x,t1y,5,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();
+  ctx.beginPath();ctx.arc(t2x,t2y,5,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+  ctx.beginPath();ctx.moveTo(t1x,t1y);ctx.lineTo(t2x,t2y);
+  ctx.strokeStyle='rgba(249,115,22,.7)';ctx.lineWidth=2;ctx.stroke();
+  var sep=Math.sqrt((t1x-t2x)*(t1x-t2x)+(t1y-t2y)*(t1y-t2y));
+  tx('Δd='+sep.toFixed(1)+'px',(t1x+t2x)/2,(t1y+t2y)/2-10,'rgba(249,115,22,.85)',10);
+  ctx.beginPath();ctx.arc(W/2,H/2,5,0,Math.PI*2);ctx.fillStyle='#f59e0b';ctx.fill();
+  tx('Nous',W/2,H/2-13,'rgba(245,158,11,.7)',10);
+
+  // Légende
+  var lx=20,ly=H-60;
+  ctx.fillStyle='rgba(20,20,30,.7)';ctx.fillRect(lx,ly,180,48);
+  ctx.beginPath();ctx.arc(lx+10,ly+12,4,0,Math.PI*2);ctx.fillStyle='#818cf8';ctx.fill();
+  tx('Galaxie A',lx+18,ly+16,'rgba(129,140,248,.8)',10,'left');
+  ctx.beginPath();ctx.arc(lx+10,ly+30,4,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+  tx('Galaxie B (Δx=3)',lx+18,ly+34,'rgba(52,211,153,.8)',10,'left');
+  ctx.beginPath();ctx.arc(lx+10,ly+46,3,0,Math.PI*2);ctx.fillStyle='#f59e0b';ctx.fill();
+  tx('Observateur',lx+18,ly+50,'rgba(245,158,11,.7)',10,'left');
+
+  tx('Λ='+lambda.toFixed(2)+' — expansion accélérée → divergence exponentielle (analogue exposant de Lyapunov)',W/2,H-10,'rgba(129,140,248,.45)',10);
+}
+
+function scene1(){
+  ctx.fillStyle='#08080f';ctx.fillRect(0,0,W,H);
+  var CX=W/2,CY=H/2;
+  for(var i=0;i<70;i++){
+    var sx=((i*137)%1)*W,sy=((i*91)%1)*H;
+    ctx.fillStyle='rgba(255,255,255,.1)';
+    ctx.beginPath();ctx.arc(sx,sy,.7,0,Math.PI*2);ctx.fill();
+  }
+  var t=frame*.015*speed;
+  var horizonR=140+Math.sin(t*.3)*8;
+
+  // Zone hors horizon
+  ctx.save();
+  ctx.fillStyle='rgba(0,0,0,.5)';
+  ctx.beginPath();ctx.rect(0,0,W,H);
+  ctx.arc(CX,CY,horizonR,0,Math.PI*2,true);
+  ctx.fill();
+  ctx.restore();
+
+  // Galaxies
+  galaxies.forEach(function(g){
+    var nx=CX+(g.x0-W/2)*2,ny=CY+(g.y0-H/2)*2;
+    var d=Math.sqrt((nx-CX)*(nx-CX)+(ny-CY)*(ny-CY));
+    ctx.beginPath();ctx.arc(nx,ny,g.size+.4,0,Math.PI*2);
+    ctx.fillStyle=g.col;ctx.globalAlpha=d<horizonR?0.9:0.12;ctx.fill();ctx.globalAlpha=1;
+  });
+
+  // Horizon
+  ctx.beginPath();ctx.arc(CX,CY,horizonR,0,Math.PI*2);
+  ctx.strokeStyle='rgba(216,90,48,.9)';ctx.lineWidth=2.5;ctx.setLineDash([7,5]);ctx.stroke();ctx.setLineDash([]);
+
+  // Photon animé : trajectoire en spirale qui s'approche asymptotiquement de l'horizon
+  // (un photon ne peut jamais le franchir, ni revenir téléporté au centre)
+  var pA=t*.65;
+  var pingpong=(Math.sin(t*.35)+1)/2; // 0 → 1 → 0, sans saut
+  var pR=8+pingpong*(horizonR-15);
+  var px=CX+Math.cos(pA)*pR,py=CY+Math.sin(pA)*pR;
+  ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fillStyle='#fde68a';ctx.fill();
+  for(var k=1;k<=10;k++){
+    var kr=pR-k*4;if(kr<0) continue;
+    var kx=CX+Math.cos(pA-k*0.04)*kr,ky=CY+Math.sin(pA-k*0.04)*kr;
+    ctx.beginPath();ctx.arc(kx,ky,1.2,0,Math.PI*2);
+    ctx.fillStyle='rgba(253,230,138,'+(0.7*(1-k/10))+')';ctx.fill();
+  }
+
+  // Observateur
+  ctx.beginPath();ctx.arc(CX,CY,6,0,Math.PI*2);ctx.fillStyle='#f59e0b';ctx.fill();
+  tx('Horizon cosmologique (',CX-20,CY-horizonR-10,'rgba(216,90,48,.85)',11,'right');
+  tx('c)',CX-20+ctx.measureText('Horizon cosmologique (').width,CY-horizonR-10,'rgba(216,90,48,.85)',11,'left');
+  tx('Univers observable',CX-50,CY+18,'rgba(245,158,11,.5)',10);
+  tx('Hors de portée  v > c',CX+horizonR+14,CY,'rgba(100,100,130,.55)',10,'left');
+  tx('Le photon jaune ne peut jamais dépasser l\'horizon — analogue à la limite de Lyapunov',CX,H-10,'rgba(129,140,248,.45)',10);
+}
+
+function scene2(){
+  ctx.fillStyle='#08080f';ctx.fillRect(0,0,W,H);
+  var xL=65,xR=W-65,yT=38,yB=260;
+
+  // Potentiel asymétrique
+  var N=200,raw=[];
+  for(var i=0;i<=N;i++){
+    var x=i/N,u=(x-.12)*3.2;
+    raw.push(u*u*u*u-lambda*1.4*u*u-lambda*0.6*u);
+  }
+  var mn=Math.min.apply(null,raw),mx=Math.max.apply(null,raw);
+  var pts=raw.map(function(v,i){return{px:xL+i*(xR-xL)/N,py:yT+(1-(v-mn)/(mx-mn))*(yB-yT)*.88+4};});
+
+  ctx.beginPath();ctx.moveTo(pts[0].px,yB);
+  pts.forEach(function(p){ctx.lineTo(p.px,p.py);});
+  ctx.lineTo(pts[pts.length-1].px,yB);ctx.closePath();
+  ctx.fillStyle='rgba(129,140,248,.07)';ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].px,pts[0].py);
+  pts.forEach(function(p){ctx.lineTo(p.px,p.py);});
+  ctx.strokeStyle='#818cf8';ctx.lineWidth=2.5;ctx.stroke();
+
+  // Bille
+  var ballProg=Math.min(0.93,(frame*.005)%1.05);
+  var bi=Math.min(Math.floor(ballProg*N),N);
+  var bp=pts[bi];
+  if(bp){
+    ctx.beginPath();ctx.arc(bp.px,bp.py-12,9,0,Math.PI*2);ctx.fillStyle='#3b82f6';ctx.fill();
+    ctx.beginPath();ctx.arc(bp.px,bp.py-12,16,0,Math.PI*2);
+    ctx.strokeStyle='rgba(59,130,246,.3)';ctx.lineWidth=2;ctx.stroke();
+  }
+
+  // Comparaison double puits (en bas)
+  var yT2=290,yB2=360;
+  var raw2=[];
+  for(var i=0;i<=N;i++){var u2=(i/N-.5)*4;raw2.push(u2*u2*u2*u2-2*.6*u2*u2);}
+  var mn2=Math.min.apply(null,raw2),mx2=Math.max.apply(null,raw2);
+  var pts2=raw2.map(function(v,i){return{px:xL+i*(xR-xL)/N,py:yT2+(1-(v-mn2)/(mx2-mn2))*(yB2-yT2)*.85+2};});
+  ctx.globalAlpha=0.45;
+  ctx.beginPath();ctx.moveTo(pts2[0].px,pts2[0].py);
+  pts2.forEach(function(p){ctx.lineTo(p.px,p.py);});
+  ctx.strokeStyle='rgba(216,90,48,.6)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+  ctx.globalAlpha=1;
+  tx('double puits classique (pour comparaison)',(xL+xR)/2,yT2-5,'rgba(216,90,48,.4)',10);
+  ctx.fillStyle='rgba(216,90,48,.5)';
+  ctx.font='10px Arial';ctx.textAlign='left';
+  ctx.fillText('← 2 états stables possibles',xL+10,yB2-5);
+
+  // Flèche du temps
+  ctx.beginPath();ctx.moveTo(xL,yB+22);ctx.lineTo(xR-15,yB+22);
+  ctx.strokeStyle='rgba(129,140,248,.3)';ctx.lineWidth=1;ctx.stroke();
+  tx('temps →',xR-8,yB+20,'rgba(129,140,248,.4)',10,'right');
+
+  tx('Univers actuel',xL+75,yT+18,'rgba(245,158,11,.6)',11);
+  tx('→ Big Freeze',xR-60,yB-15,'rgba(129,140,248,.6)',11);
+  tx('Pas de 2ème puits stable — descente irréversible (mort thermique)',W/2,H-22,'rgba(129,140,248,.5)',10);
+  tx('Λ contrôle la vitesse de descente — plus Λ est grand, plus la chute s\'accélère',W/2,H-8,'rgba(129,140,248,.38)',10);
+}
+
+function scene3(){
+  ctx.fillStyle='#08080f';ctx.fillRect(0,0,W,H);
+
+  // Potentiel gauche
+  var xL=15,xR=305,yT=18,yB=320;
+  var tot=400,prog=(frame%tot)/tot;
+  var ua,va;
+  if(prog<.5){var p2=prog/.5;ua=-1+p2*1.6;va=.5-p2*1.1;}
+  else{var p3=(prog-.5)/.5;ua=.6+p3*.8;va=-.6+p3*1.1;}
+  var ctrl=Math.max(.05,Math.min(.95,.5+ua*.32));
+
+  var pts3=getPts(ctrl,xL,xR,yT,yB);
+  ctx.beginPath();ctx.moveTo(pts3[0].px,yB);
+  pts3.forEach(function(p){ctx.lineTo(p.px,p.py);});
+  ctx.lineTo(pts3[pts3.length-1].px,yB);ctx.closePath();
+  ctx.fillStyle=ctrl>.5?'rgba(249,115,22,.07)':'rgba(129,140,248,.07)';ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts3[0].px,pts3[0].py);
+  pts3.forEach(function(p){ctx.lineTo(p.px,p.py);});
+  ctx.strokeStyle=ctrl>.5?'rgba(249,115,22,.8)':'rgba(129,140,248,.8)';ctx.lineWidth=2.2;ctx.stroke();
+
+  var ballPos=ctrl>.5?(ua>0?.76:.24):.5;
+  var bpx=xL+ballPos*(xR-xL);
+  ctx.beginPath();ctx.arc(bpx,getY(pts3,bpx)-9,7,0,Math.PI*2);
+  ctx.fillStyle=ctrl>.5?'rgba(249,115,22,.85)':'rgba(129,140,248,.85)';ctx.fill();
+  tx('régime cosmologique',(xL+xR)/2,yB+14,'rgba(129,140,248,.4)',9);
+
+  // Plan de contrôle droit
+  var dx=318,dy=15,dw=W-dx-10,dh=340,ocx=dx+dw/2,ocy=dy+dh*.55;
+  ctx.fillStyle='rgba(18,18,32,.7)';ctx.fillRect(dx,dy,dw,dh);
+  tx('plan de contrôle cosmologique',ocx,dy+14,'rgba(129,140,248,.6)',11);
+  ctx.strokeStyle='rgba(100,100,130,.2)';ctx.lineWidth=.5;
+  ctx.beginPath();ctx.moveTo(dx+10,ocy);ctx.lineTo(dx+dw-10,ocy);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(ocx,dy+24);ctx.lineTo(ocx,dy+dh-10);ctx.stroke();
+  tx('densité →',dx+dw-14,ocy-5,'rgba(100,100,130,.4)',9,'right');
+  tx('Λ',ocx+4,dy+28,'rgba(100,100,130,.4)',9,'left');
+
+  // Courbe catastrophe
+  ctx.beginPath();var fp=true;
+  for(var i=0;i<=120;i++){
+    var u=(i/120-.5)*2.4,vv=-u*u*u*3,px=ocx+u*72,py=ocy-vv*55;
+    if(py<dy+26||py>dy+dh-12){fp=true;continue;}
+    fp?ctx.moveTo(px,py):ctx.lineTo(px,py);fp=false;
+  }
+  ctx.strokeStyle='rgba(245,158,11,.92)';ctx.lineWidth=2.2;ctx.stroke();
+
+  // Zones cosmiques
+  tx('Big Freeze',ocx-60,ocy+42,'rgba(59,130,246,.65)',10);
+  tx('Big Rip',ocx+38,dy+42,'rgba(216,90,48,.65)',10);
+  tx('Rebond?',ocx-65,dy+42,'rgba(52,211,153,.65)',10);
+
+  // Traîne
+  for(var k=0;k<22;k++){
+    var kp=((frame-k*1.5)%tot+tot)%tot/tot;
+    var ku,kv;
+    if(kp<.5){var kpp=kp/.5;ku=-1+kpp*1.6;kv=.5-kpp*1.1;}
+    else{var kpp=(kp-.5)/.5;ku=.6+kpp*.8;kv=-.6+kpp*1.1;}
+    ctx.beginPath();ctx.arc(ocx+ku*72,ocy-kv*55,1.8,0,Math.PI*2);
+    ctx.fillStyle='rgba(52,211,153,'+(0.5*(1-k/22))+')';ctx.fill();
+  }
+
+  // Point animé
+  var animPx=ocx+ua*72,animPy=ocy-va*55;
+  ctx.beginPath();ctx.arc(animPx,animPy,7,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+  var fronce=-ua*ua*ua*3,near=Math.abs(va-fronce)<.18&&Math.abs(ua)<1;
+  if(near){
+    ctx.beginPath();ctx.arc(animPx,animPy,14,0,Math.PI*2);
+    ctx.strokeStyle='rgba(249,115,22,.8)';ctx.lineWidth=2;ctx.stroke();
+    tx('SAUT cosmique!',animPx,animPy-22,'rgba(249,115,22,.95)',12);
+  }
+
+  // Position actuelle de notre univers
+  var ourU=ocx-18,ourV=ocy+12;
+  ctx.beginPath();ctx.arc(ourU,ourV,5,0,Math.PI*2);ctx.fillStyle='#f59e0b';ctx.fill();
+  ctx.beginPath();ctx.arc(ourU,ourV,10,0,Math.PI*2);
+  ctx.strokeStyle='rgba(245,158,11,.4)';ctx.lineWidth=1.5;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+  tx('Nous',ourU-14,ourV-14,'rgba(245,158,11,.7)',9,'right');
+
+  tx('Chaque bifurcation = changement irréversible du destin de l\'univers',W/2,H-10,'rgba(129,140,248,.45)',10);
+}
+
+function loop(){
+  ctx.clearRect(0,0,W,H);frame++;
+  if(mode===0) scene0();
+  else if(mode===1) scene1();
+  else if(mode===2) scene2();
+  else scene3();
+  requestAnimationFrame(loop);
+}
+loop();
+})();
+</script>
+</div>
+
+<!-- ══ MODULE 3 ══ -->
+<div id="screen-p3" class="screen">
+<h1>Trous noirs & Rayonnement de Hawking</h1>
+<p class="sub">Liens avec les attracteurs, le double puits, les catastrophes de Thom, le vide quantique et l'expansion cosmique.</p>
+
+<div class="tabs">
+  <button class="tab on" data-m="0">① Trou noir comme attracteur</button>
+  <button class="tab" data-m="1">② Horizon & catastrophe de Thom</button>
+  <button class="tab" data-m="2">③ Rayonnement de Hawking</button>
+  <button class="tab" data-m="3">④ Évaporation & paradoxe</button>
+  <button class="tab" data-m="4">⑤ Effet Unruh & vide quantique</button>
+</div>
+<canvas id="cv_p3" width="900" height="400"></canvas>
+<div class="desc" id="desc_p3"></div>
+<div class="ctrl" id="ctrl_p3"></div>
+
+<script>
+(function(){
+var cv=document.getElementById('cv_p3'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+var mode=0,frame=0,mass=50,speed=1;
+
+var DESCS=[
+  'Un trou noir est l\'attracteur point fixe ultime : tout ce qui franchit l\'horizon converge vers la singularité. Le théorème de calvitie réduit l\'état à 3 paramètres (M, Q, J) — le bassin d\'attraction efface toute information. Comparer avec l\'attracteur de Lorenz : ici la convergence est absolue, pas chaotique.',
+  'L\'horizon des événements est une bifurcation causale irréversible au sens de Thom. Aucune trajectoire ne peut revenir en arrière après le franchissement. Un observateur en chute libre ne ressent rien — le saut est imperceptible de l\'intérieur, exactement comme un saut catastrophique de fronce traversé depuis l\'extérieur de la courbe.',
+  'Le rayonnement de Hawking est un effet tunnel quantique à travers l\'horizon. T_H = ℏc³/(8πGMk_B). Des paires particule-antiparticule émergent du vide près de l\'horizon : l\'une tombe dans le trou noir (énergie négative), l\'autre s\'échappe. Analogie directe avec l\'effet tunnel dans le double puits de potentiel.',
+  'En émettant, le trou noir perd de la masse → T_H augmente → émission accélère → divergence exponentielle vers la fin de vie. Temps d\'évaporation t ~ M³. Le paradoxe de l\'information : l\'unitarité quantique exige que l\'information soit préservée — mais où va-t-elle si le trou noir s\'évapore en rayonnement thermique ?',
+  'L\'effet Unruh : pour un observateur accéléré (accélération a), le vide quantique semble peuplé de particules à T_U = ℏa/(2πck_B). La notion de vide dépend de l\'observateur — brisure de la symétrie de Poincaré. Directement lié à la brisure de symétrie spontanée et au vide quantique fluctuant.'
+];
+
+document.querySelectorAll('#screen-p3 .tab').forEach(function(b){
+  b.addEventListener('click',function(){
+    mode=parseInt(b.dataset.m);frame=0;
+    document.querySelectorAll('#screen-p3 .tab').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    document.getElementById('desc_p3').textContent=DESCS[mode];
+    buildCtrl();
+  });
+});
+document.getElementById('desc_p3').textContent=DESCS[0];
+
+function buildCtrl(){
+  var c=document.getElementById('ctrl_p3');
+  if(mode===0||mode===1){
+    c.innerHTML='<span>Masse du trou noir</span><input type="range" id="ms" min="5" max="100" value="50"><span class="v" id="msv">50 M☉</span>';
+    document.getElementById('ms').oninput=function(){mass=+this.value;document.getElementById('msv').textContent=mass+' M☉';};
+  } else if(mode===2){
+    c.innerHTML='<span>Masse M</span><input type="range" id="ms" min="5" max="100" value="50"><span class="v" id="msv">T=120 nK</span>';
+    document.getElementById('ms').oninput=function(){mass=+this.value;var T=Math.round(6000/mass);document.getElementById('msv').textContent='T='+T+' nK';};
+  } else if(mode===3){
+    c.innerHTML='<span>Vitesse évaporation</span><input type="range" id="sp" min="10" max="100" value="50"><span class="v" id="spv">1.0×</span>';
+    document.getElementById('sp').oninput=function(){speed=this.value/50;document.getElementById('spv').textContent=speed.toFixed(1)+'×';};
+  } else {
+    c.innerHTML='<span>Accélération a</span><input type="range" id="ms" min="1" max="100" value="30"><span class="v" id="msv">T=0.15 K</span>';
+    document.getElementById('ms').oninput=function(){mass=+this.value;var T=(mass*0.004).toFixed(3);document.getElementById('msv').textContent='T_U='+T+' K';};
+  }
+}
+buildCtrl();
+
+function tx(t,x,y,col,sz,al){
+  ctx.fillStyle=col||'rgba(150,150,160,.7)';
+  ctx.font=(sz||11)+'px Arial,sans-serif';
+  ctx.textAlign=al||'center';
+  ctx.fillText(t,x,y);
+}
+
+// ── SCENE 0 : Trou noir comme attracteur ──────────────────────
+function scene0(){
+  ctx.fillStyle='#06060d';ctx.fillRect(0,0,W,H);
+  var CX=W/2,CY=H/2;
+  var r=mass*0.7+20; // rayon horizon
+  var rSing=6; // singularité
+
+  // Étoiles de fond
+  for(var i=0;i<120;i++){
+    var sx=((i*137.5)%1)*W,sy=((i*91.3)%1)*H;
+    ctx.fillStyle='rgba(255,255,255,'+(0.05+0.2*((i*53)%1))+')';
+    ctx.beginPath();ctx.arc(sx,sy,0.6,0,Math.PI*2);ctx.fill();
+  }
+
+  // Déformation de l'espace-temps (grille)
+  ctx.strokeStyle='rgba(99,102,241,.18)';ctx.lineWidth=0.6;
+  for(var gx=0;gx<W;gx+=36){
+    ctx.beginPath();
+    for(var gy=0;gy<H;gy+=2){
+      var dx=gx-CX,dy=gy-CY,d=Math.sqrt(dx*dx+dy*dy);
+      var deflect=d<10?0:(r*r*r)/(d*d*d);
+      var ndx=dx-dx*deflect*0.45,ndy=dy-dy*deflect*0.45;
+      var px=CX+ndx,py=CY+ndy;
+      if(py<0||py>H) continue;
+      gy===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+  }
+  for(var gy=0;gy<H;gy+=36){
+    ctx.beginPath();
+    for(var gx=0;gx<W;gx+=2){
+      var dx=gx-CX,dy=gy-CY,d=Math.sqrt(dx*dx+dy*dy);
+      var deflect=d<10?0:(r*r*r)/(d*d*d);
+      var ndx=dx-dx*deflect*0.45,ndy=dy-dy*deflect*0.45;
+      var px=CX+ndx,py=CY+ndy;
+      if(px<0||px>W) continue;
+      gx===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+  }
+
+  // Photonsphère
+  ctx.beginPath();ctx.arc(CX,CY,r*1.5,0,Math.PI*2);
+  ctx.strokeStyle='rgba(251,191,36,.15)';ctx.lineWidth=8;ctx.stroke();
+  ctx.beginPath();ctx.arc(CX,CY,r*1.5,0,Math.PI*2);
+  ctx.strokeStyle='rgba(251,191,36,.3)';ctx.lineWidth=1;ctx.stroke();
+
+  // Disque d'accrétion simplifié
+  var grad=ctx.createRadialGradient(CX,CY,r,CX,CY,r*3.2);
+  grad.addColorStop(0,'rgba(249,115,22,.0)');
+  grad.addColorStop(0.2,'rgba(249,115,22,.55)');
+  grad.addColorStop(0.6,'rgba(245,158,11,.25)');
+  grad.addColorStop(1,'rgba(245,158,11,.0)');
+  ctx.save();ctx.scale(1,0.28);
+  ctx.beginPath();ctx.arc(CX,CY/0.28,r*3.2,0,Math.PI*2);
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.restore();
+
+  // Horizon
+  var hGrad=ctx.createRadialGradient(CX,CY,0,CX,CY,r);
+  hGrad.addColorStop(0,'#000');hGrad.addColorStop(0.7,'#000');hGrad.addColorStop(1,'rgba(0,0,0,.9)');
+  ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);ctx.fillStyle=hGrad;ctx.fill();
+  ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);
+  ctx.strokeStyle='rgba(129,140,248,.6)';ctx.lineWidth=2;ctx.stroke();
+
+  // Trajectoires attirées (particules)
+  var T=frame*.016;
+  for(var i=0;i<6;i++){
+    var angle=i/6*Math.PI*2+T*.18;
+    var startR=r*4.5,endR=r*1.05;
+    var spiral=0.4+i*.1;
+    for(var k=0;k<50;k++){
+      var prog=k/50,ri=startR-prog*(startR-endR);
+      var ai=angle+prog*spiral*Math.PI*2;
+      var px=CX+Math.cos(ai)*ri,py=CY+Math.sin(ai)*ri*0.55;
+      if(k===0)ctx.beginPath();
+      ctx.lineTo(px,py);
+    }
+    ctx.strokeStyle='rgba(129,140,248,'+(0.08+i*.05)+')';ctx.lineWidth=1;ctx.stroke();
+    // Particule sur la trajectoire
+    var pProg=(T*0.12+i*0.18)%1;
+    var pR=startR-(startR-endR)*pProg,pA=angle+pProg*spiral*Math.PI*2;
+    var ppx=CX+Math.cos(pA)*pR,ppy=CY+Math.sin(pA)*pR*0.55;
+    if(pR>r){
+      ctx.beginPath();ctx.arc(ppx,ppy,2.5,0,Math.PI*2);
+      ctx.fillStyle='rgba(129,140,248,.8)';ctx.fill();
+    }
+  }
+
+  // Singularité
+  ctx.beginPath();ctx.arc(CX,CY,rSing,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+
+  // Labels
+  tx('Singularité',CX,CY-14,'rgba(255,255,255,.7)',10);
+  tx('Horizon des événements',CX,CY-r-10,'rgba(129,140,248,.8)',11);
+  tx('Photonsphère (r=1.5r_s)',CX,CY-r*1.5-10,'rgba(251,191,36,.65)',10);
+  tx('Disque d\'accrétion',CX+r*2.8,CY+20,'rgba(245,158,11,.6)',10,'left');
+  tx('Bassin d\'attraction : tout l\'espace → singularité',W/2,H-12,'rgba(129,140,248,.45)',10);
+  tx('M='+mass+' M☉   r_s='+Math.round(mass*2.96)+' km',W-10,22,'rgba(129,140,248,.4)',10,'right');
+}
+
+// ── SCENE 1 : Horizon & Thom ──────────────────────────────────
+function scene1(){
+  ctx.fillStyle='#06060d';ctx.fillRect(0,0,W,H);
+
+  // Côté gauche : espace-temps avec horizon
+  var CX=230,CY=H/2,r=mass*0.7+20;
+
+  // Cône de lumière avant horizon
+  ctx.fillStyle='rgba(99,102,241,.08)';
+  ctx.beginPath();ctx.moveTo(CX-r-20,CY);ctx.lineTo(CX-r-100,CY-80);ctx.lineTo(CX-r-100,CY+80);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='rgba(99,102,241,.4)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(CX-r-20,CY);ctx.lineTo(CX-r-100,CY-80);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX-r-20,CY);ctx.lineTo(CX-r-100,CY+80);ctx.stroke();
+  tx('cône de lumière',CX-r-60,CY-88,'rgba(99,102,241,.6)',9);
+
+  // Grille espace-temps locale
+  ctx.strokeStyle='rgba(99,102,241,.12)';ctx.lineWidth=0.5;
+  for(var i=0;i<8;i++){
+    var x=CX-r*3+i*(r*3/7);
+    if(x>CX-r-5) break;
+    ctx.beginPath();ctx.moveTo(x,CY-110);ctx.lineTo(x,CY+110);ctx.stroke();
+  }
+  for(var i=0;i<7;i++){var y=CY-90+i*30;ctx.beginPath();ctx.moveTo(CX-r*3,y);ctx.lineTo(CX-r-5,y);ctx.stroke();}
+
+  // Horizon vertical
+  ctx.beginPath();ctx.moveTo(CX-r,CY-120);ctx.lineTo(CX-r,CY+120);
+  ctx.strokeStyle='rgba(249,115,22,.9)';ctx.lineWidth=2.5;ctx.setLineDash([]);ctx.stroke();
+  tx('Horizon',CX-r,CY-142,'rgba(249,115,22,.8)',11);
+  tx('bifurcation',CX-r,CY-130,'rgba(249,115,22,.6)',9);
+  tx('causale',CX-r,CY-119,'rgba(249,115,22,.6)',9);
+
+  // Trou noir
+  var hGrad=ctx.createRadialGradient(CX,CY,0,CX,CY,r);
+  hGrad.addColorStop(0,'#000');hGrad.addColorStop(1,'rgba(0,0,0,.95)');
+  ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);ctx.fillStyle=hGrad;ctx.fill();
+  ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);
+  ctx.strokeStyle='rgba(129,140,248,.5)';ctx.lineWidth=1.5;ctx.stroke();
+
+  // Trajectoires observateurs
+  var T=frame*.012;
+  // Observateur distant - reste dehors
+  var obs1x=CX-r-55,obs1y=CY;
+  ctx.beginPath();ctx.arc(obs1x,obs1y,5,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+  tx('Observateur',obs1x,obs1y-24,'rgba(52,211,153,.7)',9);
+  tx('lointain',obs1x,obs1y-13,'rgba(52,211,153,.7)',9);
+
+  // Observateur en chute libre - franchit l'horizon
+  var fallProg=(T*0.18)%1.4;
+  var fallX,fallY;
+  if(fallProg<1){fallX=CX-r-120+fallProg*(r+120)*0.9;fallY=CY+Math.sin(fallProg*Math.PI)*25;}
+  else{fallX=CX-r+(fallProg-1)*(r+30);fallY=CY;}
+  ctx.beginPath();ctx.arc(Math.min(CX+r,fallX),fallY,5,0,Math.PI*2);
+  ctx.fillStyle='#f97316';ctx.fill();
+  if(fallX<CX-r+5){
+    tx('En chute',fallX,fallY-26,'rgba(249,115,22,.8)',9);
+    tx('libre',fallX,fallY-15,'rgba(249,115,22,.8)',9);
+  }
+
+  // Côté droit : catastrophe de Thom (analogie)
+  var lx=490,ly=30,lw=380,lh=340,ocx=lx+lw/2,ocy=ly+lh*.55;
+  ctx.fillStyle='rgba(16,16,28,.7)';ctx.fillRect(lx,ly,lw,lh);
+  tx('Analogie : catastrophe de Thom',ocx,ly+14,'rgba(129,140,248,.65)',11);
+
+  ctx.strokeStyle='rgba(100,100,130,.2)';ctx.lineWidth=.5;
+  ctx.beginPath();ctx.moveTo(lx+12,ocy);ctx.lineTo(lx+lw-12,ocy);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(ocx,ly+26);ctx.lineTo(ocx,ly+lh-12);ctx.stroke();
+
+  // Courbe de fronce
+  ctx.beginPath();var fp=true;
+  for(var i=0;i<=120;i++){
+    var u=(i/120-.5)*2.4,vv=-u*u*u*3,px=ocx+u*68,py=ocy-vv*52;
+    if(py<ly+28||py>ly+lh-14){fp=true;continue;}
+    fp?ctx.moveTo(px,py):ctx.lineTo(px,py);fp=false;
+  }
+  ctx.strokeStyle='rgba(249,115,22,.9)';ctx.lineWidth=2.5;ctx.stroke();
+
+  // Zones
+  tx('← avant',ocx-14,ocy+70,'rgba(52,211,153,.55)',9,'right');
+  tx('après →',ocx+14,ocy+70,'rgba(249,115,22,.55)',9,'left');
+  tx('(causal)',ocx+5,ocy-50,'rgba(249,115,22,.4)',9);
+
+  // Point traversant la fronce
+  var tot2=300,prog2=(frame%tot2)/tot2;
+  var ua2=-1+prog2*2.6,va2=.5-prog2*1.8;
+  if(prog2>.65){ua2=0.6;va2=-.6;}
+  var apx=Math.max(lx+10,Math.min(lx+lw-10,ocx+ua2*68));
+  var apy=Math.max(ly+28,Math.min(ly+lh-14,ocy-va2*52));
+  ctx.beginPath();ctx.arc(apx,apy,7,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+  var fronce=-ua2*ua2*ua2*3,near2=Math.abs(va2-fronce)<.2&&Math.abs(ua2)<1;
+  if(near2){ctx.beginPath();ctx.arc(apx,apy,14,0,Math.PI*2);ctx.strokeStyle='rgba(249,115,22,.8)';ctx.lineWidth=2;ctx.stroke();tx('SAUT !',apx,apy-20,'rgba(249,115,22,.9)',11);}
+
+  tx('Irréversible — imperceptible de l\'intérieur — exactement comme le franchissement de l\'horizon',W/2,H-12,'rgba(129,140,248,.45)',10);
+}
+
+// ── SCENE 2 : Rayonnement de Hawking (effet tunnel) ───────────
+function scene2(){
+  ctx.fillStyle='#06060d';ctx.fillRect(0,0,W,H);
+  var CX=W/2,CY=H/2;
+  var r=Math.max(20,mass*0.6+18);
+  var T_H=Math.round(6000/mass); // en nK, simplifié
+
+  // Trou noir
+  ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();
+  ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);
+  ctx.strokeStyle='rgba(129,140,248,.6)';ctx.lineWidth=2;ctx.stroke();
+  tx('Trou noir',CX,CY+5,'rgba(255,255,255,.5)',10);
+
+  // Potentiel de barrière (analogue double puits)
+  var xL=80,xR=W-80,yT=60,yB=180;
+  // V(r) ~ -GM/r + L²/(2mr²) (potentiel effectif Schwarzschild simplifié)
+  var N=180,raw=[];
+  for(var i=0;i<=N;i++){
+    var rr=i/N,u=(rr-.15)*5.5;
+    raw.push(-2/(rr+.1)+3*rr*rr*rr-.5);
+  }
+  var mn=Math.min.apply(null,raw),mx=Math.max.apply(null,raw);
+  var pts=raw.map(function(v,i){return{px:xL+i*(xR-xL)/N,py:yT+(1-(v-mn)/(mx-mn))*(yB-yT)*.88+4};});
+  ctx.beginPath();ctx.moveTo(pts[0].px,yB);pts.forEach(function(p){ctx.lineTo(p.px,p.py);});ctx.lineTo(pts[pts.length-1].px,yB);ctx.closePath();
+  ctx.fillStyle='rgba(99,102,241,.07)';ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].px,pts[0].py);pts.forEach(function(p){ctx.lineTo(p.px,p.py);});
+  ctx.strokeStyle='rgba(99,102,241,.7)';ctx.lineWidth=2;ctx.stroke();
+  tx('Potentiel effectif V(r) — barrière d\'horizon',CX,yT-8,'rgba(99,102,241,.6)',10);
+
+  // Niveau d'énergie (T_H)
+  var eY=yT+(yB-yT)*.55;
+  ctx.beginPath();ctx.setLineDash([6,4]);ctx.moveTo(xL,eY);ctx.lineTo(xR,eY);
+  ctx.strokeStyle='rgba(245,158,11,.6)';ctx.lineWidth=1.5;ctx.stroke();ctx.setLineDash([]);
+  tx('E ~ k_B T_H = '+T_H+' nK',xR-5,eY-6,'rgba(245,158,11,.7)',10,'right');
+
+  // Paires virtuelles près de l'horizon
+  var T=frame*.02;
+  for(var i=0;i<8;i++){
+    var angle=i/8*Math.PI*2+T*.1;
+    var pairR=r+6+Math.sin(T*1.5+i)*4;
+    var px1=CX+Math.cos(angle)*pairR,py1=CY+Math.sin(angle)*pairR;
+    var sep=18+Math.sin(T*2+i*1.3)*5;
+    var px2=CX+Math.cos(angle)*(pairR+sep),py2=CY+Math.sin(angle)*(pairR+sep);
+
+    // Particule tombant dans le trou noir
+    ctx.beginPath();ctx.arc(px1,py1,3.5,0,Math.PI*2);ctx.fillStyle='rgba(249,115,22,.7)';ctx.fill();
+    // Particule s'échappant
+    var escProg=Math.max(0,(T*.3+i*.4)%1);
+    var escR=r+sep+escProg*120;
+    var epx=CX+Math.cos(angle)*escR,epy=CY+Math.sin(angle)*escR;
+    if(escR<r*4){
+      ctx.beginPath();ctx.arc(epx,epy,3,0,Math.PI*2);ctx.fillStyle='rgba(52,211,153,.75)';ctx.fill();
+      // Traîne
+      for(var k=1;k<=6;k++){
+        var kr=escR-k*12;if(kr<r) continue;
+        var kpx=CX+Math.cos(angle)*kr,kpy=CY+Math.sin(angle)*kr;
+        ctx.beginPath();ctx.arc(kpx,kpy,1.5,0,Math.PI*2);ctx.fillStyle='rgba(52,211,153,'+(0.5*(1-k/6))+')';ctx.fill();
+      }
+    }
+
+    // Ligne de connexion (corrélation quantique)
+    ctx.beginPath();ctx.moveTo(px1,py1);ctx.lineTo(px2,py2);
+    ctx.strokeStyle='rgba(245,158,11,.25)';ctx.lineWidth=1;ctx.setLineDash([2,2]);ctx.stroke();ctx.setLineDash([]);
+  }
+
+  // Légende
+  var lx=20,ly=H-75;
+  ctx.fillStyle='rgba(16,16,28,.8)';ctx.fillRect(lx,ly,200,65);
+  ctx.beginPath();ctx.arc(lx+10,ly+14,4,0,Math.PI*2);ctx.fillStyle='rgba(249,115,22,.8)';ctx.fill();
+  tx('Particule (énergie <0) → trou noir',lx+18,ly+18,'rgba(249,115,22,.7)',10,'left');
+  ctx.beginPath();ctx.arc(lx+10,ly+34,4,0,Math.PI*2);ctx.fillStyle='rgba(52,211,153,.8)';ctx.fill();
+  tx('Antiparticule → Rayonnement Hawking',lx+18,ly+38,'rgba(52,211,153,.7)',10,'left');
+  ctx.beginPath();ctx.moveTo(lx+4,ly+52);ctx.lineTo(lx+16,ly+52);ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=1;ctx.setLineDash([2,2]);ctx.stroke();ctx.setLineDash([]);
+  tx('Corrélation quantique',lx+18,ly+56,'rgba(245,158,11,.55)',10,'left');
+
+  tx('T_H = ℏc³/(8πGMk_B) — augmente quand M diminue',W/2,H-12,'rgba(129,140,248,.45)',10);
+}
+
+// ── SCENE 3 : Évaporation & paradoxe ─────────────────────────
+function scene3(){
+  ctx.fillStyle='#06060d';ctx.fillRect(0,0,W,H);
+  var T=frame*.012*speed;
+
+  // Masse qui diminue (divergence exponentielle finale)
+  var M0=100,M=Math.max(2,M0-T*8);
+  var CX=200,CY=H/2;
+  var r=Math.max(4,M*0.55);
+
+  // Rayonnement thermique émis
+  for(var i=0;i<24;i++){
+    var angle=i/24*Math.PI*2+T*.05;
+    var emitProg=((T*.5+i*.18)%1);
+    var emitR=r+emitProg*180;
+    var epx=CX+Math.cos(angle)*emitR,epy=CY+Math.sin(angle)*emitR;
+    if(epx<0||epx>400||epy<0||epy>H) continue;
+    var alpha=1-emitProg;
+    var hue=Math.round(120-emitProg*80); // vert → jaune
+    ctx.beginPath();ctx.arc(epx,epy,2,0,Math.PI*2);
+    ctx.fillStyle='hsla('+hue+',80%,60%,'+alpha+')';ctx.fill();
+  }
+
+  // Trou noir qui rétrécit
+  ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();
+  ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);
+  var intensity=Math.min(1,(M0-M)/M0*2);
+  ctx.strokeStyle='rgba('+(Math.round(129+intensity*126))+',140,248,.7)';ctx.lineWidth=2;ctx.stroke();
+  tx('M='+Math.round(M)+' M☉',CX,CY+r+14,'rgba(129,140,248,.6)',10);
+
+  // Température
+  var TH=Math.round(6000/Math.max(1,M));
+  tx('T_H='+TH+' nK',CX,CY-r-10,'rgba(245,158,11,.7)',10);
+
+  // Courbe M(t) et T(t)
+  var gx=440,gy=40,gw=420,gh=160;
+  ctx.fillStyle='rgba(16,16,28,.6)';ctx.fillRect(gx,gy,gw,gh);
+  tx('Évolution de M et T_H au cours du temps',gx+gw/2,gy+14,'rgba(129,140,248,.6)',10);
+
+  // Axe
+  ctx.strokeStyle='rgba(100,100,130,.3)';ctx.lineWidth=.5;
+  ctx.beginPath();ctx.moveTo(gx+20,gy+gh-20);ctx.lineTo(gx+gw-10,gy+gh-20);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(gx+20,gy+gh-20);ctx.lineTo(gx+20,gy+24);ctx.stroke();
+  tx('temps',gx+gw-14,gy+gh-12,'rgba(100,100,130,.5)',9);
+
+  // Courbe M(t) ~ (t_evap - t)^(1/3)
+  ctx.beginPath();
+  for(var i=0;i<=100;i++){
+    var prog=i/100,tEv=1-prog;
+    var Mval=Math.pow(Math.max(0,tEv),0.333);
+    var px=gx+20+prog*(gw-30),py=gy+gh-20-Mval*(gh-44);
+    i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+  }
+  ctx.strokeStyle='rgba(99,102,241,.8)';ctx.lineWidth=2;ctx.stroke();
+  tx('M(t)',gx+28,gy+34,'rgba(99,102,241,.7)',10,'left');
+
+  // Courbe T_H ~ M^(-1)
+  ctx.beginPath();
+  for(var i=0;i<=95;i++){
+    var prog=i/100,tEv=1-prog;
+    var Mval=Math.pow(Math.max(0.01,tEv),0.333);
+    var THval=Math.min(1,0.06/Mval);
+    var px=gx+20+prog*(gw-30),py=gy+gh-20-THval*(gh-44);
+    if(py<gy+24) break;
+    i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+  }
+  ctx.strokeStyle='rgba(249,115,22,.8)';ctx.lineWidth=2;ctx.stroke();
+  tx('T_H(t)',gx+28,gy+50,'rgba(249,115,22,.7)',10,'left');
+
+  // Divergence finale
+  ctx.beginPath();ctx.arc(gx+gw-22,gy+28,5,0,Math.PI*2);
+  ctx.strokeStyle='rgba(249,115,22,.8)';ctx.lineWidth=2;ctx.stroke();
+  tx('→ divergence',gx+gw-22,gy+18,'rgba(249,115,22,.6)',9);
+
+  // Paradoxe
+  var px2=gx,py2=gy+gh+15,pw=gw,ph=H-py2-30;
+  ctx.fillStyle='rgba(16,16,28,.6)';ctx.fillRect(px2,py2,pw,ph);
+  tx('Paradoxe de l\'information',px2+pw/2,py2+16,'rgba(249,115,22,.7)',11);
+  var lines=[
+    '→ Le trou noir s\'évapore entièrement en rayonnement thermique (mixte).',
+    '→ Or la MQ exige que l\'évolution soit unitaire (pure → pure).',
+    '→ Information perdue ? Violation de l\'unitarité ?',
+    '→ Réponses : holographie, ER=EPR (Maldacena-Susskind), îles quantiques.',
+  ];
+  lines.forEach(function(l,i){tx(l,px2+pw/2,py2+32+i*17,'rgba(150,150,170,.7)',10);});
+
+  tx('Évaporation : M diminue → T_H augmente → émission s\'emballe → divergence exponentielle',W/2,H-10,'rgba(129,140,248,.4)',10);
+}
+
+// ── SCENE 4 : Effet Unruh & vide quantique ────────────────────
+function scene4(){
+  ctx.fillStyle='#06060d';ctx.fillRect(0,0,W,H);
+  var T=frame*.014;
+  var accel=mass/100; // 0.01 à 1
+
+  // Fond : fluctuations du vide quantique
+  for(var i=0;i<20;i++){
+    var fx=((i*137.5+T*12)%1)*W,fy=((i*91.3+T*8)%1)*H;
+    var lt=((i*53.7+T*5)%1),al=Math.sin(lt*Math.PI)*.45;
+    var sep=8+lt*10;
+    ctx.beginPath();ctx.arc(fx,fy,2.5+lt*2,0,Math.PI*2);ctx.fillStyle='rgba(99,102,241,'+al+')';ctx.fill();
+    ctx.beginPath();ctx.arc(fx+sep*Math.cos(i*2.3),fy+sep*Math.sin(i*2.3),2.5+lt*2,0,Math.PI*2);
+    ctx.fillStyle='rgba(249,115,22,'+(al*.8)+')';ctx.fill();
+  }
+
+  // Observateur inertiel (gauche)
+  var inx=180,iny=H/2;
+  ctx.beginPath();ctx.arc(inx,iny,10,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+  tx('Observateur',inx,iny-30,'rgba(52,211,153,.8)',11);
+  tx('inertiel',inx,iny-18,'rgba(52,211,153,.7)',10);
+  tx('Vide = vide',inx,iny+20,'rgba(52,211,153,.6)',10);
+  tx('(0 particule)',inx,iny+32,'rgba(52,211,153,.5)',10);
+
+  // Observateur accéléré (droite)
+  var acx=700+Math.sin(T*.8)*12*accel,acy=H/2;
+  ctx.beginPath();ctx.arc(acx,acy,10,0,Math.PI*2);ctx.fillStyle='#f97316';ctx.fill();
+  // Flèche d'accélération
+  ctx.beginPath();ctx.moveTo(acx+14,acy);ctx.lineTo(acx+50,acy);
+  ctx.strokeStyle='rgba(249,115,22,.6)';ctx.lineWidth=2;ctx.stroke();
+  tx('a',acx+32,acy-8,'rgba(249,115,22,.5)',10);
+
+  tx('Observateur',acx,acy-30,'rgba(249,115,22,.8)',11);
+  tx('accéléré',acx,acy-18,'rgba(249,115,22,.7)',10);
+  var TU=(accel*0.004).toFixed(4);
+  tx('Voit T_U='+TU+' K',acx,acy+20,'rgba(249,115,22,.65)',10);
+  tx('(bain thermique !)',acx,acy+32,'rgba(249,115,22,.55)',10);
+
+  // Particules thermiques autour de l'observateur accéléré
+  var nPart=Math.floor(accel*18);
+  for(var i=0;i<nPart;i++){
+    var angle=i/nPart*Math.PI*2+T*.15;
+    var pr=30+Math.sin(T*2+i)*8;
+    var ppx=acx+Math.cos(angle)*pr,ppy=acy+Math.sin(angle)*pr;
+    ctx.beginPath();ctx.arc(ppx,ppy,2.5,0,Math.PI*2);
+    ctx.fillStyle='rgba(249,115,22,0.5)';ctx.fill();
+  }
+
+  // Horizon de Rindler (entre les deux)
+  var horizX=W/2;
+  ctx.beginPath();ctx.moveTo(horizX,30);ctx.lineTo(horizX,H-30);
+  ctx.strokeStyle='rgba(249,115,22,.5)';ctx.lineWidth=2;ctx.setLineDash([8,5]);ctx.stroke();ctx.setLineDash([]);
+  tx('Horizon de Rindler',horizX,24,'rgba(249,115,22,.65)',10);
+
+  // Connexion holographique
+  ctx.beginPath();ctx.setLineDash([3,3]);
+  ctx.moveTo(inx+14,iny);ctx.lineTo(horizX,iny);
+  ctx.strokeStyle='rgba(52,211,153,.3)';ctx.lineWidth=1;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(horizX,iny);ctx.lineTo(acx-14,acy);
+  ctx.strokeStyle='rgba(249,115,22,.3)';ctx.stroke();ctx.setLineDash([]);
+
+  // Lien avec brisure de symétrie
+  var bx=290,by=50,bw=320,bh=110;
+  ctx.fillStyle='rgba(16,16,28,.75)';ctx.fillRect(bx,by,bw,bh);
+  tx('Brisure de symétrie de Poincaré',bx+bw/2,by+14,'rgba(129,140,248,.7)',11);
+  tx('Symétrie intact  →  vide universel',bx+bw/2,by+32,'rgba(52,211,153,.6)',10);
+  tx('Symétrie brisée (accélération) →',bx+bw/2,by+48,'rgba(249,115,22,.6)',10);
+  tx('vide peuplé de particules à T_U',bx+bw/2,by+64,'rgba(249,115,22,.6)',10);
+  tx('Analogue : vide de Higgs vs. vide vrai',bx+bw/2,by+82,'rgba(129,140,248,.45)',9);
+  tx('(notion de vide dépend de l\'observateur)',bx+bw/2,by+96,'rgba(129,140,248,.38)',9);
+
+  // Double puits analogue
+  var dby=H-130,dbx=120,dbw=W-240;
+  ctx.fillStyle='rgba(16,16,28,.6)';ctx.fillRect(dbx,dby,dbw,100);
+  tx('Formule de Hawking-Unruh : T = ℏ·(a ou κ)/(2πck_B)',dbx+dbw/2,dby+16,'rgba(129,140,248,.65)',10);
+  tx('κ = gravité de surface = c⁴/(4GM)  →  T_H = κ/(2π) en unités naturelles',dbx+dbw/2,dby+34,'rgba(99,102,241,.6)',10);
+  tx('a = accélération propre  →  T_U = a/(2π) en unités naturelles',dbx+dbw/2,dby+52,'rgba(249,115,22,.6)',10);
+  tx('Les deux formules sont identiques : l\'horizon de Rindler est localement',dbx+dbw/2,dby+70,'rgba(150,150,170,.55)',10);
+  tx('équivalent à l\'horizon des événements (principe d\'équivalence d\'Einstein)',dbx+dbw/2,dby+84,'rgba(150,150,170,.5)',10);
+
+  tx('La notion de vide est relative à l\'état de mouvement — brisure de la symétrie de Poincaré',W/2,H-10,'rgba(129,140,248,.4)',10);
+}
+
+function loop(){
+  ctx.clearRect(0,0,W,H);frame++;
+  if(mode===0) scene0();
+  else if(mode===1) scene1();
+  else if(mode===2) scene2();
+  else if(mode===3) scene3();
+  else scene4();
+  requestAnimationFrame(loop);
+}
+loop();
+})();
+</script>
+</div>
+
+<!-- ══ MODULE 4 ══ -->
+<div id="screen-p4" class="screen">
+<h1>Complémentarité — Holographie — ER = EPR</h1>
+<p class="sub">Trois révolutions conceptuelles sur l'information, l'espace-temps et l'intrication quantique.</p>
+
+<div class="tabs">
+  <button class="tab on" data-m="0">① Complémentarité</button>
+  <button class="tab" data-m="1">② Principe holographique</button>
+  <button class="tab" data-m="2">③ AdS/CFT</button>
+  <button class="tab" data-m="3">④ ER = EPR</button>
+  <button class="tab" data-m="4">⑤ Synthèse</button>
+</div>
+<canvas id="cv_p4" width="900" height="480"></canvas>
+<div class="desc" id="desc_p4"></div>
+<div class="ctrl" id="ctrl_p4"></div>
+
+<script>
+(function(){
+var cv=document.getElementById('cv_p4'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+var mode=0,frame=0,entangle=0.5,mass=50;
+
+var DESCS=[
+  'Complémentarité de Susskind (1993) : l\'observateur distant voit l\'information revenir dans le rayonnement de Hawking. L\'observateur en chute libre franchit l\'horizon sans rien ressentir. Les deux descriptions sont correctes — mais leurs régions causales sont disjointes. Personne ne peut vérifier les deux simultanément : le no-cloning quantique interdit de lire deux copies du même état.',
+  'Principe holographique (\'t Hooft & Susskind, 1993) : S = A/(4l²_P). Le contenu en information d\'un volume est proportionnel à son aire, non à son volume. Un bit par zone de Planck sur la surface frontière. La réalité 3D est encodée sur une surface 2D — exactement comme un hologramme optique encode une image 3D sur un film 2D.',
+  'Correspondance AdS/CFT (Maldacena, 1997) : une théorie des cordes dans un espace anti-de Sitter à 5 dimensions (avec gravité) est exactement équivalente à une théorie des champs conforme sans gravité sur sa frontière à 4 dimensions. Dualité complète : un même calcul peut être fait des deux côtés. La gravité dans le volume = physique quantique sur le bord.',
+  'ER = EPR (Maldacena & Susskind, 2013) : deux particules intriquées (EPR) sont reliées par un ver d\'Einstein-Rosen (ER) microscopique. L\'intrication quantique et la connexion géométrique de l\'espace-temps sont la même chose. Le curseur contrôle le degré d\'intrication — observer comment la géométrie du ver évolue.',
+  'Synthèse : l\'information, l\'intrication et la géométrie de l\'espace-temps sont trois facettes du même objet. L\'espace-temps émerge de l\'intrication quantique. Les îles quantiques (Penington & Almheiri, 2019) formalisent comment l\'information sort d\'un trou noir via des structures topologiques non triviales — exactement les invariants topologiques du reste de ce document.'
+];
+
+document.querySelectorAll('#screen-p4 .tab').forEach(function(b){
+  b.addEventListener('click',function(){
+    mode=parseInt(b.dataset.m);frame=0;
+    document.querySelectorAll('#screen-p4 .tab').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    document.getElementById('desc_p4').textContent=DESCS[mode];
+    buildCtrl();
+  });
+});
+document.getElementById('desc_p4').textContent=DESCS[0];
+
+function buildCtrl(){
+  var c=document.getElementById('ctrl_p4');
+  if(mode===0){
+    c.innerHTML='<span>Masse trou noir</span><input type="range" id="ms" min="10" max="90" value="50"><span class="v" id="msv">50 M☉</span>';
+    document.getElementById('ms').oninput=function(){mass=+this.value;document.getElementById('msv').textContent=mass+' M☉';};
+  } else if(mode===3){
+    c.innerHTML='<span>Intrication EPR</span><input type="range" id="en" min="0" max="100" value="50"><span class="v" id="env">50%</span>';
+    document.getElementById('en').oninput=function(){entangle=this.value/100;document.getElementById('env').textContent=Math.round(entangle*100)+'%';};
+  } else {
+    c.innerHTML='';
+  }
+}
+buildCtrl();
+
+function tx(t,x,y,col,sz,al){
+  ctx.fillStyle=col||'rgba(150,150,160,.7)';
+  ctx.font=(sz||11)+'px Arial,sans-serif';
+  ctx.textAlign=al||'center';
+  ctx.fillText(t,x,y);
+}
+
+// ── SCENE 0 : Complémentarité ──────────────────────────────────
+function scene0(){
+  ctx.fillStyle='#05050c';ctx.fillRect(0,0,W,H);
+  var T=frame*.014;
+
+  // Trou noir gauche
+  var BHx=260,BHy=H/2,r=mass*0.55+18;
+  // Étoiles
+  for(var i=0;i<80;i++){var sx=((i*137.5)%1)*W,sy=((i*91.3)%1)*H;ctx.fillStyle='rgba(255,255,255,'+(0.06+0.14*((i*53)%1))+')';ctx.beginPath();ctx.arc(sx,sy,.6,0,Math.PI*2);ctx.fill();}
+
+  // Disque
+  var grad=ctx.createRadialGradient(BHx,BHy,r,BHx,BHy,r*2.8);
+  grad.addColorStop(0,'rgba(249,115,22,0)');grad.addColorStop(0.25,'rgba(249,115,22,.45)');grad.addColorStop(0.7,'rgba(245,158,11,.15)');grad.addColorStop(1,'rgba(245,158,11,0)');
+  ctx.save();ctx.scale(1,0.28);ctx.beginPath();ctx.arc(BHx,BHy/0.28,r*2.8,0,Math.PI*2);ctx.fillStyle=grad;ctx.fill();ctx.restore();
+
+  // Trou noir
+  ctx.beginPath();ctx.arc(BHx,BHy,r,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();
+  ctx.beginPath();ctx.arc(BHx,BHy,r,0,Math.PI*2);ctx.strokeStyle='rgba(129,140,248,.55)';ctx.lineWidth=2;ctx.stroke();
+
+  // ── Observateur distant (droite haute) ──
+  var obs1x=600,obs1y=90;
+  ctx.beginPath();ctx.arc(obs1x,obs1y,7,0,Math.PI*2);ctx.fillStyle='#34d399';ctx.fill();
+  tx('Observateur distant',obs1x+12,obs1y-2,'rgba(52,211,153,.8)',10,'left');
+  tx('Voit : information → Hawking',obs1x+12,obs1y+10,'rgba(52,211,153,.6)',9,'left');
+
+  // Rayonnement de Hawking montant vers lui
+  for(var i=0;i<10;i++){
+    var angle=-Math.PI*.5+i*.18-.9;
+    var emitProg=((T*.4+i*.22)%1);
+    var emitR=r+emitProg*200;
+    var epx=BHx+Math.cos(angle)*emitR,epy=BHy+Math.sin(angle)*emitR;
+    if(epx>0&&epx<W&&epy>0&&epy<H){
+      ctx.beginPath();ctx.arc(epx,epy,1.8,0,Math.PI*2);
+      ctx.fillStyle='rgba(52,211,153,'+(0.8*(1-emitProg))+')';ctx.fill();
+    }
+  }
+
+  // ── Observateur en chute libre (droite basse) ──
+  var obs2x=600,obs2y=310;
+  var fallProg=(T*.14)%1;
+  var fobsx=BHx+r*1.8+(obs2x-BHx-r*1.8)*(1-fallProg);
+  var fobsy=BHy+(obs2y-BHy)*(1-fallProg)+Math.sin(fallProg*Math.PI)*30;
+  ctx.beginPath();ctx.arc(fobsx,fobsy,7,0,Math.PI*2);ctx.fillStyle='#f97316';ctx.fill();
+  if(fobsx>BHx-r+10){
+    tx('Observateur en chute',obs2x+12,obs2y-2,'rgba(249,115,22,.8)',10,'left');
+    tx('Franchit horizon : rien',obs2x+12,obs2y+10,'rgba(249,115,22,.6)',9,'left');
+    tx('d\'anormal ressenti',obs2x+12,obs2y+21,'rgba(249,115,22,.6)',9,'left');
+  }
+
+  // Frontière causale (ligne pointillée entre les deux zones)
+  ctx.beginPath();ctx.moveTo(BHx+r+5,30);ctx.lineTo(BHx+r+5,H-30);
+  ctx.strokeStyle='rgba(245,158,11,.4)';ctx.lineWidth=1.5;ctx.setLineDash([6,5]);ctx.stroke();ctx.setLineDash([]);
+  tx('Horizon causal',BHx+r+5,12,'rgba(245,158,11,.55)',9);
+  tx('(régions disjointes)',BHx+r+5,22,'rgba(245,158,11,.42)',9);
+
+  // No-cloning
+  var ncx=50,ncy=340,ncw=190,nch=50;
+  ctx.fillStyle='rgba(14,14,26,.8)';ctx.fillRect(ncx,ncy,ncw,nch);
+  tx('No-cloning quantique',ncx+ncw/2,ncy+14,'rgba(129,140,248,.7)',10);
+  tx('2 copies → jamais lisibles',ncx+ncw/2,ncy+28,'rgba(129,140,248,.55)',9);
+  tx('simultanément → pas de paradoxe',ncx+ncw/2,ncy+41,'rgba(129,140,248,.45)',9);
+
+  tx('Deux descriptions correctes — aucun observateur ne peut les vérifier ensemble — aucune contradiction',W/2,H-10,'rgba(129,140,248,.42)',10);
+}
+
+// ── SCENE 1 : Principe holographique ──────────────────────────
+function scene1(){
+  ctx.fillStyle='#05050c';ctx.fillRect(0,0,W,H);
+  var T=frame*.01;
+
+  // Volume 3D (sphère schématique = cercle + ellipse)
+  var CX=290,CY=H/2,RV=130;
+
+  // Remplissage volume (matière à l'intérieur)
+  for(var i=0;i<180;i++){
+    var angle=Math.random?i/180*Math.PI*2:0,rdot=Math.random?Math.random()*RV*.85:RV*.5;
+    var dx=Math.cos(i/180*Math.PI*2),dy=Math.sin(i/180*Math.PI*2)*.5;
+    var px=CX+dx*(i%17)*7.5,py=CY+dy*(i%17)*7.5;
+    if(Math.sqrt((px-CX)**2+((py-CY)/.55)**2)>RV) continue;
+    ctx.fillStyle='rgba(99,102,241,'+(0.04+0.04*((i*37)%1))+')';
+    ctx.fillRect(px-1,py-1,2,2);
+  }
+
+  // Particules dans le volume
+  for(var i=0;i<22;i++){
+    var a=i/22*Math.PI*2+T*.2,r2=30+((i*47)%1)*80;
+    var px=CX+Math.cos(a)*r2,py=CY+Math.sin(a)*r2*.55;
+    if(Math.sqrt((px-CX)**2+((py-CY)/.55)**2)>RV-8) continue;
+    ctx.beginPath();ctx.arc(px,py,1.8,0,Math.PI*2);ctx.fillStyle='rgba(99,102,241,.5)';ctx.fill();
+  }
+
+  // Surface frontière (ellipse)
+  ctx.beginPath();ctx.ellipse(CX,CY,RV,RV*.55,0,0,Math.PI*2);
+  ctx.strokeStyle='rgba(52,211,153,.8)';ctx.lineWidth=2.5;ctx.stroke();
+
+  // Bits encodés sur la surface
+  var nBits=36;
+  for(var i=0;i<nBits;i++){
+    var a=i/nBits*Math.PI*2;
+    var sx=CX+Math.cos(a)*RV,sy=CY+Math.sin(a)*RV*.55;
+    var bit=(i*7+Math.floor(T*3))%2;
+    ctx.font='9px Arial';ctx.fillStyle=bit?'rgba(52,211,153,.75)':'rgba(129,140,248,.6)';
+    ctx.textAlign='center';ctx.fillText(bit?'1':'0',sx,sy+3);
+  }
+
+  // Flèches de projection
+  for(var i=0;i<6;i++){
+    var a=i/6*Math.PI*2+.5;
+    var r2=40+((i*31)%1)*60;
+    var ix=CX+Math.cos(a)*r2,iy=CY+Math.sin(a)*r2*.55;
+    var sx=CX+Math.cos(a)*RV*.95,sy=CY+Math.sin(a)*RV*.95*.55;
+    ctx.beginPath();ctx.moveTo(ix,iy);ctx.lineTo(sx,sy);
+    ctx.strokeStyle='rgba(245,158,11,.2)';ctx.lineWidth=1;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+  }
+
+  ctx.fillStyle='rgba(5,5,12,.72)';ctx.fillRect(CX-52,CY-14,104,30);
+  tx('Volume 3D',CX,CY,'rgba(129,140,248,.85)',11);
+  tx('(matière, champs)',CX,CY+13,'rgba(129,140,248,.6)',9);
+  tx('Surface frontière 2D',CX,CY-RV*.55-12,'rgba(52,211,153,.75)',10);
+  tx('1 bit / l²_P',CX,CY+RV*.55+14,'rgba(52,211,153,.6)',9);
+
+  // Formule
+  var fx=530,fy=60,fw=330,fh=100;
+  ctx.fillStyle='rgba(14,14,26,.75)';ctx.fillRect(fx,fy,fw,fh);
+  tx('S_BH = A / (4 l²_P)',fx+fw/2,fy+22,'rgba(245,158,11,.85)',13);
+  tx('A = aire de l\'horizon',fx+fw/2,fy+42,'rgba(245,158,11,.6)',10);
+  tx('l_P = √(ℏG/c³) ≈ 1.6×10⁻³⁵ m',fx+fw/2,fy+57,'rgba(245,158,11,.5)',10);
+  tx('S ~ r² / l²_P   (et non r³)',fx+fw/2,fy+74,'rgba(129,140,248,.6)',10);
+  tx('→ information ∝ surface, pas volume',fx+fw/2,fy+89,'rgba(129,140,248,.5)',9);
+
+  // Comparaison hologramme optique
+  var hx=530,hy=180,hw=330,hh=70;
+  ctx.fillStyle='rgba(14,14,26,.7)';ctx.fillRect(hx,hy,hw,hh);
+  tx('Analogie : hologramme optique',hx+hw/2,hy+14,'rgba(129,140,248,.65)',10);
+  tx('Film 2D → image 3D complète',hx+hw/2,hy+29,'rgba(129,140,248,.5)',9);
+  tx('Chaque morceau du film contient',hx+hw/2,hy+43,'rgba(129,140,248,.45)',9);
+  tx('l\'information globale (non locale)',hx+hw/2,hy+57,'rgba(129,140,248,.4)',9);
+
+  // Entropie vs volume classique
+  var ex=530,ey=270,ew=330,eh=110;
+  ctx.fillStyle='rgba(14,14,26,.7)';ctx.fillRect(ex,ey,ew,eh);
+  tx('Entropie classique (gaz) : S ~ V',ex+ew/2,ey+16,'rgba(216,90,48,.6)',10);
+  ctx.beginPath();ctx.moveTo(ex+30,ey+32);ctx.lineTo(ex+ew-30,ey+32);
+  ctx.strokeStyle='rgba(216,90,48,.25)';ctx.lineWidth=1;ctx.stroke();
+  tx('Entropie trou noir : S ~ A',ex+ew/2,ey+50,'rgba(52,211,153,.7)',10);
+  tx('L\'information maximale dans',ex+ew/2,ey+68,'rgba(52,211,153,.5)',9);
+  tx('un volume est bornée par sa surface',ex+ew/2,ey+82,'rgba(52,211,153,.5)',9);
+  tx('→ borne de Bekenstein',ex+ew/2,ey+96,'rgba(52,211,153,.45)',9);
+
+  tx('La 3D est une illusion encodée sur la 2D — l\'univers est un hologramme',W/2,H-10,'rgba(129,140,248,.42)',10);
+}
+
+// ── SCENE 2 : AdS/CFT ──────────────────────────────────────────
+function scene2(){
+  ctx.fillStyle='#05050c';ctx.fillRect(0,0,W,H);
+  var T=frame*.012;
+  var CX=215,CY=H/2;  // décalé à gauche pour ne pas chevaucher le panneau de droite
+
+  // ── Espace AdS (disque de Poincaré) ──
+  var R=155;
+  // Fond AdS (courbure négative = espace hyperbolique)
+  for(var n=1;n<=6;n++){
+    ctx.beginPath();ctx.arc(CX,CY,R*n/6,0,Math.PI*2);
+    ctx.strokeStyle='rgba(99,102,241,'+(0.06+n*.04)+')';ctx.lineWidth=0.5;ctx.stroke();
+  }
+  // Géodésiques hyperboliques
+  for(var i=0;i<12;i++){
+    var a=i/12*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(CX,CY);ctx.lineTo(CX+Math.cos(a)*R,CY+Math.sin(a)*R);
+    ctx.strokeStyle='rgba(99,102,241,.07)';ctx.lineWidth=0.5;ctx.stroke();
+  }
+
+  // Particules dans le bulk (gravitons, cordes)
+  for(var i=0;i<18;i++){
+    var a=i/18*Math.PI*2+T*.15,r2=(20+((i*47)%1)*100);
+    if(r2>R-10) continue;
+    var px=CX+Math.cos(a)*r2,py=CY+Math.sin(a)*r2;
+    ctx.beginPath();ctx.arc(px,py,2,0,Math.PI*2);
+    ctx.fillStyle='rgba(99,102,241,.5)';ctx.fill();
+    // Graviton (boson spin-2 symbolique)
+    if(i%3===0){
+      ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);
+      ctx.strokeStyle='rgba(129,140,248,.35)';ctx.lineWidth=1;ctx.stroke();
+    }
+  }
+
+  // Bord AdS (cercle de la frontière)
+  ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);
+  ctx.strokeStyle='rgba(52,211,153,.9)';ctx.lineWidth=3;ctx.stroke();
+
+  // Opérateurs CFT sur le bord
+  var nOp=24;
+  for(var i=0;i<nOp;i++){
+    var a=i/nOp*Math.PI*2+T*.05;
+    var bx=CX+Math.cos(a)*R,by=CY+Math.sin(a)*R;
+    var phase=Math.sin(a*3+T*1.5);
+    ctx.beginPath();ctx.arc(bx,by,3.5,0,Math.PI*2);
+    ctx.fillStyle='hsla('+(140+phase*40)+',70%,55%,.75)';ctx.fill();
+  }
+
+  // Labels
+  ctx.fillStyle='rgba(5,5,12,.72)';ctx.fillRect(CX-62,CY-20,124,30);
+  tx('Bulk AdS₅',CX,CY-8,'rgba(129,140,248,.85)',11);
+  tx('(gravité + cordes)',CX,CY+6,'rgba(129,140,248,.6)',9);
+  tx('Bord CFT₄',CX,CY-R-22,'rgba(52,211,153,.75)',10);
+  tx('(sans gravité)',CX,CY-R-10,'rgba(52,211,153,.55)',9);
+
+  // Flèches de dualité
+  var arrowX=CX,arrowY1=CY-R+12,arrowY2=CY-15;
+  ctx.beginPath();ctx.moveTo(arrowX-20,arrowY1);ctx.lineTo(arrowX-20,arrowY2);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.moveTo(arrowX+20,arrowY2);ctx.lineTo(arrowX+20,arrowY1);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+  tx('dualité',arrowX,arrowY1+(arrowY2-arrowY1)/2,'rgba(245,158,11,.6)',9);
+
+  // Panneau droit : équivalences
+  var px2=570,py2=25,pw=300,ph=350;
+  ctx.fillStyle='rgba(12,12,22,.8)';ctx.fillRect(px2,py2,pw,ph);
+  tx('Dictionnaire AdS/CFT',px2+pw/2,py2+16,'rgba(245,158,11,.8)',11);
+
+  var rows=[
+    ['Bulk AdS₅','CFT₄ (bord)','rgba(200,200,210,.55)'],
+    ['Gravité','Théorie quantique','rgba(99,102,241,.65)'],
+    ['Graviton','Tenseur énergie-impulsion','rgba(99,102,241,.55)'],
+    ['Champ scalaire ϕ','Opérateur O_Δ','rgba(99,102,241,.5)'],
+    ['Géodésique','Fonction de corrélation','rgba(99,102,241,.45)'],
+    ['Trou noir dans AdS','État thermique CFT','rgba(249,115,22,.65)'],
+    ['Horizon','Entropie d\'intrication','rgba(249,115,22,.6)'],
+    ['Wormhole ER','État intriqué EPR','rgba(52,211,153,.65)'],
+  ];
+  rows.forEach(function(r,i){
+    var ry=py2+34+i*37;
+    if(i>0&&i%2===0){ctx.fillStyle='rgba(99,102,241,.04)';ctx.fillRect(px2+4,ry-14,pw-8,36);}
+    tx(r[0],px2+pw*.28,ry,r[2],9,'center');
+    tx('↔',px2+pw/2,ry,'rgba(245,158,11,.5)',11);
+    tx(r[1],px2+pw*.72,ry,r[2],9,'center');
+    ctx.strokeStyle='rgba(100,100,130,.15)';ctx.lineWidth=.5;
+    ctx.beginPath();ctx.moveTo(px2+6,ry+10);ctx.lineTo(px2+pw-6,ry+10);ctx.stroke();
+  });
+
+  tx('Maldacena 1997 — dualité exacte : même physique, deux langages — gravité = théorie quantique',W/2,H-10,'rgba(129,140,248,.42)',10);
+}
+
+// ── SCENE 3 : ER = EPR ─────────────────────────────────────────
+function scene3(){
+  ctx.fillStyle='#05050c';ctx.fillRect(0,0,W,H);
+  var T=frame*.013;
+  var e=entangle; // 0→1
+
+  // ── Deux trous noirs / particules ──
+  var BH1x=200,BH1y=H/2,BH2x=700,BH2y=H/2;
+  var r=35;
+
+  // Étoiles
+  for(var i=0;i<70;i++){var sx=((i*137.5)%1)*W,sy=((i*91.3)%1)*H;ctx.fillStyle='rgba(255,255,255,'+(0.05+0.12*((i*53)%1))+')';ctx.beginPath();ctx.arc(sx,sy,.6,0,Math.PI*2);ctx.fill();}
+
+  // ── Ver d'Einstein-Rosen (gorge du ver) ──
+  if(e>0.05){
+    var wormW=Math.max(4, e*90);
+    var midX=W/2,midY=H/2;
+    // Tube du ver (espace-temps reliant les deux horizons)
+    var grad=ctx.createLinearGradient(BH1x+r,midY,BH2x-r,midY);
+    grad.addColorStop(0,'rgba(99,102,241,'+(.05+e*.4)+')');
+    grad.addColorStop(0.5,'rgba(129,140,248,'+(.1+e*.35)+')');
+    grad.addColorStop(1,'rgba(99,102,241,'+(.05+e*.4)+')');
+    ctx.beginPath();
+    ctx.moveTo(BH1x+r,midY-wormW/2);
+    ctx.quadraticCurveTo(midX,midY-wormW*1.2,BH2x-r,midY-wormW/2);
+    ctx.lineTo(BH2x-r,midY+wormW/2);
+    ctx.quadraticCurveTo(midX,midY+wormW*1.2,BH1x+r,midY+wormW/2);
+    ctx.closePath();
+    ctx.fillStyle=grad;ctx.fill();
+    ctx.strokeStyle='rgba(129,140,248,'+(.3+e*.4)+')';ctx.lineWidth=1.5;ctx.stroke();
+
+    // Particules traversant le ver (mais ne pouvant pas sortir)
+    for(var i=0;i<5;i++){
+      var prog=((T*.3+i*.28)%1);
+      var tx2=BH1x+r+(BH2x-r-BH1x-r)*prog;
+      var ty2=midY+Math.sin(prog*Math.PI)*wormW*.6*(i%2?1:-1);
+      ctx.beginPath();ctx.arc(tx2,ty2,2.5,0,Math.PI*2);
+      ctx.fillStyle='rgba(245,158,11,'+(0.6*Math.sin(prog*Math.PI))+')';ctx.fill();
+    }
+
+    tx('Ver d\'Einstein-Rosen',midX,midY-wormW/2-10,'rgba(129,140,248,'+(.5+e*.3)+')',10);
+    tx('ER',midX,midY,'rgba(129,140,248,'+(.4+e*.4)+')',14);
+  }
+
+  // Trou noir 1
+  ctx.beginPath();ctx.arc(BH1x,BH1y,r,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();
+  ctx.beginPath();ctx.arc(BH1x,BH1y,r,0,Math.PI*2);ctx.strokeStyle='rgba(129,140,248,.6)';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.arc(BH1x,BH1y,r*1.6,0,Math.PI*2);ctx.strokeStyle='rgba(245,158,11,.2)';ctx.lineWidth=4;ctx.stroke();
+
+  // Trou noir 2
+  ctx.beginPath();ctx.arc(BH2x,BH2y,r,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();
+  ctx.beginPath();ctx.arc(BH2x,BH2y,r,0,Math.PI*2);ctx.strokeStyle='rgba(52,211,153,.6)';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.arc(BH2x,BH2y,r*1.6,0,Math.PI*2);ctx.strokeStyle='rgba(245,158,11,.2)';ctx.lineWidth=4;ctx.stroke();
+
+  // Corrélations EPR (lignes d'intrication au-dessus)
+  var nLines=Math.floor(e*14);
+  for(var i=0;i<nLines;i++){
+    var offset=(i-(nLines-1)/2)*18;
+    var phase=Math.sin(T*1.2+i*.5)*.3;
+    ctx.beginPath();
+    ctx.moveTo(BH1x+r,BH1y-80+offset);
+    ctx.bezierCurveTo(W/3,BH1y-140+offset+phase*20,2*W/3,BH1y-140+offset+phase*20,BH2x-r,BH1y-80+offset);
+    ctx.strokeStyle='rgba(245,158,11,'+(.15+e*.25)+')';ctx.lineWidth=1;ctx.stroke();
+  }
+  if(e>0.1) tx('Intrication EPR',W/2,BH1y-148,'rgba(245,158,11,'+(.4+e*.4)+')',10);
+  if(e>0.1) tx('= ψ⟩ = (|↑↓⟩ - |↓↑⟩)/√2',W/2,BH1y-136,'rgba(245,158,11,'+(.3+e*.3)+')',9);
+
+  // Labels
+  tx('TN₁',BH1x,BH1y+r+16,'rgba(129,140,248,.65)',10);
+  tx('TN₂',BH2x,BH2y+r+16,'rgba(52,211,153,.65)',10);
+
+  // Équation centrale
+  var eq_alpha=0.3+e*.6;
+  ctx.fillStyle='rgba(12,12,22,.8)';ctx.fillRect(W/2-100,H-70,200,52);
+  tx('ER = EPR',W/2,H-50,'rgba(245,158,11,'+eq_alpha+')',16);
+  tx('Intrication = Connexion géométrique',W/2,H-30,'rgba(245,158,11,'+(.4+e*.4)+')',9);
+
+  // Jauge d'intrication
+  var gx=20,gy=H-60,gw=160,gh=42;
+  ctx.fillStyle='rgba(12,12,22,.7)';ctx.fillRect(gx,gy,gw,gh);
+  tx('Intrication',gx+gw/2,gy+13,'rgba(245,158,11,.6)',9);
+  ctx.fillStyle='rgba(14,14,24,.8)';ctx.fillRect(gx+8,gy+20,gw-16,14);
+  ctx.fillStyle='rgba(245,158,11,'+(.4+e*.5)+')';ctx.fillRect(gx+8,gy+20,Math.round((gw-16)*e),14);
+  tx(Math.round(e*100)+'%',gx+gw-10,gy+32,'rgba(245,158,11,.7)',9,'right');
+
+  tx('Maldacena & Susskind 2013 — augmenter l\'intrication crée la connexion géométrique (ver)',W/2,H-10,'rgba(129,140,248,.4)',10);
+}
+
+// ── SCENE 4 : Synthèse ────────────────────────────────────────
+function scene4(){
+  ctx.fillStyle='#05050c';ctx.fillRect(0,0,W,H);
+  var T=frame*.01;
+
+  // Nœuds principaux
+  var nodes=[
+    {x:W/2,    y:52,   label:'Information',sub:'(unitarité MQ)',col:'rgba(245,158,11,.9)',rc:'rgba(245,158,11,.3)',labelAbove:false},
+    {x:155,    y:175,  label:'Intrication',sub:'EPR |ψ⟩',col:'rgba(99,102,241,.9)',rc:'rgba(99,102,241,.3)',labelAbove:false},
+    {x:745,    y:175,  label:'Géométrie',sub:'ER / espace-temps',col:'rgba(52,211,153,.9)',rc:'rgba(52,211,153,.3)',labelAbove:false},
+    {x:155,    y:295,  label:'Holographie',sub:'S = A/4l²_P',col:'rgba(129,140,248,.9)',rc:'rgba(129,140,248,.3)',labelAbove:false},
+    {x:745,    y:295,  label:'Complémentarité',sub:'Susskind 1993',col:'rgba(249,115,22,.9)',rc:'rgba(249,115,22,.3)',labelAbove:false},
+    {x:W/2,    y:410,  label:'Îles quantiques',sub:'Penington & Almheiri',col:'rgba(216,90,48,.85)',rc:'rgba(216,90,48,.3)',labelAbove:true},
+  ];
+
+  // Connexions
+  var edges=[
+    [0,1,'ER=EPR'],[0,2,'ER=EPR'],[1,2,'ER=EPR'],[0,3,'Page curve'],[0,4,'no-cloning'],
+    [1,3,'S_ent=A/4'],[2,4,'horizon'],[1,5,'îles'],[2,5,'topologie'],[3,4,'AdS/CFT'],
+    [3,5,'bulk→bord'],[4,5,'évaporation'],
+  ];
+  edges.forEach(function(e){
+    var n1=nodes[e[0]],n2=nodes[e[1]];
+    var pulse=0.5+0.5*Math.sin(T*1.5+(e[0]+e[1])*.7);
+    ctx.beginPath();ctx.moveTo(n1.x,n1.y);ctx.lineTo(n2.x,n2.y);
+    ctx.strokeStyle='rgba(100,100,140,'+(.08+pulse*.1)+')';ctx.lineWidth=1;ctx.stroke();
+    // Label milieu
+    var mx=(n1.x+n2.x)/2,my=(n1.y+n2.y)/2;
+    tx(e[2],mx,my,'rgba(130,130,160,.38)',8);
+  });
+
+  // Nœuds
+  nodes.forEach(function(n,i){
+    var pulse=0.5+0.5*Math.sin(T*1.2+i*.8);
+    // Halo
+    ctx.beginPath();ctx.arc(n.x,n.y,32+pulse*6,0,Math.PI*2);
+    ctx.strokeStyle=n.rc;ctx.lineWidth=1.5;ctx.stroke();
+    // Cercle principal
+    ctx.beginPath();ctx.arc(n.x,n.y,28,0,Math.PI*2);
+    ctx.fillStyle='rgba(5,5,14,.95)';ctx.fill();
+    ctx.strokeStyle=n.col;ctx.lineWidth=2;ctx.stroke();
+    // Label : sous le cercle sauf si labelAbove
+    // Halo max = 32+6 = 38px — labels démarrent à y+46 (marge 8px)
+    ctx.fillStyle='rgba(5,5,14,.85)';
+    if(n.labelAbove){
+      ctx.fillRect(n.x-56,n.y-84,112,30);
+      tx(n.label,n.x,n.y-70,n.col,10);
+      tx(n.sub,n.x,n.y-58,'rgba(160,160,175,.65)',8);
+    } else {
+      ctx.fillRect(n.x-50,n.y+46,100,30);
+      tx(n.label,n.x,n.y+60,n.col,10);
+      tx(n.sub,n.x,n.y+72,'rgba(160,160,175,.65)',8);
+    }
+  });
+
+  // Équation centrale
+  var eqY=245;
+  ctx.fillStyle='rgba(10,10,20,.9)';ctx.fillRect(W/2-130,eqY-22,260,52);
+  ctx.strokeStyle='rgba(245,158,11,.3)';ctx.lineWidth=1;ctx.strokeRect(W/2-130,eqY-22,260,52);
+  tx('Espace-temps = Intrication',W/2,eqY-4,'rgba(245,158,11,.85)',12);
+  tx('Géométrie ← → Corrélations quantiques',W/2,eqY+13,'rgba(245,158,11,.6)',10);
+  tx('Gravité émergente',W/2,eqY+26,'rgba(129,140,248,.5)',9);
+
+  ctx.fillStyle='rgba(5,5,14,.88)';ctx.fillRect(0,H-18,W,18);
+  tx('Les structures topologiques des sections 1–9 encodent la même réalité que l\'espace-temps quantique',W/2,H-5,'rgba(129,140,248,.6)',10);
+}
+
+function loop(){
+  ctx.clearRect(0,0,W,H);frame++;
+  if(mode===0) scene0();
+  else if(mode===1) scene1();
+  else if(mode===2) scene2();
+  else if(mode===3) scene3();
+  else scene4();
+  requestAnimationFrame(loop);
+}
+loop();
+})();
+</script>
+</div>
+
+<script>
+// ── Navigation principale ──────────────────────────────────────
+var _activeRAFs = {};  // store RAF ids per screen to cancel when hidden
+
+function show(id) {
+  // Cacher tous les écrans
+  document.querySelectorAll('.screen').forEach(function(s) {
+    s.classList.remove('active');
+  });
+
+  // Afficher le bon
+  var target = document.getElementById('screen-' + id);
+  if (target) target.classList.add('active');
+
+  // Bouton retour : caché sur l'accueil, visible ailleurs
+  var btn = document.getElementById('back-btn');
+  btn.style.display = (id === 'home') ? 'none' : 'block';
+
+  // Scroll en haut
+  window.scrollTo(0, 0);
+}
+
+// Init : afficher accueil
+show('home');
+</script>
+
+</body>
+</html>
