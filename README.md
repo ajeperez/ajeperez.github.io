@@ -65,7 +65,8 @@ This repository contains the personal website gathering the complete corpus of *
 | PEREZ 2026b | Personal reflections on the geometry of abstract spaces | [10.5281/zenodo.20098372](https://doi.org/10.5281/zenodo.20098372) |
 | PEREZ 2026c | Unus Mundus as H_φ (main document) | [10.5281/zenodo.20098274](https://doi.org/10.5281/zenodo.20098274) |
 | PEREZ 2026d | Analysis report — Prediction P2 | [10.5281/zenodo.20113396](https://doi.org/10.5281/zenodo.20113396) |
-| PEREZ 2026e | Understanding the H_φ theory (popular science) | [10.5281/zenodo.20098853](https://doi.org/10.5281/zenodo.20098853) |
+| PEREZ 2026e | Rapport d'analyse — Prédiction P3 | [10.5281/zenodo.20113396](https://doi.org/10.5281/zenodo.20170931) |
+| PEREZ 2026f | Comprendre la théorie H_φ (vulgarisation) | [10.5281/zenodo.20098853](https://doi.org/10.5281/zenodo.20098853) |
 
 ### Disclaimer
 
