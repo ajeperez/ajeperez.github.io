@@ -89,8 +89,8 @@ html,body{min-height:100%;background:#05050d;color:#e2dfd6;overflow-x:hidden}
       <p class="card-num">Module 02</p>
       <h3 class="card-title">Pièces manquantes — H_φ</h3>
       <p class="card-desc">Cantor → H_φ — Klein V4 → H₂ — Kramers → synchronicité —
-      Berry → π₁(H_φ) — T⁴ → H_φ — Synthèse — Test P2 φ-MEA.<br><br>
-      <span style="color:rgba(52,211,153,.45);font-size:12px;">7 onglets · données publiées</span></p>
+      Berry → π₁(H_φ) — T⁴ → H_φ — Synthèse — Test P2 φ-MEA — Test P3 cosmologie.<br><br>
+      <span style="color:rgba(52,211,153,.45);font-size:12px;">9 onglets · données publiées</span></p>
       <span class="card-arrow">→</span>
     </div>
     <div class="card gold full">
@@ -102,6 +102,7 @@ html,body{min-height:100%;background:#05050d;color:#e2dfd6;overflow-x:hidden}
         <a href="https://doi.org/10.5281/zenodo.20098372" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098372</a> — Réflexions personnelles sur la géométrie des espaces abstraits<br>
         <a href="https://doi.org/10.5281/zenodo.20098274" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098274</a> — Unus Mundus comme H_φ<br>
         <a href="https://doi.org/10.5281/zenodo.20113396" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20113396</a> — Rapport d'analyse Prédiction P2<br>
+        <a href="https://doi.org/10.5281/zenodo.20170931" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20170931</a> — Rapport d'analyse Prédiction P3 (chap. 5 &amp; 8)<br>
         <a href="https://doi.org/10.5281/zenodo.20098853" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098853</a> — Comprendre la théorie H_φ (vulgarisation)<br><br>
         <span style="color:#333340;font-size:12px;">Travail spéculatif · Non peer-reviewed · Toutes affirmations marquées comme hypothèses</span>
       </p>
@@ -731,6 +732,7 @@ loop();
   <button class="tab" data-m="5">⑥ Synthèse des connexions</button>
   <button class="tab" data-m="6">⑦ Test P2 — φ-MEA</button>
   <button class="tab" data-m="7">⑧ Test P2 v1.0.0 — données brutes</button>
+  <button class="tab" data-m="8">⑨ Test P3 — chap. 5 &amp; 8 (cosmologie)</button>
 </div>
 <canvas id="pm-cv" width="900" height="700"></canvas>
 <div class="desc" id="pm-desc"></div>
@@ -742,34 +744,44 @@ var cv=document.getElementById('pm-cv'),ctx=cv.getContext('2d'),W=cv.width,H=cv.
 var mode=0,frame=0,phi=(1+Math.sqrt(5))/2;
 var sliderA=0.5;
 var vueP2=1; // vue active du module 2 onglet 8 (1=précision, 2=universalité, 3=stabilité, 4=développement, 0=neutre)
+var vueP3=1; // vue active du module 2 onglet 9 (1=§8.1 CMB, 2=§8.3 Hubble, 3=§8.2 w(z), 4=§5 Fibonacci/Λ(Ψ))
 
-// Gestionnaire de clic sur le canvas — actif uniquement en mode 7 (onglet 8)
-// Zones cliquables correspondant aux 4 panneaux (cohérent avec scene7)
+// Gestionnaire de clic sur le canvas — actif en mode 7 (onglet 8) et mode 8 (onglet 9)
+// Zones cliquables correspondant aux 4 panneaux
 cv.addEventListener('click',function(e){
-  if(mode!==7) return;
+  if(mode!==7 && mode!==8) return;
   var rect=cv.getBoundingClientRect();
   var scaleX=W/rect.width, scaleY=H/rect.height;
   var x=(e.clientX-rect.left)*scaleX;
   var y=(e.clientY-rect.top)*scaleY;
   // Panneau 1 : x=20-440, y=40 jusqu'à H-60
-  if(x>=20 && x<=440 && y>=40 && y<=H-60) vueP2=1;
+  var p1=(x>=20 && x<=440 && y>=40 && y<=H-60);
   // Panneau 2 : x=460-880, y=40-245
-  else if(x>=460 && x<=880 && y>=40 && y<=245) vueP2=2;
+  var p2=(x>=460 && x<=880 && y>=40 && y<=245);
   // Panneau 3 : x=460-880, y=265-420
-  else if(x>=460 && x<=880 && y>=265 && y<=420) vueP2=3;
-  // Panneau 4 : x=460-880, y=440-610
-  else if(x>=460 && x<=880 && y>=440 && y<=610) vueP2=4;
-  // Hors panneau : on ne change rien
-  // Mettre à jour l'indicateur dans la zone ctrl
-  var sav=document.getElementById('pm-sav');
-  if(sav){
-    var labels=['','① précision','② universalité','③ stabilité','④ développement'];
-    sav.textContent=labels[vueP2]||'';
+  var p3=(x>=460 && x<=880 && y>=265 && y<=420);
+  // Panneau 4 : étendu en mode 8 (P3) pour aligner avec bas du bloc gauche
+  var p4ymax=(mode===8)?640:610;
+  var p4=(x>=460 && x<=880 && y>=440 && y<=p4ymax);
+  if(mode===7){
+    if(p1) vueP2=1; else if(p2) vueP2=2; else if(p3) vueP2=3; else if(p4) vueP2=4;
+    var sav=document.getElementById('pm-sav');
+    if(sav){
+      var labels=['','① précision','② universalité','③ stabilité','④ développement'];
+      sav.textContent=labels[vueP2]||'';
+    }
+  } else if(mode===8){
+    if(p1) vueP3=1; else if(p2) vueP3=2; else if(p3) vueP3=3; else if(p4) vueP3=4;
+    var sav=document.getElementById('pm-sav');
+    if(sav){
+      var labels=['','① §8.1 CMB','② §8.3 Hubble×ρ★','③ §8.2 w(z)','④ §5 Fibonacci & Λ(Ψ)'];
+      sav.textContent=labels[vueP3]||'';
+    }
   }
 });
-// Curseur pointer en mode 7 quand on survole un panneau
+// Curseur pointer en mode 7 ou 8 quand on survole un panneau
 cv.addEventListener('mousemove',function(e){
-  if(mode!==7){ cv.style.cursor='default'; return; }
+  if(mode!==7 && mode!==8){ cv.style.cursor='default'; return; }
   var rect=cv.getBoundingClientRect();
   var scaleX=W/rect.width, scaleY=H/rect.height;
   var x=(e.clientX-rect.left)*scaleX;
@@ -777,7 +789,8 @@ cv.addEventListener('mousemove',function(e){
   var inP1=(x>=20&&x<=440&&y>=40&&y<=H-60);
   var inP2=(x>=460&&x<=880&&y>=40&&y<=245);
   var inP3=(x>=460&&x<=880&&y>=265&&y<=420);
-  var inP4=(x>=460&&x<=880&&y>=440&&y<=610);
+  var inP4ymax=(mode===8)?640:610;
+  var inP4=(x>=460&&x<=880&&y>=440&&y<=inP4ymax);
   cv.style.cursor=(inP1||inP2||inP3||inP4)?'pointer':'default';
 });
 
@@ -787,7 +800,10 @@ var DESCS=[
   "§5.2 PEREZ (2026c) — La loi de Kramers (1940) k = (ω₀·ω_b)/(2πγ)·exp(−ΔV/k_BT) et la fréquence de synchronicité f_sync = |⟨ψ₁|P_k|ψ₂⟩|²/τ_φ ont la même structure formelle. La correspondance ΔV/k_BT ↔ d_φ(H_k,H_{k'})/τ_φ dérive τ_φ ≈ φ² t_P depuis des quantités physiques définies.",
   "§7.1 PEREZ (2026c) — La connexion de Berry A_n = i⟨n|∇_R|n⟩ et son premier nombre de Chern sont l'invariant topologique de π₁(H_φ) = ℤ_φ. Un cycle archétypal H_k→H_{k+1}→H_k acquiert une phase de Berry = 2π/φ. Prédiction testable : phase quantifiée en unités de 2π/φ dans un condensat de Bose-Einstein d'aspect ratio φ.",
   "§2.2–2.3 PEREZ (2026c) — Le tore T⁴ = S¹×S¹×S¹×S¹ avec π₁(T⁴)=ℤ⁴ admet un homomorphisme vers π₁(H_φ)=ℤ_φ : (n₁,n₂,n₃,n₄) ↦ n₁+n₂φ+n₃φ²+n₄φ³. T⁴ est la compactification de H_φ à 4 dimensions. Les 4 premiers niveaux de Fibonacci F₁=F₂=1, F₃=2, F₄=3 correspondent aux 4 cercles de T⁴.",
-  "Synthèse complète des 5 connexions entre les structures de PEREZ (2026c) et H_φ. Chaque structure mathématique du document de réflexion — Cantor, V4, Kramers, Berry, T⁴ — est une projection de H_φ dans l'espace ordinaire. La prédiction la plus directement testable est la phase de Berry quantifiée en 2π/φ (connexion ④)."
+  "Synthèse complète des 5 connexions entre les structures de PEREZ (2026c) et H_φ. Chaque structure mathématique du document de réflexion — Cantor, V4, Kramers, Berry, T⁴ — est une projection de H_φ dans l'espace ordinaire. La prédiction la plus directement testable est la phase de Berry quantifiée en 2π/φ (connexion ④).",
+  "Test P2 préliminaire (PEREZ 2026c, §5.2) — Analyse de 15 ratios de fréquences caractéristiques sur 8 études neurophysiologiques (2013–2024). 93% des ratios à moins de 20% d'un niveau φⁿ, χ²=62.5, p<0.0001 contre uniformité. Concentration sur φ⁸ et φ⁹. Voie expérimentale conclusive : MEA CMOS (Maxwell Biosystems, Zurich).",
+  "Test P2 v1.0.0 (PEREZ 2026d) — Validation sur 24 préparations LFP (3275 CF, χ²=2475.61, p<0.001). Quatre vues : ① précision (record MO extra φ⁷→φ⁸ à 0.003%), ② universalité (Fisher 100% sur φ⁶/φ⁷/φ⁸ pour HO/MO/CS), ③ stabilité (HO3 sur 17 jours, CV=0.3%), ④ trajectoire développementale (P13D→P45D→adulte). Cliquez sur un panneau pour le mettre en focus.",
+  "Test P3 (PEREZ 2026e) — Validation empirique des chapitres 5 et 8 du corpus 2026c sur Planck PR4, DESI DR2, Pantheon+SH0ES et Gaia DR3. §8.1 (anisotropie CMB) validée : 0/1000 sims ΛCDM, match grille §10.6 sur axe 2 T⁴ à 0.53%. §8.3 (tension Hubble × densité stellaire) validée : Spearman r=−0.60, p<10⁻⁴, robuste à 23 tests. §8.2 (variation w(z)) compatible indicativement. §5.2 (Fibonacci) et §5.3–5.4 (Λ(Ψ)) non réfutés. Cliquez sur un panneau pour le mettre en focus."
 ];
 
 document.querySelectorAll('.tab').forEach(function(b){
@@ -818,6 +834,9 @@ function buildCtrl(){
   } else if(mode===7){
     vueP2=1; // initialiser sur vue 1 (précision)
     c.innerHTML='<span style="color:rgba(200,200,220,.55);">Cliquez sur un panneau pour le mettre en focus</span><span class="v" id="pm-sav" style="margin-left:auto;color:#818cf8;">① précision</span>';
+  } else if(mode===8){
+    vueP3=1; // initialiser sur vue 1 (§8.1 CMB)
+    c.innerHTML='<span style="color:rgba(200,200,220,.55);">Cliquez sur un panneau pour le mettre en focus</span><span class="v" id="pm-sav" style="margin-left:auto;color:#34d399;">① §8.1 CMB</span>';
   } else {
     c.innerHTML='';
   }
@@ -1675,6 +1694,349 @@ function scene7(){
   tx('Test P2 v1.0.0 (PEREZ 2026d, doi:10.5281/zenodo.20113396)   ·   24 préparations LFP   ·   3275 CF   ·   χ²=2475.61, p<0.001   ·   N CF dans 20% φⁿ : 2308/3275 (70%)',W/2,H-8,'rgba(129,140,248,.45)',9);
 }
 
+// ── SCENE 8 : Test P3 — chap. 5 & 8 (PEREZ 2026e) ────────────
+// 4 panneaux : §8.1 CMB / §8.3 Hubble×ρ★ / §8.2 w(z) / §5 Fibonacci & Λ(Ψ)
+function scene8(){
+  ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
+  var T=frame*.008;
+  var vue=vueP3;
+  function frameWidth(p){ return (vue===p)?3:1; }
+  function frameAlpha(p){ return (vue===p)?1.0:0.35; }
+  function isFocus(p){ return vue===p; }
+
+  // ═══ PANNEAU GAUCHE : §8.1 CMB Planck PR4 — signal fort & match §10.6 ═══
+  var P1x=20, P1y=40, P1w=420, P1h=H-100;
+  ctx.strokeStyle='rgba(52,211,153,'+frameAlpha(1)+')';ctx.lineWidth=frameWidth(1);ctx.strokeRect(P1x,P1y,P1w,P1h);
+  if(isFocus(1)){
+    var fp=0.6+0.4*Math.sin(T*2);
+    ctx.beginPath();ctx.arc(P1x+P1w-12,P1y+12,4,0,Math.PI*2);
+    ctx.fillStyle='rgba(52,211,153,'+fp+')';ctx.fill();
+  }
+  tx('① §8.1 Anisotropie CMB — Planck PR4 + GAL080',P1x+P1w/2,P1y+14,'rgba(52,211,153,.9)',12);
+  tx('Commander · 0/1000 sims ΛCDM · match §10.6 à 0.53%',P1x+P1w/2,P1y+28,'rgba(52,211,153,.55)',9);
+
+  // --- Sous-panneau A : distribution ΛCDM vs observation (histogramme stylisé)
+  var hpX=P1x+30, hpY=P1y+50, hpW=P1w-60, hpH=130;
+  tx('Distribution ΛCDM de |A(SGP)| sur 1000 sims vs observations',hpX+hpW/2,hpY-2,'rgba(200,200,220,.65)',9);
+  // Axe horizontal de 0 à 0.25 (couvre observation 0.2019)
+  var ampMin=0, ampMax=0.25;
+  function ampX(a){ return hpX+hpW*(a-ampMin)/(ampMax-ampMin); }
+  // Bande ΛCDM (mean=0.018, std=0.014, max=0.087) — gaussienne stylisée
+  var gradH=ctx.createLinearGradient(hpX,hpY,hpX+hpW,hpY);
+  for(var gi=0;gi<60;gi++){
+    var aa=ampMin+(ampMax-ampMin)*gi/60;
+    var mu=0.018, sigma=0.018; // approximation pour visualisation
+    var pdf=Math.exp(-(aa-mu)*(aa-mu)/(2*sigma*sigma));
+    var bx=ampX(aa), bw=hpW/60;
+    var bh=pdf*hpH*0.85;
+    ctx.fillStyle='rgba(120,120,150,'+(0.18+pdf*0.35)+')';
+    ctx.fillRect(bx,hpY+hpH-bh,bw,bh);
+  }
+  // Bord supérieur gaussienne
+  ctx.beginPath();
+  for(var gi2=0;gi2<=120;gi2++){
+    var aa2=ampMin+(ampMax-ampMin)*gi2/120;
+    var pdf2=Math.exp(-(aa2-0.018)*(aa2-0.018)/(2*0.018*0.018));
+    var px2=ampX(aa2), py2=hpY+hpH-pdf2*hpH*0.85;
+    if(gi2===0) ctx.moveTo(px2,py2); else ctx.lineTo(px2,py2);
+  }
+  ctx.strokeStyle='rgba(150,150,180,.6)';ctx.lineWidth=1;ctx.stroke();
+  // Max ΛCDM (0.087)
+  var maxLcdm_x=ampX(0.087);
+  ctx.beginPath();ctx.moveTo(maxLcdm_x,hpY+10);ctx.lineTo(maxLcdm_x,hpY+hpH);
+  ctx.strokeStyle='rgba(180,180,200,.55)';ctx.lineWidth=1;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+  tx('max ΛCDM = 0.087',maxLcdm_x+2,hpY+8,'rgba(180,180,200,.7)',8,'left');
+  // SEVEM observation (0.047)
+  var sevX=ampX(0.047);
+  var pulseS=0.7+0.3*Math.sin(T*1.8);
+  ctx.beginPath();ctx.arc(sevX,hpY+hpH-22,6,0,Math.PI*2);
+  ctx.fillStyle='rgba(245,158,11,'+(0.85*pulseS)+')';ctx.fill();
+  tx('SEVEM 0.047',sevX-10,hpY+hpH-30,'rgba(245,158,11,.85)',8,'right');
+  // Commander observation (0.2019) — vedette
+  var cmdX=ampX(0.2019);
+  var pulseC=0.7+0.3*Math.sin(T*2);
+  ctx.beginPath();ctx.arc(cmdX,hpY+hpH-22,16,0,Math.PI*2);
+  ctx.fillStyle='rgba(52,211,153,'+(0.18*pulseC)+')';ctx.fill();
+  ctx.beginPath();ctx.arc(cmdX,hpY+hpH-22,8,0,Math.PI*2);
+  ctx.fillStyle='rgba(52,211,153,'+(0.95*pulseC)+')';ctx.fill();
+  tx('Commander 0.2019',cmdX,hpY+hpH-36,'rgba(52,211,153,.95)',9);
+  tx('+12.71σ',cmdX,hpY+hpH-48,'rgba(52,211,153,.7)',8);
+  // Axe horizontal
+  ctx.beginPath();ctx.moveTo(hpX,hpY+hpH);ctx.lineTo(hpX+hpW,hpY+hpH);
+  ctx.strokeStyle='rgba(120,120,150,.45)';ctx.lineWidth=1;ctx.stroke();
+  [0,0.05,0.10,0.15,0.20,0.25].forEach(function(v){
+    var px=ampX(v);
+    ctx.beginPath();ctx.moveTo(px,hpY+hpH);ctx.lineTo(px,hpY+hpH+3);
+    ctx.strokeStyle='rgba(120,120,150,.5)';ctx.stroke();
+    tx(v.toFixed(2),px,hpY+hpH+22,'rgba(140,140,170,.55)',8);
+  });
+  tx('|A(SGP)|',hpX+hpW/2,hpY+hpH+34,'rgba(180,180,200,.55)',9);
+
+  // --- Sous-panneau B : Match grille §10.6 (axes T⁴)
+  var mpY=P1y+225, mpH=125;
+  ctx.fillStyle='rgba(8,8,18,.6)';ctx.fillRect(P1x+20,mpY,P1w-40,mpH);
+  ctx.strokeStyle='rgba(245,158,11,.25)';ctx.lineWidth=1;ctx.strokeRect(P1x+20,mpY,P1w-40,mpH);
+  tx('Match grille §10.6 — 3 axes T⁴ §10.5',P1x+P1w/2,mpY+24,'rgba(245,158,11,.85)',10);
+  var axes=[
+    {n:'Axe 1 — SGP↔NGP',     A:0.2019, pred:'k=5 f=2', val:'2/φ⁵=0.180', err:11.94},
+    {n:'Axe 2 — Centre↔Anti', A:0.1813, pred:'k=5 f=2', val:'2/φ⁵=0.18034', err:0.53, star:true},
+    {n:'Axe 3 — l=90↔l=270',  A:0.1922, pred:'k=5 f=2', val:'2/φ⁵=0.180', err:6.57}
+  ];
+  axes.forEach(function(a,i){
+    var ry=mpY+48+i*24;
+    var col=a.star?'rgba(245,158,11,':'rgba(180,180,200,';
+    var op=a.star?0.95:0.65;
+    var pulse=a.star?(0.75+0.25*Math.sin(T*2)):1;
+    tx(a.n,P1x+30,ry+4,col+(0.85*op)+')',10,'left');
+    tx('|A|='+a.A,P1x+200,ry+4,col+(0.85*op*pulse)+')',9);
+    tx(a.err.toFixed(2)+'%',P1x+P1w-32,ry+4,col+(op*pulse)+')',10,'right');
+    if(a.star){
+      ctx.beginPath();ctx.arc(P1x+30-12,ry+4,3,0,Math.PI*2);
+      ctx.fillStyle='rgba(245,158,11,'+pulse+')';ctx.fill();
+    }
+  });
+
+  // --- Sous-panneau C : Convergence littérature CMB (deux décennies)
+  var ltY=P1y+360, ltH=145;
+  ctx.fillStyle='rgba(8,8,18,.6)';ctx.fillRect(P1x+20,ltY,P1w-40,ltH);
+  ctx.strokeStyle='rgba(129,140,248,.25)';ctx.lineWidth=1;ctx.strokeRect(P1x+20,ltY,P1w-40,ltH);
+  tx('Convergence littérature — 20 ans d\'anomalies hémisphériques',P1x+P1w/2,ltY+14,'rgba(129,140,248,.85)',10);
+  var lits=[
+    {y:'2005',ref:'Land & Magueijo',l:225,b:-27},
+    {y:'2007',ref:'Eriksen (WMAP3)',l:225,b:-27},
+    {y:'2009',ref:'Hansen (WMAP5)',l:226,b:-27},
+    {y:'2016',ref:'Planck XVI (PR2)',l:227,b:-27},
+    {y:'2020',ref:'Planck IV (PR3)',l:227,b:-27},
+    {y:'2023',ref:'Vielva (PR4)',l:230,b:-30},
+    {y:'2026',ref:'★ Présent (PR4 GAL080)',l:243,b:-45,star:true}
+  ];
+  lits.forEach(function(L,i){
+    var ry=ltY+32+i*15;
+    var col=L.star?'rgba(245,158,11,':'rgba(180,180,200,';
+    var op=L.star?0.95:0.65;
+    var pulse=L.star?(0.75+0.25*Math.sin(T*2)):1;
+    tx(L.y,P1x+34,ry+3,col+(op*pulse)+')',9,'left');
+    tx(L.ref,P1x+72,ry+3,col+(op*pulse)+')',9,'left');
+    tx('(l≈'+L.l+'°, b≈'+L.b+'°)',P1x+P1w-32,ry+3,col+(op*pulse)+')',9,'right');
+  });
+
+  // --- Bandeau verdict bas du panneau 1
+  var vY=P1y+P1h-72, vH=60;
+  ctx.fillStyle='rgba(52,211,153,.08)';ctx.fillRect(P1x+20,vY,P1w-40,vH);
+  ctx.strokeStyle='rgba(52,211,153,.35)';ctx.lineWidth=1;ctx.strokeRect(P1x+20,vY,P1w-40,vH);
+  tx('★ Match §10.6 sur axe 2 T⁴ : 2/φ⁵ = 0.18034  vs  obs = 0.1813',P1x+P1w/2,vY+14,'rgba(245,158,11,.9)',10);
+  tx('Direction (l=243°, b=−45°) confirmée au pixel près par SEVEM',P1x+P1w/2,vY+30,'rgba(52,211,153,.85)',9);
+  tx('§8.1 validée — direction · intensité · signature §10.6',P1x+P1w/2,vY+48,'rgba(52,211,153,.85)',10);
+
+  // ═══ PANNEAU DROIT-HAUT : §8.3 Tension Hubble × densité Gaia ═══
+  var P2x=460, P2y=40, P2w=420, P2h=205;
+  ctx.strokeStyle='rgba(129,140,248,'+frameAlpha(2)+')';ctx.lineWidth=frameWidth(2);ctx.strokeRect(P2x,P2y,P2w,P2h);
+  if(isFocus(2)){
+    var fp2=0.6+0.4*Math.sin(T*2);
+    ctx.beginPath();ctx.arc(P2x+P2w-12,P2y+12,4,0,Math.PI*2);
+    ctx.fillStyle='rgba(129,140,248,'+fp2+')';ctx.fill();
+  }
+  tx('② §8.3 Tension Hubble × densité stellaire',P2x+P2w/2,P2y+14,'rgba(129,140,248,.9)',12);
+  tx('42 hôtes SH0ES × Gaia DR3 · Spearman r = −0.60, p = 2.6×10⁻⁵',P2x+P2w/2,P2y+28,'rgba(129,140,248,.55)',9);
+
+  // Scatter stylisé : 42 hôtes SH0ES — H_0 local vs densité Gaia
+  var spX=P2x+20, spY=P2y+45, spW=P2w-200, spH=P2h-80;
+  // Axes
+  ctx.beginPath();ctx.moveTo(spX,spY);ctx.lineTo(spX,spY+spH);ctx.lineTo(spX+spW,spY+spH);
+  ctx.strokeStyle='rgba(120,120,150,.45)';ctx.lineWidth=1;ctx.stroke();
+  tx('densité Gaia →',spX+spW/2,spY+spH+12,'rgba(160,160,180,.55)',8);
+  ctx.save();
+  ctx.translate(spX-14,spY+spH/2);ctx.rotate(-Math.PI/2);
+  ctx.fillStyle='rgba(160,160,180,.55)';ctx.font='8px Arial';ctx.textAlign='center';
+  ctx.fillText('H₀ local →',0,0);
+  ctx.restore();
+  // 42 points stylisés montrant la corrélation négative monotone (Spearman -0.60)
+  // distribution : densité basse → H_0 haut, densité haute → H_0 bas (sature)
+  var seed=12345;
+  function rnd(){ seed=(seed*9301+49297)%233280; return seed/233280; }
+  for(var pi=0;pi<42;pi++){
+    var u=pi/41; // 0..1 densité normalisée
+    // Tendance Spearman -0.60 : courbe légèrement non-linéaire
+    var trend=1-Math.pow(u,0.7); // de 1 à 0
+    var noise=(rnd()-0.5)*0.45;
+    var v=Math.max(0,Math.min(1,trend+noise));
+    var px=spX+8+u*(spW-16);
+    var py=spY+8+(1-v)*(spH-16);
+    var pulse=0.65+0.35*Math.sin(T*1.2+pi*0.4);
+    ctx.beginPath();ctx.arc(px,py,3.2,0,Math.PI*2);
+    ctx.fillStyle='rgba(129,140,248,'+(0.75*pulse)+')';ctx.fill();
+  }
+  // Trend line (Spearman -0.60)
+  ctx.beginPath();
+  for(var tt=0;tt<=20;tt++){
+    var u=tt/20;
+    var v=1-Math.pow(u,0.7);
+    var px=spX+8+u*(spW-16);
+    var py=spY+8+(1-v)*(spH-16);
+    if(tt===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+  }
+  ctx.strokeStyle='rgba(129,140,248,.55)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+
+  // Stats à droite — synthèse 23 tests
+  var stX=spX+spW+14, stW=P2w-spW-40;
+  var statsList=[
+    {l:'Spearman r',v:'−0.60',c:'rgba(52,211,153,'},
+    {l:'p-value',v:'2.6×10⁻⁵',c:'rgba(52,211,153,'},
+    {l:'Kendall τ',v:'−0.44',c:'rgba(129,140,248,'},
+    {l:'5000 perm.',v:'0/5000',c:'rgba(245,158,11,'},
+    {l:'leave-1-out',v:'42/42 sig',c:'rgba(52,211,153,'},
+    {l:'D_L < 20 Mpc',v:'r = −0.89',c:'rgba(245,158,11,'},
+    {l:'HF z=0.01–0.10',v:'r = +0.017 NS',c:'rgba(180,180,200,'}
+  ];
+  statsList.forEach(function(s,i){
+    var sy=spY+8+i*19;
+    tx(s.l,stX,sy,'rgba(180,180,200,.6)',8,'left');
+    tx(s.v,stX+stW-8,sy,s.c+'0.9)',9,'right');
+  });
+  tx('§8.3 validée — robuste à 23 tests indépendants',P2x+P2w/2,P2y+P2h-10,'rgba(52,211,153,.75)',9);
+
+  // ═══ PANNEAU DROIT-MILIEU : §8.2 Variation temporelle w(z) ═══
+  var P3x=460, P3y=265, P3w=420, P3h=155;
+  ctx.strokeStyle='rgba(167,139,250,'+frameAlpha(3)+')';ctx.lineWidth=frameWidth(3);ctx.strokeRect(P3x,P3y,P3w,P3h);
+  if(isFocus(3)){
+    var fp3=0.6+0.4*Math.sin(T*2);
+    ctx.beginPath();ctx.arc(P3x+P3w-12,P3y+12,4,0,Math.PI*2);
+    ctx.fillStyle='rgba(167,139,250,'+fp3+')';ctx.fill();
+  }
+  tx('③ §8.2 Variation temporelle w(z) — séquence 1998–2026',P3x+P3w/2,P3y+14,'rgba(167,139,250,.9)',12);
+  tx('17 estimations · 28 ans · range §8.2 prédit [0.3, 0.5]',P3x+P3w/2,P3y+28,'rgba(167,139,250,.55)',9);
+
+  // Barre horizontale : range [0.3, 0.5] avec deux corrélations dedans
+  var bX=P3x+50, bY=P3y+72, bW=P3w-100, bH=20;
+  var rangeMin=0, rangeMax=0.6;
+  function rngX(r){ return bX+bW*(r-rangeMin)/(rangeMax-rangeMin); }
+  // Fond axe
+  ctx.fillStyle='rgba(60,60,80,.35)';ctx.fillRect(bX,bY,bW,bH);
+  // Zone verte (range §8.2 [0.3, 0.5])
+  ctx.fillStyle='rgba(167,139,250,.22)';
+  ctx.fillRect(rngX(0.3),bY,rngX(0.5)-rngX(0.3),bH);
+  ctx.strokeStyle='rgba(167,139,250,.6)';ctx.lineWidth=1;
+  ctx.strokeRect(rngX(0.3),bY,rngX(0.5)-rngX(0.3),bH);
+  // Label range au-dessus, hors-zone des points
+  tx('range §8.2 prédit [0.3, 0.5]',rngX(0.4),bY-26,'rgba(167,139,250,.85)',9);
+  // Graduations
+  [0,0.1,0.2,0.3,0.4,0.5,0.6].forEach(function(v){
+    var px=rngX(v);
+    ctx.beginPath();ctx.moveTo(px,bY+bH);ctx.lineTo(px,bY+bH+3);
+    ctx.strokeStyle='rgba(120,120,150,.5)';ctx.stroke();
+    if(v===0||v===0.3||v===0.5||v===0.6) tx(v.toFixed(1),px,bY+bH+13,'rgba(140,140,170,.55)',8);
+  });
+  // Points : Pearson 0.4331 et Spearman 0.3528
+  var pearX=rngX(0.4331), spearX=rngX(0.3528);
+  var pulseP=0.7+0.3*Math.sin(T*1.5);
+  // Pearson — match k=3 f=2 = 0.4721
+  ctx.beginPath();ctx.arc(pearX,bY+bH/2,7,0,Math.PI*2);
+  ctx.fillStyle='rgba(245,158,11,'+(0.95*pulseP)+')';ctx.fill();
+  tx('Pearson 0.43',pearX+14,bY+bH/2+3,'rgba(245,158,11,.95)',9,'left');
+  // Spearman — match k=2 f=1 = 0.382
+  var pulseS2=0.7+0.3*Math.sin(T*1.5+1);
+  ctx.beginPath();ctx.arc(spearX,bY+bH/2,7,0,Math.PI*2);
+  ctx.fillStyle='rgba(52,211,153,'+(0.95*pulseS2)+')';ctx.fill();
+  tx('Spearman 0.35',spearX-14,bY+bH/2+3,'rgba(52,211,153,.95)',9,'right');
+  // Lignes verticales vers les prédictions §10.6
+  var pred1X=rngX(0.4721), pred2X=rngX(0.3820);
+  // Marqueurs prédictions
+  ctx.beginPath();ctx.moveTo(pred1X,bY-2);ctx.lineTo(pred1X,bY+bH+2);
+  ctx.strokeStyle='rgba(245,158,11,.55)';ctx.setLineDash([2,2]);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.moveTo(pred2X,bY-2);ctx.lineTo(pred2X,bY+bH+2);
+  ctx.strokeStyle='rgba(52,211,153,.55)';ctx.setLineDash([2,2]);ctx.stroke();ctx.setLineDash([]);
+  // Détails sous la barre — sur une ligne pour éviter superpositions
+  tx('§10.6 k=3 f=2 : 2/φ³ = 0.472 (Δ=0.039)   ·   §10.6 k=2 f=1 : 1/φ² = 0.382 (Δ=0.029)',P3x+P3w/2,bY+bH+34,'rgba(180,180,200,.7)',8);
+  // Caveat
+  tx('⚠ 28 ans < 50–80 ans requis — compatible indicativement, non concluant',P3x+P3w/2,P3y+P3h-10,'rgba(167,139,250,.7)',8);
+
+  // ═══ PANNEAU DROIT-BAS : §5 — Fibonacci & Λ(Ψ) ═══════════════
+  // Hauteur étendue pour aligner le bas avec celui du bloc gauche (P1)
+  var P4x=460, P4y=440, P4w=420, P4h=200;
+  ctx.strokeStyle='rgba(249,115,22,'+frameAlpha(4)+')';ctx.lineWidth=frameWidth(4);ctx.strokeRect(P4x,P4y,P4w,P4h);
+  if(isFocus(4)){
+    var fp4=0.6+0.4*Math.sin(T*2);
+    ctx.beginPath();ctx.arc(P4x+P4w-12,P4y+12,4,0,Math.PI*2);
+    ctx.fillStyle='rgba(249,115,22,'+fp4+')';ctx.fill();
+  }
+  tx('④ Chapitre 5 — Fibonacci §5.2 & Λ(Ψ) §5.3–5.4',P4x+P4w/2,P4y+14,'rgba(249,115,22,.9)',12);
+  tx('Pantheon+ / DESY5 / Union3 · DESI DR2 BAO',P4x+P4w/2,P4y+28,'rgba(249,115,22,.55)',9);
+
+  // Gauche : §5.2 Fibonacci — ratios r_78 et r_89 vs 1/φ
+  var sgX=P4x+15, sgY=P4y+45, sgW=180, sgH=P4h-80;
+  ctx.strokeStyle='rgba(249,115,22,.25)';ctx.lineWidth=1;ctx.strokeRect(sgX,sgY,sgW,sgH);
+  tx('§5.2 Fibonacci',sgX+sgW/2,sgY-2,'rgba(249,115,22,.75)',10);
+  // Ligne 1/φ = 0.618
+  var refY=sgY+sgH-(sgH-20)*(0.618/1.0)-10;
+  ctx.beginPath();ctx.moveTo(sgX+10,refY);ctx.lineTo(sgX+sgW-10,refY);
+  ctx.strokeStyle='rgba(245,158,11,.55)';ctx.lineWidth=1.5;ctx.stroke();
+  tx('1/φ = 0.618',sgX+sgW-10,refY-3,'rgba(245,158,11,.75)',8,'right');
+  // r_78 = 0.7349 et r_89 = 0.7515
+  var r78=0.7349, r89=0.7515;
+  function ratY(r){ return sgY+sgH-(sgH-20)*(r/1.0)-10; }
+  var pulseR=0.7+0.3*Math.sin(T*1.4);
+  // r_78
+  var px78=sgX+sgW*0.33, py78=ratY(r78);
+  ctx.beginPath();ctx.arc(px78,py78,6,0,Math.PI*2);
+  ctx.fillStyle='rgba(249,115,22,'+(0.9*pulseR)+')';ctx.fill();
+  // Error bar r_78 : +0.418/-0.232
+  ctx.beginPath();ctx.moveTo(px78,ratY(0.7349-0.2325));ctx.lineTo(px78,ratY(Math.min(1.0,0.7349+0.4178)));
+  ctx.strokeStyle='rgba(249,115,22,.55)';ctx.lineWidth=1;ctx.stroke();
+  tx('r₇₈',px78,sgY+sgH-2,'rgba(249,115,22,.85)',9);
+  tx('0.735',px78,py78-12,'rgba(220,220,235,.75)',8);
+  // r_89
+  var px89=sgX+sgW*0.67, py89=ratY(r89);
+  ctx.beginPath();ctx.arc(px89,py89,6,0,Math.PI*2);
+  ctx.fillStyle='rgba(249,115,22,'+(0.9*pulseR)+')';ctx.fill();
+  ctx.beginPath();ctx.moveTo(px89,ratY(0.7515-0.3863));ctx.lineTo(px89,ratY(Math.min(1.0,0.7515+0.8070)));
+  ctx.strokeStyle='rgba(249,115,22,.55)';ctx.lineWidth=1;ctx.stroke();
+  tx('r₈₉',px89,sgY+sgH-2,'rgba(249,115,22,.85)',9);
+  tx('0.752',px89,py89-12,'rgba(220,220,235,.75)',8);
+  tx('S5 préféré (log₁₀BF=0)',sgX+sgW/2,sgY+sgH+14,'rgba(249,115,22,.7)',8);
+
+  // Droite : §5.3–5.4 MCMC Λ(Ψ) sur DESI DR2
+  var mqX=P4x+220, mqY=P4y+45, mqW=180, mqH=P4h-80;
+  ctx.strokeStyle='rgba(52,211,153,.25)';ctx.lineWidth=1;ctx.strokeRect(mqX,mqY,mqW,mqH);
+  tx('§5.3–5.4 MCMC Λ(Ψ)',mqX+mqW/2,mqY-2,'rgba(52,211,153,.75)',10);
+  // Distribution gaussienne posterior ε = 0.012 ± 0.087
+  var epsMin=-0.3, epsMax=0.3;
+  function epsX(e){ return mqX+10+(mqW-20)*(e-epsMin)/(epsMax-epsMin); }
+  // Axe
+  ctx.beginPath();ctx.moveTo(mqX+10,mqY+mqH-22);ctx.lineTo(mqX+mqW-10,mqY+mqH-22);
+  ctx.strokeStyle='rgba(120,120,150,.45)';ctx.lineWidth=1;ctx.stroke();
+  // Ligne ε=0
+  var zeroX=epsX(0);
+  ctx.beginPath();ctx.moveTo(zeroX,mqY+10);ctx.lineTo(zeroX,mqY+mqH-22);
+  ctx.strokeStyle='rgba(180,180,200,.4)';ctx.setLineDash([2,3]);ctx.stroke();ctx.setLineDash([]);
+  tx('ε=0',zeroX,mqY+8,'rgba(180,180,200,.55)',7);
+  // Posterior gaussienne ε = 0.012 ± 0.087
+  ctx.beginPath();
+  for(var gi3=0;gi3<=60;gi3++){
+    var ee=epsMin+(epsMax-epsMin)*gi3/60;
+    var pdf3=Math.exp(-(ee-0.012)*(ee-0.012)/(2*0.087*0.087));
+    var px3=epsX(ee), py3=mqY+mqH-22-pdf3*(mqH-40);
+    if(gi3===0) ctx.moveTo(px3,py3); else ctx.lineTo(px3,py3);
+  }
+  ctx.strokeStyle='rgba(52,211,153,.7)';ctx.lineWidth=1.5;ctx.stroke();
+  // Remplir sous la courbe
+  ctx.lineTo(epsX(epsMax),mqY+mqH-22);ctx.lineTo(epsX(epsMin),mqY+mqH-22);ctx.closePath();
+  ctx.fillStyle='rgba(52,211,153,.12)';ctx.fill();
+  // Médiane
+  var medX=epsX(0.012);
+  var pulseM=0.75+0.25*Math.sin(T*1.6);
+  ctx.beginPath();ctx.arc(medX,mqY+mqH-44,4,0,Math.PI*2);
+  ctx.fillStyle='rgba(52,211,153,'+pulseM+')';ctx.fill();
+  // Label ε sous l'axe X, à l'intérieur du sous-cadre
+  tx('ε = 0.012 ± 0.087',mqX+mqW/2,mqY+mqH-8,'rgba(52,211,153,.9)',9);
+  tx('χ²/dof ≈ 1.05',mqX+mqW/2,mqY+mqH+14,'rgba(52,211,153,.7)',8);
+
+  // Pied — légende verdict
+  tx('§5.2 & §5.3–5.4 non réfutés — DESI Y5 / Euclid / LSST requis pour discriminer',P4x+P4w/2,P4y+P4h-10,'rgba(249,115,22,.65)',8);
+
+  // ═══ Pied de page ════════════════════════════════════════════
+  tx('Test P3 (PEREZ 2026e, doi:10.5281/zenodo.20170931)   ·   Planck PR4 + DESI DR2 + Pantheon+SH0ES + Gaia DR3   ·   §8.1 & §8.3 validées   ·   §10.6 grille §10.5 T⁴',W/2,H-8,'rgba(52,211,153,.45)',9);
+}
+
 function loop(){
   ctx.clearRect(0,0,W,H);frame++;
   if(mode===0) scene0();
@@ -1684,7 +2046,8 @@ function loop(){
   else if(mode===4) scene4();
   else if(mode===5) scene5();
   else if(mode===6) scene6();
-  else scene7();
+  else if(mode===7) scene7();
+  else scene8();
   requestAnimationFrame(loop);
 }
 loop();
