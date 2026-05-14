@@ -255,6 +255,35 @@
 }</code></pre>
   </section>
 
+  <!-- À propos de l'auteur -->
+  <section class="section about">
+    <h2 class="section-title">
+      <span data-fr="À propos de l'auteur" data-en="About the author">À propos de l'auteur</span>
+    </h2>
+
+    <div class="about-card">
+      <div class="about-avatar">
+        <img src="assets/img/avatar_fibonacci.jpg" alt="Alexandre Joseph Etienne PEREZ" width="140" height="140" loading="lazy">
+      </div>
+      <div class="about-text">
+        <p data-fr="Innovateur suisse comptant plus de 10 ans d'expérience dans la conduite de projets d'innovation produit de bout en bout dans des environnements réglementés. Expérience avérée dans la direction de la R&amp;D, la levée de fonds (3 millions de CHF), la conformité réglementaire (dispositifs médicaux de classe IIA) et la coordination d'équipes interfonctionnelles. Auteur d'articles publiés dans &lt;em&gt;Nature Digital Medicine&lt;/em&gt;."
+           data-en="Swiss innovator with over 10 years of experience leading end-to-end product innovation projects in regulated environments. Proven track record in R&amp;D leadership, fundraising (CHF 3 million), regulatory compliance (Class IIA medical devices) and cross-functional team coordination. Author of articles published in &lt;em&gt;Nature Digital Medicine&lt;/em&gt;.">
+          Innovateur suisse comptant plus de 10 ans d'expérience dans la conduite de projets d'innovation produit de bout en bout dans des environnements réglementés. Expérience avérée dans la direction de la R&amp;D, la levée de fonds (3 millions de CHF), la conformité réglementaire (dispositifs médicaux de classe IIA) et la coordination d'équipes interfonctionnelles. Auteur d'articles publiés dans <em>Nature Digital Medicine</em>.
+        </p>
+        <p data-fr="Parallèlement à ma carrière professionnelle, je consacre depuis 17 ans mon temps libre à l'exploration de la physique fondamentale et de la psychologie analytique dans la tradition de Carl Jung. La cosmologie est une passion personnelle, et mes recherches actuelles visent à mettre au jour le lien profond entre le cosmos et la psyché — poursuivant ainsi le dialogue entamé par Jung et Wolfgang Pauli dans les années 1950."
+           data-en="Alongside my professional career, I have devoted my free time for 17 years to exploring fundamental physics and analytical psychology in the tradition of Carl Jung. Cosmology is a personal passion, and my current research aims to uncover the deep connection between the cosmos and the psyche — continuing the dialogue initiated by Jung and Wolfgang Pauli in the 1950s.">
+          Parallèlement à ma carrière professionnelle, je consacre depuis 17 ans mon temps libre à l'exploration de la physique fondamentale et de la psychologie analytique dans la tradition de Carl Jung. La cosmologie est une passion personnelle, et mes recherches actuelles visent à mettre au jour le lien profond entre le cosmos et la psyché — poursuivant ainsi le dialogue entamé par Jung et Wolfgang Pauli dans les années 1950.
+        </p>
+        <p class="about-orcid">
+          <a href="https://orcid.org/0000-0003-1454-4327" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947 0 .525-.422.947-.947.947-.525 0-.946-.422-.946-.947 0-.516.421-.947.946-.947zm-.704 3.585h1.41v10.18h-1.41V7.963zm3.486 0h3.952c3.766 0 5.422 2.69 5.422 5.09 0 2.612-2.043 5.09-5.4 5.09H10.15V7.963zm1.41 1.27v7.64h2.422c2.453 0 3.971-1.81 3.971-3.82 0-1.81-1.296-3.82-4.01-3.82H11.56z"/></svg>
+            <span>ORCID 0000-0003-1454-4327</span>
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="divider"></div>
@@ -299,7 +328,14 @@
   function apply(lang) {
     document.documentElement.lang = lang;
     document.querySelectorAll('[data-fr]').forEach(function(el) {
-      el.textContent = el.dataset[lang] || el.dataset.fr;
+      var content = el.dataset[lang] || el.dataset.fr;
+      // Si le contenu contient des balises HTML (em, strong…), utiliser innerHTML
+      // sinon textContent (plus sûr et plus rapide pour le texte simple)
+      if (content.indexOf('<') !== -1) {
+        el.innerHTML = content;
+      } else {
+        el.textContent = content;
+      }
     });
     btns.forEach(function(b) {
       b.classList.toggle('active', b.dataset.lang === lang);
