@@ -27,7 +27,8 @@ Ce dépôt contient le site web personnel rassemblant le corpus complet de la **
 | PEREZ 2026b | Réflexions personnelles sur la géométrie des espaces abstraits | [10.5281/zenodo.20098372](https://doi.org/10.5281/zenodo.20098372) |
 | PEREZ 2026c | Unus Mundus comme H_φ (document principal) | [10.5281/zenodo.20098274](https://doi.org/10.5281/zenodo.20098274) |
 | PEREZ 2026d | Rapport d'analyse — Prédiction P2 | [10.5281/zenodo.20113396](https://doi.org/10.5281/zenodo.20113396) |
-| PEREZ 2026e | Comprendre la théorie H_φ (vulgarisation) | [10.5281/zenodo.20098853](https://doi.org/10.5281/zenodo.20098853) |
+| PEREZ 2026e | Rapport d'analyse — Prédiction P3 | [10.5281/zenodo.20113396](https://doi.org/10.5281/zenodo.20170931) |
+| PEREZ 2026f | Comprendre la théorie H_φ (vulgarisation) | [10.5281/zenodo.20098853](https://doi.org/10.5281/zenodo.20098853) |
 
 ### Avertissement
 
