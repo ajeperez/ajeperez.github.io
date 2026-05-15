@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Théorie H_φ — Visualisations interactives</title>
+<title>H_φ Theory — Interactive Visualizations</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -50,81 +50,93 @@ html,body{min-height:100%;background:#05050d;color:#e2dfd6;overflow-x:hidden}
 
 #screen-pm * {box-sizing:border-box;margin:0;padding:0}#screen-pm body {font-family:Arial,sans-serif;background:#05050d;color:#e2dfd6;min-height:100vh;padding:28px}#screen-pm h1 {font-size:19px;font-weight:400;margin-bottom:3px}#screen-pm h1 em {font-style:italic;color:#818cf8}#screen-pm p.sub {font-size:12px;color:#555;margin-bottom:16px}#screen-pm canvas {display:block;border-radius:8px;background:#05050d}#screen-pm .tabs {display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}#screen-pm button.tab {font-size:11px;padding:4px 12px;border-radius:16px;border:1px solid #252535;background:transparent;color:#666;cursor:pointer}#screen-pm button.tab.on {background:#1c1c2a;color:#818cf8;border-color:#818cf8}#screen-pm .desc {font-size:12px;color:#777;line-height:1.6;margin:8px 0 4px;min-height:36px}#screen-pm .ctrl {display:flex;align-items:center;gap:8px;font-size:11px;color:#666;margin-top:4px;flex-wrap:wrap}#screen-pm .ctrl input[type=range] {flex:1;min-width:80px;accent-color:#818cf8}#screen-pm .v {min-width:32px;color:#888}
 
+/* Language switch */
+#lang-switch{position:fixed;top:20px;right:140px;z-index:9999;background:rgba(5,5,13,.85);backdrop-filter:blur(8px);border:1px solid rgba(129,140,248,.25);border-radius:20px;padding:6px 14px;font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1.5px;display:flex;align-items:center;gap:6px}
+.lang-btn{background:transparent;border:none;color:rgba(129,140,248,.45);cursor:pointer;padding:4px 6px;font-family:inherit;font-size:inherit;letter-spacing:inherit;text-transform:uppercase;transition:color .2s}
+.lang-btn:hover{color:#818cf8}
+.lang-btn.active{color:#c7d0ff;font-weight:500}
+.lang-sep{color:rgba(129,140,248,.3)}
+
 </style>
 </head>
 <body>
 
-<div id="back-btn"><button onclick="showScreen('home')">← Accueil</button></div>
+<!-- Language switch -->
+<div id="lang-switch">
+  <button data-lang="en" class="lang-btn active">EN</button>
+  <span class="lang-sep">/</span>
+  <button data-lang="fr" class="lang-btn">FR</button>
+</div>
+
+<div id="back-btn"><button onclick="showScreen('home')"><span data-en="← Home" data-fr="← Accueil">← Home</span></button></div>
 
 <!-- ACCUEIL -->
 <div id="screen-home" class="screen active">
-  <p class="kicker">Théorie H_φ — Visualisations interactives</p>
-  <h1 class="portal-title">Unus Mundus comme <em>H_φ</em></h1>
-  <p class="portal-sub">Visualisations interactives</p>
+  <p class="kicker"><span data-en="H_φ Theory — Interactive Visualizations" data-fr="Théorie H_φ — Visualisations interactives">H_φ Theory — Interactive Visualizations</span></p>
+  <h1 class="portal-title"><span data-en="Unus Mundus as " data-fr="Unus Mundus comme ">Unus Mundus as </span><em>H_φ</em></h1>
+  <p class="portal-sub"><span data-en="Interactive visualizations" data-fr="Visualisations interactives">Interactive visualizations</span></p>
   <p class="meta" style="margin-top:10px;">
     <strong>Alexandre Joseph Etienne PEREZ</strong>
-    &nbsp;·&nbsp; Lausanne, 10 mai 2026 &nbsp;·&nbsp; © 2026 — Usage recherche
+    &nbsp;·&nbsp; <span data-en="Lausanne, May 14, 2026" data-fr="Lausanne, 14 mai 2026">Lausanne, May 14, 2026</span> &nbsp;·&nbsp; <span data-en="© 2026 — Research use" data-fr="© 2026 — Usage recherche">© 2026 — Research use</span>
   </p>
   <div class="divider"></div>
   <div class="intro">
-    <p>Ce portail rassemble deux modules de visualisations interactives accompagnant
-    la théorie H_φ — une formalisation spéculative de l'Unus Mundus de Jung et Pauli
-    comme espace de Hilbert structuré par le nombre d'or φ.</p>
-    <p>Cliquez sur un module pour l'ouvrir directement ici.
-    Le bouton <em>← Accueil</em> en haut à droite vous ramène à cette page à tout moment.</p>
+    <p data-en="This portal gathers two modules of interactive visualizations accompanying the H_φ theory — a speculative formalization of the Pauli–Jung Unus Mundus as a Hilbert space structured by the golden ratio φ."
+       data-fr="Ce portail rassemble deux modules de visualisations interactives accompagnant la théorie H_φ — une formalisation spéculative de l'Unus Mundus de Jung et Pauli comme espace de Hilbert structuré par le nombre d'or φ.">This portal gathers two modules of interactive visualizations accompanying the H_φ theory — a speculative formalization of the Pauli–Jung Unus Mundus as a Hilbert space structured by the golden ratio φ.</p>
+    <p data-en="Click on a module to open it directly here. The &lt;em&gt;← Home&lt;/em&gt; button at the top right brings you back to this page anytime."
+       data-fr="Cliquez sur un module pour l'ouvrir directement ici. Le bouton &lt;em&gt;← Accueil&lt;/em&gt; en haut à droite vous ramène à cette page à tout moment.">Click on a module to open it directly here. The <em>← Home</em> button at the top right brings you back to this page anytime.</p>
   </div>
   <div class="grid">
     <div class="card violet" onclick="showScreen('um')">
-      <div class="badge bv">Théorie centrale</div>
-      <p class="card-num">Module 01</p>
-      <h3 class="card-title">Unus Mundus comme H_φ</h3>
-      <p class="card-desc">Opérateur R &amp; H_φ — Fibonacci ontologique —
-      Archétypes comme modes propres — ER=EPR &amp; synchronicité —
-      Brisure 4→3 et dualité effondrement/déploiement.<br><br>
-      <span style="color:rgba(129,140,248,.45);font-size:12px;">6 onglets · curseurs animés</span></p>
+      <div class="badge bv" data-en="Core theory" data-fr="Théorie centrale">Core theory</div>
+      <p class="card-num" data-en="Module 01" data-fr="Module 01">Module 01</p>
+      <h3 class="card-title" data-en="Unus Mundus as H_φ" data-fr="Unus Mundus comme H_φ">Unus Mundus as H_φ</h3>
+      <p class="card-desc"
+         data-en="R operator &amp; H_φ — Ontological Fibonacci — Archetypes as eigenmodes — ER=EPR &amp; synchronicity — 4→3 breaking and collapse/unfolding duality.&lt;br&gt;&lt;br&gt;&lt;span style=&quot;color:rgba(129,140,248,.45);font-size:12px;&quot;&gt;6 tabs · animated sliders&lt;/span&gt;"
+         data-fr="Opérateur R &amp; H_φ — Fibonacci ontologique — Archétypes comme modes propres — ER=EPR &amp; synchronicité — Brisure 4→3 et dualité effondrement/déploiement.&lt;br&gt;&lt;br&gt;&lt;span style=&quot;color:rgba(129,140,248,.45);font-size:12px;&quot;&gt;6 onglets · curseurs animés&lt;/span&gt;">R operator &amp; H_φ — Ontological Fibonacci — Archetypes as eigenmodes — ER=EPR &amp; synchronicity — 4→3 breaking and collapse/unfolding duality.<br><br><span style="color:rgba(129,140,248,.45);font-size:12px;">6 tabs · animated sliders</span></p>
       <span class="card-arrow">→</span>
     </div>
     <div class="card green" onclick="showScreen('pm')">
-      <div class="badge bg">Connexions mathématiques</div>
-      <p class="card-num">Module 02</p>
-      <h3 class="card-title">Pièces manquantes — H_φ</h3>
-      <p class="card-desc">Cantor → H_φ — Klein V4 → H₂ — Kramers → synchronicité —
-      Berry → π₁(H_φ) — T⁴ → H_φ — Synthèse — Test P2 φ-MEA — Test P3 cosmologie.<br><br>
-      <span style="color:rgba(52,211,153,.45);font-size:12px;">9 onglets · données publiées</span></p>
+      <div class="badge bg" data-en="Mathematical connections" data-fr="Connexions mathématiques">Mathematical connections</div>
+      <p class="card-num" data-en="Module 02" data-fr="Module 02">Module 02</p>
+      <h3 class="card-title" data-en="Missing pieces — H_φ" data-fr="Pièces manquantes — H_φ">Missing pieces — H_φ</h3>
+      <p class="card-desc"
+         data-en="Cantor → H_φ — Klein V4 → H₂ — Kramers → synchronicity — Berry → π₁(H_φ) — T⁴ → H_φ — Synthesis — P2 test φ-MEA — P3 test cosmology.&lt;br&gt;&lt;br&gt;&lt;span style=&quot;color:rgba(52,211,153,.45);font-size:12px;&quot;&gt;9 tabs · published data&lt;/span&gt;"
+         data-fr="Cantor → H_φ — Klein V4 → H₂ — Kramers → synchronicité — Berry → π₁(H_φ) — T⁴ → H_φ — Synthèse — Test P2 φ-MEA — Test P3 cosmologie.&lt;br&gt;&lt;br&gt;&lt;span style=&quot;color:rgba(52,211,153,.45);font-size:12px;&quot;&gt;9 onglets · données publiées&lt;/span&gt;">Cantor → H_φ — Klein V4 → H₂ — Kramers → synchronicity — Berry → π₁(H_φ) — T⁴ → H_φ — Synthesis — P2 test φ-MEA — P3 test cosmology.<br><br><span style="color:rgba(52,211,153,.45);font-size:12px;">9 tabs · published data</span></p>
       <span class="card-arrow">→</span>
     </div>
     <div class="card gold full">
-      <div class="badge bo">Publications · Zenodo</div>
-      <p class="card-num">Corpus publié — Mai 2026</p>
-      <h3 class="card-title">Publications associées</h3>
+      <div class="badge bo" data-en="Publications · Zenodo" data-fr="Publications · Zenodo">Publications · Zenodo</div>
+      <p class="card-num" data-en="Published corpus — May 2026" data-fr="Corpus publié — Mai 2026">Published corpus — May 2026</p>
+      <h3 class="card-title" data-en="Related publications" data-fr="Publications associées">Related publications</h3>
       <p class="card-desc" style="max-width:680px;">
-        <a href="https://doi.org/10.5281/zenodo.20054634" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20054634</a> — Axiome, Archétype, Singularité, φ<br>
-        <a href="https://doi.org/10.5281/zenodo.20098372" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098372</a> — Réflexions personnelles sur la géométrie des espaces abstraits<br>
-        <a href="https://doi.org/10.5281/zenodo.20098274" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098274</a> — Unus Mundus comme H_φ<br>
-        <a href="https://doi.org/10.5281/zenodo.20113396" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20113396</a> — Rapport d'analyse Prédiction P2<br>
-        <a href="https://doi.org/10.5281/zenodo.20170931" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20170931</a> — Rapport d'analyse Prédiction P3 (chap. 5 &amp; 8)<br>
-        <a href="https://doi.org/10.5281/zenodo.20098853" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098853</a> — Comprendre la théorie H_φ (vulgarisation)<br><br>
-        <span style="color:#333340;font-size:12px;">Travail spéculatif · Non peer-reviewed · Toutes affirmations marquées comme hypothèses</span>
+        <a href="https://doi.org/10.5281/zenodo.20184004" target="_blank" style="color:rgba(245,158,11,.85);text-decoration:none;font-weight:500;">doi:10.5281/zenodo.20184004</a> — <span data-en="Discrete frequency convergence (P2 paper, EN stand-alone)" data-fr="Discrete frequency convergence (P2 paper, EN stand-alone)">Discrete frequency convergence (P2 paper, EN stand-alone)</span><br>
+        <a href="https://doi.org/10.5281/zenodo.20182573" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20182573</a> — <span data-en="Axiom, Archetype, Singularity, φ" data-fr="Axiome, Archétype, Singularité, φ">Axiom, Archetype, Singularity, φ</span><br>
+        <a href="https://doi.org/10.5281/zenodo.20182716" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20182716</a> — <span data-en="Personal reflections on the geometry of abstract spaces" data-fr="Réflexions personnelles sur la géométrie des espaces abstraits">Personal reflections on the geometry of abstract spaces</span><br>
+        <a href="https://doi.org/10.5281/zenodo.20182784" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20182784</a> — <span data-en="Unus Mundus as H_φ" data-fr="Unus Mundus comme H_φ">Unus Mundus as H_φ</span><br>
+        <a href="https://doi.org/10.5281/zenodo.20182873" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20182873</a> — <span data-en="Analysis report — Prediction P3 (chap. 5 &amp; 8)" data-fr="Rapport d'analyse Prédiction P3 (chap. 5 &amp; 8)">Analysis report — Prediction P3 (chap. 5 &amp; 8)</span><br>
+        <a href="https://doi.org/10.5281/zenodo.20174647" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20174647</a> — <span data-en="Understanding the H_φ theory (popular science)" data-fr="Comprendre la théorie H_φ (vulgarisation)">Understanding the H_φ theory (popular science)</span><br><br>
+        <span style="color:#333340;font-size:12px;" data-en="Exploratory work · Not peer-reviewed · All claims marked as hypotheses" data-fr="Travail spéculatif · Non peer-reviewed · Toutes affirmations marquées comme hypothèses">Exploratory work · Not peer-reviewed · All claims marked as hypotheses</span>
       </p>
     </div>
   </div>
-  <p class="footnote">Contact : <a href="mailto:ajeprz@proton.me">ajeprz@proton.me</a>
-  &nbsp;·&nbsp; P1 : phase Berry = 2π/φ sur cristal de Penrose
-  &nbsp;·&nbsp; P2 : distribution φⁿ sur organoïdes MEA — Maxwell Biosystems, Zurich</p>
+  <p class="footnote"><span data-en="Contact: " data-fr="Contact : ">Contact: </span><a href="mailto:ajeprz@proton.me">ajeprz@proton.me</a>
+  &nbsp;·&nbsp; <span data-en="P1: Berry phase = 2π/φ on Penrose crystal" data-fr="P1 : phase Berry = 2π/φ sur cristal de Penrose">P1: Berry phase = 2π/φ on Penrose crystal</span>
+  &nbsp;·&nbsp; <span data-en="P2: φⁿ distribution on MEA organoids — DANDI, Maxwell Biosystems" data-fr="P2 : distribution φⁿ sur organoïdes MEA — DANDI, Maxwell Biosystems">P2: φⁿ distribution on MEA organoids — DANDI, Maxwell Biosystems</span></p>
 </div>
 
 <!-- MODULE 1 -->
 <div id="screen-um" class="screen">
-<h1>Unus Mundus comme H_φ — <em>Théorie psycho-cosmologique unifiée</em></h1>
-<p class="sub">Alexandre Joseph Etienne PEREZ · Lausanne, 10 mai 2026 · © Travail spéculatif</p>
+<h1><span data-en="Unus Mundus as H_φ" data-fr="Unus Mundus comme H_φ">Unus Mundus as H_φ</span> — <em><span data-en="Unified psycho-cosmological theory" data-fr="Théorie psycho-cosmologique unifiée">Unified psycho-cosmological theory</span></em></h1>
+<p class="sub">Alexandre Joseph Etienne PEREZ · <span data-en="Lausanne, May 14, 2026 · © Exploratory work" data-fr="Lausanne, 14 mai 2026 · © Travail spéculatif">Lausanne, May 14, 2026 · © Exploratory work</span></p>
 
 <div class="tabs">
-  <button class="tab on" data-m="0">① Opérateur R & H_φ</button>
-  <button class="tab" data-m="1">② Suite de Fibonacci ontologique</button>
-  <button class="tab" data-m="2">③ Archétypes & modes propres</button>
-  <button class="tab" data-m="3">④ ER=EPR & synchronicité</button>
-  <button class="tab" data-m="5">⑤ Brisure 4→3 — Dualité</button>
-  <button class="tab" data-m="4">⑥ Synthèse — L'Unus Mundus</button>
+  <button class="tab on" data-m="0"><span data-en="① R operator &amp; H_φ" data-fr="① Opérateur R &amp; H_φ">① R operator &amp; H_φ</span></button>
+  <button class="tab" data-m="1"><span data-en="② Ontological Fibonacci sequence" data-fr="② Suite de Fibonacci ontologique">② Ontological Fibonacci sequence</span></button>
+  <button class="tab" data-m="2"><span data-en="③ Archetypes &amp; eigenmodes" data-fr="③ Archétypes &amp; modes propres">③ Archetypes &amp; eigenmodes</span></button>
+  <button class="tab" data-m="3"><span data-en="④ ER=EPR &amp; synchronicity" data-fr="④ ER=EPR &amp; synchronicité">④ ER=EPR &amp; synchronicity</span></button>
+  <button class="tab" data-m="5"><span data-en="⑤ 4→3 breaking — Duality" data-fr="⑤ Brisure 4→3 — Dualité">⑤ 4→3 breaking — Duality</span></button>
+  <button class="tab" data-m="4"><span data-en="⑥ Synthesis — The Unus Mundus" data-fr="⑥ Synthèse — L'Unus Mundus">⑥ Synthesis — The Unus Mundus</span></button>
 </div>
 <canvas id="um-cv" width="900" height="600"></canvas>
 <div class="desc" id="um-desc"></div>
@@ -135,13 +147,30 @@ html,body{min-height:100%;background:#05050d;color:#e2dfd6;overflow-x:hidden}
 var cv=document.getElementById('um-cv'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
 var mode=0,frame=0,phi=(1+Math.sqrt(5))/2;
 
-var DESCS=[
+var DESCS_FR=[
   "L'opérateur d'auto-référence R agit sur H_∞. Ses états propres φ-cohérents (R|ψ⟩ = φᵏ|ψ⟩) forment le sous-espace H_φ — l'Unus Mundus. Le curseur contrôle le niveau k. Plus k est élevé, plus la résonance est complexe et les valeurs propres φᵏ grandes.",
   "La suite de Fibonacci est réinterprétée comme une suite ontologique d'espaces de Hilbert : H_{F_{n+1}} = H_{F_n} ⊕ H_{F_{n-1}}. Chaque niveau de réalité est la somme directe des deux précédents. H_φ = lim H_{F_n} est la limite — l'Unus Mundus. Observer comment la structure s'auto-organise vers φ.",
   "Les archétypes jungiens sont les modes propres de R : |A_k⟩ avec valeur propre φᵏ. Soi (k=0, λ=1) est la singularité — l'état fondamental. Ombre (k=1, λ=φ), Anima (k=2, λ=φ²), Persona (k=3, λ=φ³). Le curseur fait évoluer Ψ(t) — l'état psychique global — et montre comment il modifie Λ.",
   "Une synchronicité est un événement ER=EPR dans H_φ : deux systèmes — l'un psychique, l'autre physique — atteignent simultanément le même sous-espace H_k. La corrélation n'est pas causale : elle passe par H_φ comme une corrélation EPR passe par le ver ER. Le curseur contrôle le degré de cohérence φ.",
   "Synthèse complète : singularité = |Soi⟩ = |A₀⟩, archétypes = modes propres φᵏ, Λ = valeur propre de Ĥ_UM, synchronicité = ER=EPR dans H_φ, α_φ = 1/φ ≈ 0.618. L'univers est le processus d'individuation de H_φ. La suite de Fibonacci est la récurrence ontologique dont H_φ est la limite."
 ];
+var DESCS_EN=[
+  "The self-reference operator R acts on H_∞. Its φ-coherent eigenstates (R|ψ⟩ = φᵏ|ψ⟩) form the subspace H_φ — the Unus Mundus. The slider controls level k. The higher k, the more complex the resonance and the larger the φᵏ eigenvalues.",
+  "The Fibonacci sequence is reinterpreted as an ontological sequence of Hilbert spaces: H_{F_{n+1}} = H_{F_n} ⊕ H_{F_{n-1}}. Each level of reality is the direct sum of the two preceding ones. H_φ = lim H_{F_n} is the limit — the Unus Mundus. Observe how the structure self-organizes towards φ.",
+  "Jungian archetypes are the eigenmodes of R: |A_k⟩ with eigenvalue φᵏ. Self (k=0, λ=1) is the singularity — the ground state. Shadow (k=1, λ=φ), Anima (k=2, λ=φ²), Persona (k=3, λ=φ³). The slider evolves Ψ(t) — the global psychic state — and shows how it modifies Λ.",
+  "A synchronicity is an ER=EPR event in H_φ: two systems — one psychic, one physical — simultaneously reach the same subspace H_k. The correlation is not causal: it passes through H_φ as an EPR correlation passes through the ER wormhole. The slider controls the degree of φ-coherence.",
+  "Complete synthesis: singularity = |Self⟩ = |A₀⟩, archetypes = eigenmodes φᵏ, Λ = eigenvalue of Ĥ_UM, synchronicity = ER=EPR in H_φ, α_φ = 1/φ ≈ 0.618. The universe is the individuation process of H_φ. The Fibonacci sequence is the ontological recurrence whose limit is H_φ."
+];
+var DESCS=DESCS_EN; // default language
+window.DESCS_UM_FR=DESCS_FR;
+window.DESCS_UM_EN=DESCS_EN;
+window.DESCS_UM_active=DESCS_EN;
+window.refreshUM=function(){
+  DESCS=window.DESCS_UM_active;
+  var d=document.getElementById('um-desc');
+  if(d) d.textContent=DESCS[mode];
+  buildCtrl();
+};
 
 document.querySelectorAll('.tab').forEach(function(b){
   b.addEventListener('click',function(){
@@ -157,17 +186,22 @@ document.getElementById('um-desc').textContent=DESCS[0];
 var sliderK=3, sliderPsi=0.5, sliderCoh=0.5, sliderA=0.5;
 function buildCtrl(){
   var c=document.getElementById('um-ctrl');
+  var L=(window.currentLang==='fr'); // FR if true, EN otherwise
   if(mode===0){
-    c.innerHTML='<span>Niveau k</span><input type="range" id="um-sk" min="0" max="8" value="3" step="1"><span class="v" id="um-skv">k=3  φ³=4.24</span>';
+    var lblLevel=L?'Niveau k':'Level k';
+    c.innerHTML='<span>'+lblLevel+'</span><input type="range" id="um-sk" min="0" max="8" value="3" step="1"><span class="v" id="um-skv">k=3  φ³=4.24</span>';
     document.getElementById('um-sk').oninput=function(){sliderK=+this.value;var pv=Math.pow(phi,sliderK);document.getElementById('um-skv').textContent='k='+sliderK+'  φ'+sliderK+'='+pv.toFixed(3);};
   } else if(mode===2){
-    c.innerHTML='<span>État Ψ(t)</span><input type="range" id="um-sp" min="0" max="100" value="50"><span class="v" id="um-spv">Ψ=0.50</span>';
+    var lblState=L?'État Ψ(t)':'State Ψ(t)';
+    c.innerHTML='<span>'+lblState+'</span><input type="range" id="um-sp" min="0" max="100" value="50"><span class="v" id="um-spv">Ψ=0.50</span>';
     document.getElementById('um-sp').oninput=function(){sliderPsi=this.value/100;document.getElementById('um-spv').textContent='Ψ='+sliderPsi.toFixed(2);};
   } else if(mode===3){
-    c.innerHTML='<span>Cohérence φ</span><input type="range" id="um-sc" min="0" max="100" value="50"><span class="v" id="um-scv">50%</span>';
+    var lblCoh=L?'Cohérence φ':'φ-Coherence';
+    c.innerHTML='<span>'+lblCoh+'</span><input type="range" id="um-sc" min="0" max="100" value="50"><span class="v" id="um-scv">50%</span>';
     document.getElementById('um-sc').oninput=function(){sliderCoh=this.value/100;document.getElementById('um-scv').textContent=Math.round(sliderCoh*100)+'%';};
   } else if(mode===5){
-    c.innerHTML='<span>Animation</span><input type="range" id="um-sa" min="0" max="100" value="50"><span class="v" id="um-sav">50%</span>';
+    var lblAnim=L?'Animation':'Animation';
+    c.innerHTML='<span>'+lblAnim+'</span><input type="range" id="um-sa" min="0" max="100" value="50"><span class="v" id="um-sav">50%</span>';
     document.getElementById('um-sa').oninput=function(){sliderA=this.value/100;document.getElementById('um-sav').textContent=Math.round(sliderA*100)+'%';};
   } else {
     c.innerHTML='';
@@ -175,14 +209,88 @@ function buildCtrl(){
 }
 buildCtrl();
 
+// Translation dictionary for canvas text (Module 1)
+// Maps French → English. Used by tx() when window.currentLang !== 'fr'.
+var TX_DICT_UM = {
+  "(espace de Hilbert fondamental)": "(fundamental Hilbert space)",
+  "H_φ  (Unus Mundus)": "H_φ  (Unus Mundus)",
+  "Unus Mundus — H_φ est algébriquement clos sous l'intrication": "Unus Mundus — H_φ is algebraically closed under entanglement",
+  "Chaque niveau de réalité = somme directe des deux précédents — H_φ est la limite": "Each level of reality = direct sum of the two preceding ones — H_φ is the limit",
+  "Néant structuré": "Structured nothingness",
+  "Uroboros": "Uroboros",
+  "Singularité": "Singularity",
+  "Soi — |A₀⟩": "Self — |A₀⟩",
+  "1ère brisure": "1st breaking",
+  "Ombre": "Shadow",
+  "Géométrie": "Geometry",
+  "Triade": "Triad",
+  "Espace-temps": "Spacetime",
+  "Quaternité": "Quaternity",
+  "Vie": "Life",
+  "Quintessence": "Quintessence",
+  "Système nerveux": "Nervous system",
+  "Complexes": "Complexes",
+  "Langage": "Language",
+  "Persona": "Persona",
+  "Conscience": "Consciousness",
+  "Individuation": "Individuation",
+  "Civilisation": "Civilization",
+  "Inconscient collectif": "Collective unconscious",
+  "Noosphère": "Noosphere",
+  "Unus Mundus naissant": "Emerging Unus Mundus",
+  "Système": "System",
+  "physique": "physical",
+  "psychique": "psychic",
+  "Ver ER dans H_φ": "ER wormhole in H_φ",
+  "Corrélation EPR — non causale — dans H_φ": "EPR correlation — non-causal — in H_φ",
+  "SYNCHRO-": "SYNCHRO-",
+  "NICITÉ": "NICITY",
+  "Sous-espace H_": "Subspace H_",
+  " partagé": " shared",
+  "Constante de Planck de l'Unus Mundus": "Planck constant of the Unus Mundus",
+  "Synchronicité = ER=EPR dans H_φ — deux systèmes dans le même sous-espace H_k": "Synchronicity = ER=EPR in H_φ — two systems in the same subspace H_k",
+  "Soi": "Self",
+  "Anima": "Anima",
+  "Singularité |A₀⟩ = |Soi⟩\nλ₀ = φ⁰ = 1\nÉtat fondamental de H_φ": "Singularity |A₀⟩ = |Self⟩\nλ₀ = φ⁰ = 1\nGround state of H_φ",
+  "1ère brisure symétrie\nλ₁ = φ¹ ≈ 1.618\nQubit cosmologique": "1st symmetry breaking\nλ₁ = φ¹ ≈ 1.618\nCosmological qubit",
+  "Paire conjuguée intriquée\nλ₂ = φ² ≈ 2.618\nPaire EPR — spin-1": "Entangled conjugate pair\nλ₂ = φ² ≈ 2.618\nEPR pair — spin-1",
+  "Interface bord/bulk\nλ₃ = φ³ ≈ 4.236\nHolographie AdS/CFT": "Boundary/bulk interface\nλ₃ = φ³ ≈ 4.236\nAdS/CFT holography",
+  "Les archétypes sont les modes propres de R — Ψ contrôle la déformation du vide et Λ_eff": "Archetypes are the eigenmodes of R — Ψ controls vacuum deformation and Λ_eff",
+  "Énergie noire": "Dark energy",
+  "Archétypes": "Archetypes",
+  "Synchronicité": "Synchronicity",
+  "Couplage structurel": "Structural coupling",
+  "L'Unus Mundus est clos sous l'intrication": "The Unus Mundus is closed under entanglement",
+  "L'univers est le processus d'individuation de H_φ — la suite de Fibonacci est la récurrence ontologique dont H_φ est la limite": "The universe is the individuation process of H_φ — the Fibonacci sequence is the ontological recurrence whose limit is H_φ",
+  "Dualité Effondrement / Déploiement": "Collapse / Unfolding Duality",
+  "{Axiome, Archétype, Singularité, Fibonacci} = orbite de V4": "{Axiom, Archetype, Singularity, Fibonacci} = V4 orbit",
+  "Axiome": "Axiom",
+  "Fibonacci": "Fibonacci",
+  "Archétype": "Archetype",
+  "Limite logique": "Logical limit",
+  "Versant déploiement": "Unfolding side",
+  "Limite physique": "Physical limit",
+  "Archétype dominant": "Dominant archetype",
+  "État 4": "State 4",
+  "BLANC": "WHITE",
+  "V4 intact": "V4 intact",
+  "Brisure": "Breaking",
+  "État 3": "State 3",
+  "BLEU": "BLUE",
+  "Construit sans postulat": "Constructed without postulate",
+  "Paramètre d'ordre — transition topologique pure": "Order parameter — pure topological transition",
+  "Ajustez le curseur : ε=0 → état 4 (blanc, V4 intact) | ε=1 → état 3 (bleu, Archétype dominant, H_∞ constructible)": "Adjust slider: ε=0 → state 4 (white, V4 intact) | ε=1 → state 3 (blue, Archetype dominant, H_∞ constructible)",
+  "H_∞ non constructible (ε=0, symétrie V4 intacte)": "H_∞ non-constructible (ε=0, V4 symmetry intact)"
+};
+
 function tx(t,x,y,col,sz,al){
+  // Auto-translate French → English when current language is not FR
+  if(window.currentLang!=='fr' && TX_DICT_UM[t]) t=TX_DICT_UM[t];
   ctx.fillStyle=col||'rgba(150,150,160,.7)';
   ctx.font=(sz||11)+'px Arial,sans-serif';
   ctx.textAlign=al||'center';
   ctx.fillText(t,x,y);
 }
-
-// ── SCENE 0 : Opérateur R & H_φ ───────────────────────────────
 function scene0(){
   ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
   var T=frame*.012, k=sliderK;
@@ -720,19 +828,19 @@ loop();
 
 <!-- MODULE 2 -->
 <div id="screen-pm" class="screen">
-<h1>Pièces manquantes — <em>H_φ & géométrie abstraite (PEREZ, 2026c)</em></h1>
-<p class="sub">Alexandre Joseph Etienne PEREZ · Lausanne, 10 mai 2026 · © Travail spéculatif</p>
+<h1><span data-en="Missing pieces" data-fr="Pièces manquantes">Missing pieces</span> — <em><span data-en="H_φ &amp; abstract geometry (PEREZ, 2026c)" data-fr="H_φ &amp; géométrie abstraite (PEREZ, 2026c)">H_φ &amp; abstract geometry (PEREZ, 2026c)</span></em></h1>
+<p class="sub">Alexandre Joseph Etienne PEREZ · <span data-en="Lausanne, May 14, 2026 · © Exploratory work" data-fr="Lausanne, 14 mai 2026 · © Travail spéculatif">Lausanne, May 14, 2026 · © Exploratory work</span></p>
 
 <div class="tabs">
-  <button class="tab on" data-m="0">① Cantor → H_φ</button>
-  <button class="tab" data-m="1">② Klein V4 → H_2</button>
-  <button class="tab" data-m="2">③ Kramers → synchronicité</button>
-  <button class="tab" data-m="3">④ Berry → π₁(H_φ)</button>
-  <button class="tab" data-m="4">⑤ T⁴ → H_φ</button>
-  <button class="tab" data-m="5">⑥ Synthèse des connexions</button>
-  <button class="tab" data-m="6">⑦ Test P2 — φ-MEA</button>
-  <button class="tab" data-m="7">⑧ Test P2 v1.0.0 — données brutes</button>
-  <button class="tab" data-m="8">⑨ Test P3 — chap. 5 &amp; 8 (cosmologie)</button>
+  <button class="tab on" data-m="0"><span data-en="① Cantor → H_φ" data-fr="① Cantor → H_φ">① Cantor → H_φ</span></button>
+  <button class="tab" data-m="1"><span data-en="② Klein V4 → H_2" data-fr="② Klein V4 → H_2">② Klein V4 → H_2</span></button>
+  <button class="tab" data-m="2"><span data-en="③ Kramers → synchronicity" data-fr="③ Kramers → synchronicité">③ Kramers → synchronicity</span></button>
+  <button class="tab" data-m="3"><span data-en="④ Berry → π₁(H_φ)" data-fr="④ Berry → π₁(H_φ)">④ Berry → π₁(H_φ)</span></button>
+  <button class="tab" data-m="4"><span data-en="⑤ T⁴ → H_φ" data-fr="⑤ T⁴ → H_φ">⑤ T⁴ → H_φ</span></button>
+  <button class="tab" data-m="5"><span data-en="⑥ Connections synthesis" data-fr="⑥ Synthèse des connexions">⑥ Connections synthesis</span></button>
+  <button class="tab" data-m="6"><span data-en="⑦ P2 test — φ-MEA" data-fr="⑦ Test P2 — φ-MEA">⑦ P2 test — φ-MEA</span></button>
+  <button class="tab" data-m="7"><span data-en="⑧ P2 test v1.0.0 — raw data" data-fr="⑧ Test P2 v1.0.0 — données brutes">⑧ P2 test v1.0.0 — raw data</span></button>
+  <button class="tab" data-m="8"><span data-en="⑨ P3 test — chap. 5 &amp; 8 (cosmology)" data-fr="⑨ Test P3 — chap. 5 &amp; 8 (cosmologie)">⑨ P3 test — chap. 5 &amp; 8 (cosmology)</span></button>
 </div>
 <canvas id="pm-cv" width="900" height="700"></canvas>
 <div class="desc" id="pm-desc"></div>
@@ -767,7 +875,10 @@ cv.addEventListener('click',function(e){
     if(p1) vueP2=1; else if(p2) vueP2=2; else if(p3) vueP2=3; else if(p4) vueP2=4;
     var sav=document.getElementById('pm-sav');
     if(sav){
-      var labels=['','① précision','② universalité','③ stabilité','④ développement'];
+      var L=(window.currentLang==='fr');
+      var labels=L
+        ? ['','① précision','② universalité','③ stabilité','④ développement']
+        : ['','① precision','② universality','③ stability','④ development'];
       sav.textContent=labels[vueP2]||'';
     }
   } else if(mode===8){
@@ -794,7 +905,7 @@ cv.addEventListener('mousemove',function(e){
   cv.style.cursor=(inP1||inP2||inP3||inP4)?'pointer':'default';
 });
 
-var DESCS=[
+var DESCS_FR=[
   "§4.1 PEREZ (2026c) — La section transverse de l'attracteur de Lorenz révèle un ensemble de Cantor : une infinité de feuillets de mesure de Lebesgue nulle mais de dimension de Hausdorff non entière. Cette structure est identique à la décomposition H_φ = ⊕H_k dans H_∞. Conjecture : dim_H(H_φ) = 1 + 1/φ = φ.",
   "§6.2–6.3 PEREZ (2026c) — Le groupe de Klein V4 = Z₂ × Z₂ est le groupe de symétrie de H₂ ⊂ H_φ (Anima/Animus, k=2, λ=φ²). Les quatre opérations {identité, conjugaison, négation, négation conjuguée} correspondent à {e,a,b,c} de V4. Le nœud topologique de la figure-8 (Chenciner-Montgomery, 2000) est |A₀⟩.",
   "§5.2 PEREZ (2026c) — La loi de Kramers (1940) k = (ω₀·ω_b)/(2πγ)·exp(−ΔV/k_BT) et la fréquence de synchronicité f_sync = |⟨ψ₁|P_k|ψ₂⟩|²/τ_φ ont la même structure formelle. La correspondance ΔV/k_BT ↔ d_φ(H_k,H_{k'})/τ_φ dérive τ_φ ≈ φ² t_P depuis des quantités physiques définies.",
@@ -805,6 +916,27 @@ var DESCS=[
   "Test P2 v1.0.0 (PEREZ 2026d) — Validation sur 24 préparations LFP (3275 CF, χ²=2475.61, p<0.001). Quatre vues : ① précision (record MO extra φ⁷→φ⁸ à 0.003%), ② universalité (Fisher 100% sur φ⁶/φ⁷/φ⁸ pour HO/MO/CS), ③ stabilité (HO3 sur 17 jours, CV=0.3%), ④ trajectoire développementale (P13D→P45D→adulte). Cliquez sur un panneau pour le mettre en focus.",
   "Test P3 (PEREZ 2026e) — Validation empirique des chapitres 5 et 8 du corpus 2026c sur Planck PR4, DESI DR2, Pantheon+SH0ES et Gaia DR3. §8.1 (anisotropie CMB) validée : 0/1000 sims ΛCDM, match grille §10.6 sur axe 2 T⁴ à 0.53%. §8.3 (tension Hubble × densité stellaire) validée : Spearman r=−0.60, p<10⁻⁴, robuste à 23 tests. §8.2 (variation w(z)) compatible indicativement. §5.2 (Fibonacci) et §5.3–5.4 (Λ(Ψ)) non réfutés. Cliquez sur un panneau pour le mettre en focus."
 ];
+var DESCS_EN=[
+  "§4.1 PEREZ (2026c) — The transverse section of the Lorenz attractor reveals a Cantor set: infinitely many leaves of zero Lebesgue measure but non-integer Hausdorff dimension. This structure is identical to the decomposition H_φ = ⊕H_k in H_∞. Conjecture: dim_H(H_φ) = 1 + 1/φ = φ.",
+  "§6.2–6.3 PEREZ (2026c) — The Klein group V4 = Z₂ × Z₂ is the symmetry group of H₂ ⊂ H_φ (Anima/Animus, k=2, λ=φ²). The four operations {identity, conjugation, negation, conjugate negation} correspond to {e,a,b,c} of V4. The figure-8 topological knot (Chenciner-Montgomery, 2000) is |A₀⟩.",
+  "§5.2 PEREZ (2026c) — Kramers' law (1940) k = (ω₀·ω_b)/(2πγ)·exp(−ΔV/k_BT) and the synchronicity frequency f_sync = |⟨ψ₁|P_k|ψ₂⟩|²/τ_φ share the same formal structure. The correspondence ΔV/k_BT ↔ d_φ(H_k,H_{k'})/τ_φ derives τ_φ ≈ φ² t_P from well-defined physical quantities.",
+  "§7.1 PEREZ (2026c) — The Berry connection A_n = i⟨n|∇_R|n⟩ and its first Chern number are the topological invariant of π₁(H_φ) = ℤ_φ. An archetypal cycle H_k→H_{k+1}→H_k acquires a Berry phase = 2π/φ. Testable prediction: phase quantized in units of 2π/φ in a Bose-Einstein condensate of aspect ratio φ.",
+  "§2.2–2.3 PEREZ (2026c) — The torus T⁴ = S¹×S¹×S¹×S¹ with π₁(T⁴)=ℤ⁴ admits a homomorphism to π₁(H_φ)=ℤ_φ: (n₁,n₂,n₃,n₄) ↦ n₁+n₂φ+n₃φ²+n₄φ³. T⁴ is the 4-dimensional compactification of H_φ. The first four Fibonacci levels F₁=F₂=1, F₃=2, F₄=3 correspond to the four circles of T⁴.",
+  "Complete synthesis of the 5 connections between the structures of PEREZ (2026c) and H_φ. Each mathematical structure of the reflections document — Cantor, V4, Kramers, Berry, T⁴ — is a projection of H_φ into ordinary space. The most directly testable prediction is the Berry phase quantized in 2π/φ (connection ④).",
+  "Preliminary P2 test (PEREZ 2026c, §5.2) — Analysis of 15 characteristic frequency ratios across 8 neurophysiology studies (2013–2024). 93% of ratios within 20% of a φⁿ level, χ²=62.5, p<0.0001 against uniformity. Concentration on φ⁸ and φ⁹. Conclusive experimental path: CMOS MEA (Maxwell Biosystems, Zurich).",
+  "P2 test v1.0.0 (PEREZ 2026d) — Validation on 24 LFP preparations (3275 CF, χ²=2475.61, p<0.001). Four views: ① precision (MO extra record φ⁷→φ⁸ at 0.003%), ② universality (Fisher 100% on φ⁶/φ⁷/φ⁸ for HO/MO/CS), ③ stability (HO3 over 17 days, CV=0.3%), ④ developmental trajectory (P13D→P45D→adult). Click on a panel to focus on it.",
+  "P3 test (PEREZ 2026e) — Empirical validation of chapters 5 and 8 of the 2026c corpus on Planck PR4, DESI DR2, Pantheon+SH0ES and Gaia DR3. §8.1 (CMB anisotropy) validated: 0/1000 ΛCDM sims, §10.6 grid match on T⁴ axis 2 at 0.53%. §8.3 (Hubble tension × stellar density) validated: Spearman r=−0.60, p<10⁻⁴, robust to 23 tests. §8.2 (w(z) variation) indicatively compatible. §5.2 (Fibonacci) and §5.3–5.4 (Λ(Ψ)) not refuted. Click on a panel to focus on it."
+];
+var DESCS=DESCS_EN; // default language
+window.DESCS_PM_FR=DESCS_FR;
+window.DESCS_PM_EN=DESCS_EN;
+window.DESCS_PM_active=DESCS_EN;
+window.refreshPM=function(){
+  DESCS=window.DESCS_PM_active;
+  var d=document.getElementById('pm-desc');
+  if(d) d.textContent=DESCS[mode];
+  buildCtrl();
+};
 
 document.querySelectorAll('.tab').forEach(function(b){
   b.addEventListener('click',function(){
@@ -819,38 +951,109 @@ document.getElementById('pm-desc').textContent=DESCS[0];
 
 function buildCtrl(){
   var c=document.getElementById('pm-ctrl');
+  var L=(window.currentLang==='fr');
   if(mode===0){
-    c.innerHTML='<span>Itérations</span><input type="range" id="pm-sa" min="1" max="100" value="50"><span class="v" id="pm-sav">50</span>';
+    var lbl=L?'Itérations':'Iterations';
+    c.innerHTML='<span>'+lbl+'</span><input type="range" id="pm-sa" min="1" max="100" value="50"><span class="v" id="pm-sav">50</span>';
     document.getElementById('pm-sa').oninput=function(){sliderA=this.value/100;document.getElementById('pm-sav').textContent=this.value;};
   } else if(mode===2){
-    c.innerHTML='<span>Barrière ΔV/k_BT</span><input type="range" id="pm-sa" min="1" max="100" value="40"><span class="v" id="pm-sav">0.40</span>';
+    var lbl=L?'Barrière ΔV/k_BT':'Barrier ΔV/k_BT';
+    c.innerHTML='<span>'+lbl+'</span><input type="range" id="pm-sa" min="1" max="100" value="40"><span class="v" id="pm-sav">0.40</span>';
     document.getElementById('pm-sa').oninput=function(){sliderA=this.value/100;document.getElementById('pm-sav').textContent=sliderA.toFixed(2);};
   } else if(mode===3){
-    c.innerHTML='<span>Cycle archétypal k</span><input type="range" id="pm-sa" min="0" max="80" value="30" step="1"><span class="v" id="pm-sav">k=3</span>';
+    var lbl=L?'Cycle archétypal k':'Archetypal cycle k';
+    c.innerHTML='<span>'+lbl+'</span><input type="range" id="pm-sa" min="0" max="80" value="30" step="1"><span class="v" id="pm-sav">k=3</span>';
     document.getElementById('pm-sa').oninput=function(){sliderA=this.value/80;document.getElementById('pm-sav').textContent='k='+Math.round(this.value/80*8);};
   } else if(mode===6){
-    c.innerHTML='<span>Niveau k</span><input type="range" id="pm-sa" min="1" max="12" value="8" step="1"><span class="v" id="pm-sav">k=8</span>';
+    var lbl=L?'Niveau k':'Level k';
+    c.innerHTML='<span>'+lbl+'</span><input type="range" id="pm-sa" min="1" max="12" value="8" step="1"><span class="v" id="pm-sav">k=8</span>';
     document.getElementById('pm-sa').oninput=function(){sliderA=this.value/12;document.getElementById('pm-sav').textContent='k='+this.value;};
   } else if(mode===7){
-    vueP2=1; // initialiser sur vue 1 (précision)
-    c.innerHTML='<span style="color:rgba(200,200,220,.55);">Cliquez sur un panneau pour le mettre en focus</span><span class="v" id="pm-sav" style="margin-left:auto;color:#818cf8;">① précision</span>';
+    vueP2=1;
+    var lblClick=L?'Cliquez sur un panneau pour le mettre en focus':'Click on a panel to focus on it';
+    var lblFirst=L?'① précision':'① precision';
+    c.innerHTML='<span style="color:rgba(200,200,220,.55);">'+lblClick+'</span><span class="v" id="pm-sav" style="margin-left:auto;color:#818cf8;">'+lblFirst+'</span>';
   } else if(mode===8){
-    vueP3=1; // initialiser sur vue 1 (§8.1 CMB)
-    c.innerHTML='<span style="color:rgba(200,200,220,.55);">Cliquez sur un panneau pour le mettre en focus</span><span class="v" id="pm-sav" style="margin-left:auto;color:#34d399;">① §8.1 CMB</span>';
+    vueP3=1;
+    var lblClick=L?'Cliquez sur un panneau pour le mettre en focus':'Click on a panel to focus on it';
+    var lblFirst=L?'① §8.1 CMB':'① §8.1 CMB';
+    c.innerHTML='<span style="color:rgba(200,200,220,.55);">'+lblClick+'</span><span class="v" id="pm-sav" style="margin-left:auto;color:#34d399;">'+lblFirst+'</span>';
   } else {
     c.innerHTML='';
   }
 }
 buildCtrl();
 
+// Translation dictionary for canvas text (Module 2)
+var TX_DICT_PM = {
+  "Section transverse — Attracteur de Lorenz": "Transverse section — Lorenz attractor",
+  "Décomposition spectrale de H_φ": "Spectral decomposition of H_φ",
+  "Conjecture : dim_H(H_φ) = 1 + 1/φ = φ ≈ 1.618": "Conjecture: dim_H(H_φ) = 1 + 1/φ = φ ≈ 1.618",
+  "La dimension de l'Unus Mundus est le nombre d'or": "The dimension of the Unus Mundus is the golden ratio",
+  "Lemniscate de Bernoulli": "Bernoulli lemniscate",
+  "Sym. V4 = Z₂ × Z₂": "Sym. V4 = Z₂ × Z₂",
+  "Chorégraphie Chenciner-Montgomery (2000)": "Chenciner-Montgomery choreography (2000)",
+  "Identité": "Identity",
+  "Conj. complexe": "Complex conjugation",
+  "Négation": "Negation",
+  "Neg. conjuguée": "Conjugate negation",
+  "V4 dérivé du spectre de R": "V4 derived from R spectrum",
+  "Double puits — Loi de Kramers": "Double well — Kramers' law",
+  "Franchissement de barrière classique": "Classical barrier crossing",
+  "Distance dans H_φ": "Distance in H_φ",
+  "Synchronicité = franchissement dans H_φ": "Synchronicity = crossing in H_φ",
+  "H_k (sous-espace archétypal)": "H_k (archetypal subspace)",
+  "H_{k'} (sous-espace archétypal)": "H_{k'} (archetypal subspace)",
+  "Correspondance : ΔV/k_BT ↔ d_φ(H_k,H_{k'}) / τ_φ": "Correspondence: ΔV/k_BT ↔ d_φ(H_k,H_{k'}) / τ_φ",
+  "Espace des paramètres R": "R parameter space",
+  "C (chemin fermé dans R)": "C (closed path in R)",
+  "Phase de Berry": "Berry phase",
+  "Phase quantifiée par H_φ": "Phase quantized by H_φ",
+  "Cycle archétypal": "Archetypal cycle",
+  "Phase mesurée": "Measured phase",
+  "(mod ℤ_φ)": "(mod ℤ_φ)",
+  "(→ 2π/φ ≈ 3.883 rad en cycle complet)": "(→ 2π/φ ≈ 3.883 rad in full cycle)",
+  "Prédiction testable — Cristal de Penrose": "Testable prediction — Penrose crystal",
+  "Tore T⁴ (4 cercles)": "T⁴ torus (4 circles)",
+  "(n₁,n₂,n₃,n₄) ↦": "(n₁,n₂,n₃,n₄) ↦",
+  "Niveaux de Fibonacci": "Fibonacci levels",
+  "Compactification 4D": "4D compactification",
+  "Convergence littérature — 20 ans d'études MEA": "Literature convergence — 20 years of MEA studies",
+  "Études neurophysiologiques (2013–2024)": "Neurophysiological studies (2013–2024)",
+  "15 ratios analysés": "15 ratios analysed",
+  "Niveaux φⁿ assignés": "Assigned φⁿ levels",
+  "Distribution des niveaux φ^n assignés": "Distribution of assigned φⁿ levels",
+  "Concentration sur φ⁸–φ⁹": "Concentration on φ⁸–φ⁹",
+  "Voie expérimentale conclusive": "Conclusive experimental path",
+  "PRÉCISION (record absolu)": "PRECISION (absolute record)",
+  "Précision": "Precision",
+  "précision (record)": "precision (record)",
+  "universalité (espèces × préparations)": "universality (species × preparations)",
+  "stabilité (longitudinale)": "stability (longitudinal)",
+  "développement (P13D→adulte)": "development (P13D→adult)",
+  "Distribution ΛCDM de |A(SGP)| sur 1000 sims vs observations": "ΛCDM distribution of |A(SGP)| on 1000 sims vs observations",
+  "Direction (l=243°, b=−45°) confirmée au pixel près par SEVEM": "Direction (l=243°, b=−45°) confirmed pixel-precision by SEVEM",
+  "Match grille T⁴ §10.6 — Axe 2 à 0.53%": "T⁴ grid match §10.6 — Axis 2 at 0.53%",
+  "CMB Anisotropie — Planck PR4": "CMB Anisotropy — Planck PR4",
+  "Tension de Hubble × densité stellaire": "Hubble tension × stellar density",
+  "Pantheon+SH0ES × Gaia DR3 — 19 galaxies hôtes": "Pantheon+SH0ES × Gaia DR3 — 19 host galaxies",
+  "Variation de w(z) — DESI DR2": "w(z) variation — DESI DR2",
+  "Fibonacci ontologique &amp; Λ(Ψ)": "Ontological Fibonacci & Λ(Ψ)",
+  "Cliquez sur un panneau pour le mettre en focus": "Click on a panel to focus on it",
+  "Test P2 sur 24 préparations LFP — PEREZ 2026d": "P2 test on 24 LFP preparations — PEREZ 2026d",
+  "Validation empirique chapitres 5 & 8 — PEREZ 2026e": "Empirical validation of chapters 5 & 8 — PEREZ 2026e",
+  "Spearman r=−0.60, p<10⁻⁴, 23 tests robustes": "Spearman r=−0.60, p<10⁻⁴, 23 robust tests",
+  "stabilité longitudinale": "longitudinal stability",
+  "axe développemental": "developmental axis"
+};
+
 function tx(t,x,y,col,sz,al){
+  if(window.currentLang!=='fr' && TX_DICT_PM[t]) t=TX_DICT_PM[t];
   ctx.fillStyle=col||'rgba(150,150,160,.7)';
   ctx.font=(sz||11)+'px Arial,sans-serif';
   ctx.textAlign=al||'center';
   ctx.fillText(t,x,y);
 }
-
-// ── SCENE 0 : Cantor → H_φ ────────────────────────────────────
 function scene0(){
   ctx.fillStyle='#05050d';ctx.fillRect(0,0,W,H);
   var T=frame*.01;
@@ -2062,6 +2265,54 @@ function showScreen(id){
   document.getElementById('back-btn').style.display=(id==='home')?'none':'block';
   window.scrollTo(0,0);
 }
+
+// ── i18n: language switch ──────────────────────────────────────
+(function() {
+  var btns = document.querySelectorAll('.lang-btn');
+  var current = localStorage.getItem('lang') || 'en';
+  window.currentLang = current;
+  apply(current);
+
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var lang = btn.dataset.lang;
+      window.currentLang = lang;
+      apply(lang);
+      localStorage.setItem('lang', lang);
+    });
+  });
+
+  function apply(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-en]').forEach(function(el) {
+      var content = el.dataset[lang] || el.dataset.en;
+      if (content.indexOf('<') !== -1) {
+        el.innerHTML = content;
+      } else {
+        el.textContent = content;
+      }
+    });
+    btns.forEach(function(b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    // Swap DESCS arrays for both modules
+    try {
+      // Module 1
+      var umDesc = document.getElementById('um-desc');
+      if (umDesc && typeof window.DESCS_UM_FR !== 'undefined') {
+        window.DESCS_UM_active = (lang === 'fr') ? window.DESCS_UM_FR : window.DESCS_UM_EN;
+      }
+      // Module 2
+      var pmDesc = document.getElementById('pm-desc');
+      if (pmDesc && typeof window.DESCS_PM_FR !== 'undefined') {
+        window.DESCS_PM_active = (lang === 'fr') ? window.DESCS_PM_FR : window.DESCS_PM_EN;
+      }
+      // Trigger redraw of current desc + rebuild ctrl
+      if (typeof window.refreshUM === 'function') window.refreshUM();
+      if (typeof window.refreshPM === 'function') window.refreshPM();
+    } catch(e) {}
+  }
+})();
 </script>
 </body>
 </html>

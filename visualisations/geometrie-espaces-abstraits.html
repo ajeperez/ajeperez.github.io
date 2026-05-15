@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Géométrie des espaces abstraits — Alexandre J.E. Perez</title>
+<title>Geometry of abstract spaces — Alexandre J.E. Perez</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet">
 <style>
 /* ── Base ── */
@@ -95,10 +95,23 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
 .ctrl input[type=range]{flex:1;min-width:80px;accent-color:#818cf8}
 .ctrl .v{min-width:36px;color:#888}
 
+/* Language switch */
+#lang-switch{position:fixed;top:20px;right:140px;z-index:9999;background:rgba(5,5,13,.85);backdrop-filter:blur(8px);border:1px solid rgba(129,140,248,.25);border-radius:20px;padding:6px 14px;font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1.5px;display:flex;align-items:center;gap:6px}
+.lang-btn{background:transparent;border:none;color:rgba(129,140,248,.45);cursor:pointer;padding:4px 6px;font-family:inherit;font-size:inherit;letter-spacing:inherit;text-transform:uppercase;transition:color .2s}
+.lang-btn:hover{color:#818cf8}
+.lang-btn.active{color:#c7d0ff;font-weight:500}
+.lang-sep{color:rgba(129,140,248,.3)}
 
 </style>
 </head>
 <body>
+
+<!-- Language switch -->
+<div id="lang-switch">
+  <button data-lang="en" class="lang-btn active">EN</button>
+  <span class="lang-sep">/</span>
+  <button data-lang="fr" class="lang-btn">FR</button>
+</div>
 
 
 <div id="back-btn" style="display:none;position:fixed;top:20px;right:24px;z-index:9999;">
@@ -109,7 +122,7 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
     border-radius:20px;cursor:pointer;transition:border-color .2s,color .2s;"
     onmouseover="this.style.borderColor='#818cf8';this.style.color='#c7d0ff'"
     onmouseout="this.style.borderColor='rgba(129,140,248,.35)';this.style.color='#818cf8'">
-    ← Accueil
+    <span data-en="← Home" data-fr="← Accueil">← Home</span>
   </button>
 </div>
 
@@ -122,19 +135,23 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
   font-family:'EB Garamond',Georgia,serif;color:#e2dfd6;">
 
   <p style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:3px;
-     text-transform:uppercase;color:#818cf8;opacity:.7;margin-bottom:18px;">
-    Visualisations interactives — 4 modules
+     text-transform:uppercase;color:#818cf8;opacity:.7;margin-bottom:18px;"
+     data-en="Interactive visualizations — 4 modules"
+     data-fr="Visualisations interactives — 4 modules">
+    Interactive visualizations — 4 modules
   </p>
 
-  <h1 style="font-size:clamp(26px,3.5vw,42px);font-weight:400;line-height:1.2;margin-bottom:8px;">
-    Géométrie des espaces abstraits<br>
-    <em style="font-style:italic;color:#818cf8;">&amp; physique fondamentale</em>
+  <h1 style="font-size:clamp(26px,3.5vw,42px);font-weight:400;line-height:1.2;margin-bottom:8px;"
+      data-en="Geometry of abstract spaces&lt;br&gt;&lt;em style=&quot;font-style:italic;color:#818cf8;&quot;&gt;&amp; fundamental physics&lt;/em&gt;"
+      data-fr="Géométrie des espaces abstraits&lt;br&gt;&lt;em style=&quot;font-style:italic;color:#818cf8;&quot;&gt;&amp; physique fondamentale&lt;/em&gt;">
+    Geometry of abstract spaces<br>
+    <em style="font-style:italic;color:#818cf8;">&amp; fundamental physics</em>
   </h1>
 
   <p style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1px;
      color:#555566;margin-bottom:28px;">
     <strong style="color:rgba(220,218,210,.5);font-weight:400;">Alexandre Joseph Etienne PEREZ</strong>
-    &nbsp;·&nbsp; Lausanne, le 10 mai 2026 &nbsp;·&nbsp; © 2026 — Usage recherche
+    &nbsp;·&nbsp; <span data-en="Lausanne, May 14, 2026" data-fr="Lausanne, le 14 mai 2026">Lausanne, May 14, 2026</span> &nbsp;·&nbsp; <span data-en="© 2026 — Research use" data-fr="© 2026 — Usage recherche">© 2026 — Research use</span>
   </p>
 
   <div style="height:1px;background:linear-gradient(90deg,transparent,#818cf8,transparent);
@@ -142,13 +159,12 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
 
   <div style="font-size:16px;line-height:1.8;color:rgba(226,223,214,.72);
        max-width:680px;margin-bottom:44px;">
-    <p>Ce portail rassemble quatre modules de visualisations interactives accompagnant
-    la réflexion personnelle sur la géométrie des espaces abstraits et la physique fondamentale.
-    Chaque module explore des structures mathématiques — attracteurs, repliements, symétries,
-    catastrophes, vide quantique — et leurs connexions profondes avec la physique contemporaine.</p>
-    <p style="margin-top:12px;">
-    Cliquez sur un module ci-dessous pour l'ouvrir. Un bouton <em>Retour à l'accueil</em>
-    vous ramène ici à tout moment.</p>
+    <p data-en="This portal gathers four modules of interactive visualizations accompanying the personal reflection on the geometry of abstract spaces and fundamental physics. Each module explores mathematical structures — attractors, folding, symmetries, catastrophes, quantum vacuum — and their deep connections with contemporary physics."
+       data-fr="Ce portail rassemble quatre modules de visualisations interactives accompagnant la réflexion personnelle sur la géométrie des espaces abstraits et la physique fondamentale. Chaque module explore des structures mathématiques — attracteurs, repliements, symétries, catastrophes, vide quantique — et leurs connexions profondes avec la physique contemporaine.">This portal gathers four modules of interactive visualizations accompanying the personal reflection on the geometry of abstract spaces and fundamental physics. Each module explores mathematical structures — attractors, folding, symmetries, catastrophes, quantum vacuum — and their deep connections with contemporary physics.</p>
+    <p style="margin-top:12px;"
+       data-en="Click on a module below to open it. A &lt;em&gt;Back to home&lt;/em&gt; button brings you back here anytime."
+       data-fr="Cliquez sur un module ci-dessous pour l'ouvrir. Un bouton &lt;em&gt;Retour à l'accueil&lt;/em&gt; vous ramène ici à tout moment.">
+    Click on a module below to open it. A <em>Back to home</em> button brings you back here anytime.</p>
   </div>
 
   <!-- Grille des 4 modules -->
@@ -162,10 +178,13 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
       <p style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;
          text-transform:uppercase;color:#818cf8;opacity:.75;margin-bottom:8px;">Module 01</p>
       <h3 style="font-family:'EB Garamond',serif;font-size:18px;font-weight:400;
-         color:#e2dfd6;line-height:1.3;margin-bottom:7px;">Géométrie des espaces abstraits</h3>
-      <p style="font-size:12.5px;line-height:1.55;color:#555566;">
-        Tore 4D, attracteurs, repliement chaotique (Hénon), double puits, symétries de Klein,
-        géométrie chromatique, brisure spontanée et catastrophes de Thom.</p>
+         color:#e2dfd6;line-height:1.3;margin-bottom:7px;"
+         data-en="Geometry of abstract spaces"
+         data-fr="Géométrie des espaces abstraits">Geometry of abstract spaces</h3>
+      <p style="font-size:12.5px;line-height:1.55;color:#555566;"
+         data-en="4D torus, attractors, chaotic folding (Hénon), double well, Klein symmetries, chromatic geometry, spontaneous breaking and Thom catastrophes."
+         data-fr="Tore 4D, attracteurs, repliement chaotique (Hénon), double puits, symétries de Klein, géométrie chromatique, brisure spontanée et catastrophes de Thom.">
+        4D torus, attractors, chaotic folding (Hénon), double well, Klein symmetries, chromatic geometry, spontaneous breaking and Thom catastrophes.</p>
       <span style="position:absolute;bottom:16px;right:18px;color:#818cf8;font-size:15px;">→</span>
     </div>
 
@@ -177,10 +196,13 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
       <p style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;
          text-transform:uppercase;color:#34d399;opacity:.75;margin-bottom:8px;">Module 02</p>
       <h3 style="font-family:'EB Garamond',serif;font-size:18px;font-weight:400;
-         color:#e2dfd6;line-height:1.3;margin-bottom:7px;">Expansion de l'univers</h3>
-      <p style="font-size:12.5px;line-height:1.55;color:#555566;">
-        Divergence exponentielle (analogue Lyapunov), horizon cosmologique, destin thermodynamique,
-        destins cosmiques et catastrophes de Thom.</p>
+         color:#e2dfd6;line-height:1.3;margin-bottom:7px;"
+         data-en="Expansion of the universe"
+         data-fr="Expansion de l'univers">Expansion of the universe</h3>
+      <p style="font-size:12.5px;line-height:1.55;color:#555566;"
+         data-en="Exponential divergence (Lyapunov analogue), cosmological horizon, thermodynamic fate, cosmic destinies and Thom catastrophes."
+         data-fr="Divergence exponentielle (analogue Lyapunov), horizon cosmologique, destin thermodynamique, destins cosmiques et catastrophes de Thom.">
+        Exponential divergence (Lyapunov analogue), cosmological horizon, thermodynamic fate, cosmic destinies and Thom catastrophes.</p>
       <span style="position:absolute;bottom:16px;right:18px;color:#34d399;font-size:15px;">→</span>
     </div>
 
@@ -192,10 +214,13 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
       <p style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;
          text-transform:uppercase;color:#f59e0b;opacity:.75;margin-bottom:8px;">Module 03</p>
       <h3 style="font-family:'EB Garamond',serif;font-size:18px;font-weight:400;
-         color:#e2dfd6;line-height:1.3;margin-bottom:7px;">Trous noirs &amp; Hawking</h3>
-      <p style="font-size:12.5px;line-height:1.55;color:#555566;">
-        Trou noir comme attracteur, horizon comme bifurcation catastrophique, rayonnement
-        de Hawking, évaporation, paradoxe de l'information, effet Unruh.</p>
+         color:#e2dfd6;line-height:1.3;margin-bottom:7px;"
+         data-en="Black holes &amp; Hawking"
+         data-fr="Trous noirs &amp; Hawking">Black holes &amp; Hawking</h3>
+      <p style="font-size:12.5px;line-height:1.55;color:#555566;"
+         data-en="Black hole as attractor, horizon as catastrophic bifurcation, Hawking radiation, evaporation, information paradox, Unruh effect."
+         data-fr="Trou noir comme attracteur, horizon comme bifurcation catastrophique, rayonnement de Hawking, évaporation, paradoxe de l'information, effet Unruh.">
+        Black hole as attractor, horizon as catastrophic bifurcation, Hawking radiation, evaporation, information paradox, Unruh effect.</p>
       <span style="position:absolute;bottom:16px;right:18px;color:#f59e0b;font-size:15px;">→</span>
     </div>
 
@@ -207,10 +232,13 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
       <p style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;
          text-transform:uppercase;color:#f97316;opacity:.75;margin-bottom:8px;">Module 04</p>
       <h3 style="font-family:'EB Garamond',serif;font-size:18px;font-weight:400;
-         color:#e2dfd6;line-height:1.3;margin-bottom:7px;">Complémentarité — Holographie — ER=EPR</h3>
-      <p style="font-size:12.5px;line-height:1.55;color:#555566;">
-        Complémentarité de Susskind, holographie S=A/4l²<sub>P</sub>,
-        AdS/CFT, ER=EPR et émergence de l'espace-temps par l'intrication.</p>
+         color:#e2dfd6;line-height:1.3;margin-bottom:7px;"
+         data-en="Complementarity — Holography — ER=EPR"
+         data-fr="Complémentarité — Holographie — ER=EPR">Complementarity — Holography — ER=EPR</h3>
+      <p style="font-size:12.5px;line-height:1.55;color:#555566;"
+         data-en="Susskind complementarity, holography S=A/4l²&lt;sub&gt;P&lt;/sub&gt;, AdS/CFT, ER=EPR and the emergence of spacetime through entanglement."
+         data-fr="Complémentarité de Susskind, holographie S=A/4l²&lt;sub&gt;P&lt;/sub&gt;, AdS/CFT, ER=EPR et émergence de l'espace-temps par l'intrication.">
+        Susskind complementarity, holography S=A/4l²<sub>P</sub>, AdS/CFT, ER=EPR and the emergence of spacetime through entanglement.</p>
       <span style="position:absolute;bottom:16px;right:18px;color:#f97316;font-size:15px;">→</span>
     </div>
 
@@ -223,18 +251,25 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
       <p style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:2.5px;
          text-transform:uppercase;color:#f59e0b;opacity:.75;margin-bottom:8px;">Publications · Zenodo</p>
       <p style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:1.5px;
-         text-transform:uppercase;color:#555566;margin-bottom:10px;">Corpus PEREZ 2026 — Mai 2026</p>
+         text-transform:uppercase;color:#555566;margin-bottom:10px;"
+         data-en="PEREZ 2026 Corpus — May 2026"
+         data-fr="Corpus PEREZ 2026 — Mai 2026">PEREZ 2026 Corpus — May 2026</p>
       <h3 style="font-family:'EB Garamond',serif;font-size:18px;font-weight:400;
-         color:#e2dfd6;line-height:1.3;margin-bottom:14px;">Publications associées</h3>
+         color:#e2dfd6;line-height:1.3;margin-bottom:14px;"
+         data-en="Related publications"
+         data-fr="Publications associées">Related publications</h3>
       <p style="font-size:12.5px;line-height:1.9;color:#555566;">
-        <a href="https://doi.org/10.5281/zenodo.20054634" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20054634</a> — Axiome, Archétype, Singularité, φ<br>
-        <a href="https://doi.org/10.5281/zenodo.20098372" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098372</a> — Réflexions personnelles sur la géométrie des espaces abstraits<br>
-        <a href="https://doi.org/10.5281/zenodo.20098274" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098274</a> — Unus Mundus comme H_φ<br>
-        <a href="https://doi.org/10.5281/zenodo.20113396" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20113396</a> — Rapport d'analyse Prédiction P2<br>
-        <a href="https://doi.org/10.5281/zenodo.20098853" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20098853</a> — Comprendre la théorie H_φ (vulgarisation)
+        <a href="https://doi.org/10.5281/zenodo.20184004" target="_blank" style="color:rgba(245,158,11,.85);text-decoration:none;font-weight:500;">doi:10.5281/zenodo.20184004</a> — <span data-en="Discrete frequency convergence (P2 paper, EN stand-alone)" data-fr="Discrete frequency convergence (P2 paper, EN stand-alone)">Discrete frequency convergence (P2 paper, EN stand-alone)</span><br>
+        <a href="https://doi.org/10.5281/zenodo.20182573" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20182573</a> — <span data-en="Axiom, Archetype, Singularity, φ" data-fr="Axiome, Archétype, Singularité, φ">Axiom, Archetype, Singularity, φ</span><br>
+        <a href="https://doi.org/10.5281/zenodo.20182716" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20182716</a> — <span data-en="Personal reflections on the geometry of abstract spaces" data-fr="Réflexions personnelles sur la géométrie des espaces abstraits">Personal reflections on the geometry of abstract spaces</span><br>
+        <a href="https://doi.org/10.5281/zenodo.20182784" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20182784</a> — <span data-en="Unus Mundus as H_φ" data-fr="Unus Mundus comme H_φ">Unus Mundus as H_φ</span><br>
+        <a href="https://doi.org/10.5281/zenodo.20182873" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20182873</a> — <span data-en="Analysis report — Prediction P3" data-fr="Rapport d'analyse Prédiction P3">Analysis report — Prediction P3</span><br>
+        <a href="https://doi.org/10.5281/zenodo.20174647" target="_blank" style="color:rgba(245,158,11,.65);text-decoration:none;">doi:10.5281/zenodo.20174647</a> — <span data-en="Understanding the H_φ theory (popular science)" data-fr="Comprendre la théorie H_φ (vulgarisation)">Understanding the H_φ theory (popular science)</span>
       </p>
-      <p style="margin-top:14px;font-size:11px;color:#333340;">
-        Travail spéculatif · Non peer-reviewed · Toutes affirmations marquées comme hypothèses
+      <p style="margin-top:14px;font-size:11px;color:#333340;"
+         data-en="Exploratory work · Not peer-reviewed · All claims marked as hypotheses"
+         data-fr="Travail spéculatif · Non peer-reviewed · Toutes affirmations marquées comme hypothèses">
+        Exploratory work · Not peer-reviewed · All claims marked as hypotheses
       </p>
     </div>
   </div>
@@ -245,25 +280,25 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
 <!-- ══ MODULE 1 ══ -->
 <div id="screen-p1" class="screen">
 <nav id="nav">
-  <h2>Visualisations</h2>
-  <button class="nb active" data-s="s0">① Tore 4D</button>
-  <button class="nb" data-s="s1">② Attracteurs</button>
-  <button class="nb" data-s="s2">③ Repliement</button>
-  <button class="nb" data-s="s3">④ Double puits</button>
-  <button class="nb" data-s="s4">⑤ Symétries Klein</button>
-  <button class="nb" data-s="s5">⑥ Géométrie chromatique</button>
-  <button class="nb" data-s="s6">⑦ Brisure & Catastrophe</button>
+  <h2 data-en="Visualizations" data-fr="Visualisations">Visualizations</h2>
+  <button class="nb active" data-s="s0"><span data-en="① 4D Torus" data-fr="① Tore 4D">① 4D Torus</span></button>
+  <button class="nb" data-s="s1"><span data-en="② Attractors" data-fr="② Attracteurs">② Attractors</span></button>
+  <button class="nb" data-s="s2"><span data-en="③ Folding" data-fr="③ Repliement">③ Folding</span></button>
+  <button class="nb" data-s="s3"><span data-en="④ Double well" data-fr="④ Double puits">④ Double well</span></button>
+  <button class="nb" data-s="s4"><span data-en="⑤ Klein symmetries" data-fr="⑤ Symétries Klein">⑤ Klein symmetries</span></button>
+  <button class="nb" data-s="s5"><span data-en="⑥ Chromatic geometry" data-fr="⑥ Géométrie chromatique">⑥ Chromatic geometry</span></button>
+  <button class="nb" data-s="s6"><span data-en="⑦ Breaking &amp; Catastrophe" data-fr="⑦ Brisure &amp; Catastrophe">⑦ Breaking &amp; Catastrophe</span></button>
 </nav>
 <main id="main">
 
 <div class="sec on" id="s0">
-  <h1>Le tore à quatre dimensions</h1>
-  <p>T⁴ = S¹×S¹×S¹×S¹ — quatre cercles indépendants.</p>
+  <h1 data-en="The four-dimensional torus" data-fr="Le tore à quatre dimensions">The four-dimensional torus</h1>
+  <p data-en="T⁴ = S¹×S¹×S¹×S¹ — four independent circles." data-fr="T⁴ = S¹×S¹×S¹×S¹ — quatre cercles indépendants.">T⁴ = S¹×S¹×S¹×S¹ — four independent circles.</p>
   <div class="tabs">
-    <button class="tab on" data-m="0">① Cercle 1D</button>
-    <button class="tab" data-m="1">② Tore 2D</button>
-    <button class="tab" data-m="2">③ Tore 3D</button>
-    <button class="tab" data-m="3">④ Tore 4D</button>
+    <button class="tab on" data-m="0"><span data-en="① 1D Circle" data-fr="① Cercle 1D">① 1D Circle</span></button>
+    <button class="tab" data-m="1"><span data-en="② 2D Torus" data-fr="② Tore 2D">② 2D Torus</span></button>
+    <button class="tab" data-m="2"><span data-en="③ 3D Torus" data-fr="③ Tore 3D">③ 3D Torus</span></button>
+    <button class="tab" data-m="3"><span data-en="④ 4D Torus" data-fr="④ Tore 4D">④ 4D Torus</span></button>
   </div>
   <canvas id="c0" width="860" height="380"></canvas>
   <div class="desc" id="d0"></div>
@@ -271,12 +306,12 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
 </div>
 
 <div class="sec" id="s1">
-  <h1>Attracteurs dans l'espace de phase</h1>
-  <p>Point fixe, cycle limite, attracteur étrange de Lorenz.</p>
+  <h1 data-en="Attractors in phase space" data-fr="Attracteurs dans l'espace de phase">Attractors in phase space</h1>
+  <p data-en="Fixed point, limit cycle, Lorenz strange attractor." data-fr="Point fixe, cycle limite, attracteur étrange de Lorenz.">Fixed point, limit cycle, Lorenz strange attractor.</p>
   <div class="tabs">
-    <button class="tab on" data-m="0">① Point fixe</button>
-    <button class="tab" data-m="1">② Cycle limite</button>
-    <button class="tab" data-m="2">③ Lorenz</button>
+    <button class="tab on" data-m="0"><span data-en="① Fixed point" data-fr="① Point fixe">① Fixed point</span></button>
+    <button class="tab" data-m="1"><span data-en="② Limit cycle" data-fr="② Cycle limite">② Limit cycle</span></button>
+    <button class="tab" data-m="2"><span data-en="③ Lorenz" data-fr="③ Lorenz">③ Lorenz</span></button>
   </div>
   <canvas id="c1" width="860" height="380"></canvas>
   <div class="desc" id="d1"></div>
@@ -284,13 +319,13 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
 </div>
 
 <div class="sec" id="s2">
-  <h1>Le repliement (folding)</h1>
-  <p>Étirement + repliement = chaos déterministe. Fer à cheval de Smale, application du boulanger.</p>
+  <h1 data-en="Folding" data-fr="Le repliement (folding)">Folding</h1>
+  <p data-en="Stretching + folding = deterministic chaos. Smale horseshoe, baker's map." data-fr="Étirement + repliement = chaos déterministe. Fer à cheval de Smale, application du boulanger.">Stretching + folding = deterministic chaos. Smale horseshoe, baker's map.</p>
   <div class="tabs">
-    <button class="tab on" data-m="0">① Étire & replie</button>
-    <button class="tab" data-m="1">② Fer à cheval</button>
-    <button class="tab" data-m="2">③ Boulanger</button>
-    <button class="tab" data-m="3">④ Fractal</button>
+    <button class="tab on" data-m="0"><span data-en="① Stretch &amp; fold" data-fr="① Étire &amp; replie">① Stretch &amp; fold</span></button>
+    <button class="tab" data-m="1"><span data-en="② Horseshoe" data-fr="② Fer à cheval">② Horseshoe</span></button>
+    <button class="tab" data-m="2"><span data-en="③ Baker's map" data-fr="③ Boulanger">③ Baker's map</span></button>
+    <button class="tab" data-m="3"><span data-en="④ Fractal" data-fr="④ Fractal">④ Fractal</span></button>
   </div>
   <canvas id="c2" width="780" height="340"></canvas>
   <div class="desc" id="d2"></div>
@@ -298,13 +333,13 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
 </div>
 
 <div class="sec" id="s3">
-  <h1>Le double puits de potentiel</h1>
-  <p>V(x)=x⁴/4−μx²/2 — deux états stables, barrière, effet tunnel.</p>
+  <h1 data-en="The double-well potential" data-fr="Le double puits de potentiel">The double-well potential</h1>
+  <p data-en="V(x)=x⁴/4−μx²/2 — two stable states, barrier, tunneling effect." data-fr="V(x)=x⁴/4−μx²/2 — deux états stables, barrière, effet tunnel.">V(x)=x⁴/4−μx²/2 — two stable states, barrier, tunneling effect.</p>
   <div class="tabs">
-    <button class="tab on" data-m="0">① Paysage</button>
-    <button class="tab" data-m="1">② Effet tunnel</button>
-    <button class="tab" data-m="2">③ Bifurcation</button>
-    <button class="tab" data-m="3">④ Bruit thermique</button>
+    <button class="tab on" data-m="0"><span data-en="① Landscape" data-fr="① Paysage">① Landscape</span></button>
+    <button class="tab" data-m="1"><span data-en="② Tunneling" data-fr="② Effet tunnel">② Tunneling</span></button>
+    <button class="tab" data-m="2"><span data-en="③ Bifurcation" data-fr="③ Bifurcation">③ Bifurcation</span></button>
+    <button class="tab" data-m="3"><span data-en="④ Thermal noise" data-fr="④ Bruit thermique">④ Thermal noise</span></button>
   </div>
   <canvas id="c3" width="860" height="380"></canvas>
   <div class="desc" id="d3"></div>
@@ -312,13 +347,13 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
 </div>
 
 <div class="sec" id="s4">
-  <h1>Symétries discrètes — groupe de Klein V₄</h1>
-  <p>Z₂×Z₂ — involution centrale, nœud topologique, chorégraphie 3 corps.</p>
+  <h1 data-en="Discrete symmetries — Klein group V₄" data-fr="Symétries discrètes — groupe de Klein V₄">Discrete symmetries — Klein group V₄</h1>
+  <p data-en="Z₂×Z₂ — central involution, topological knot, 3-body choreography." data-fr="Z₂×Z₂ — involution centrale, nœud topologique, chorégraphie 3 corps.">Z₂×Z₂ — central involution, topological knot, 3-body choreography.</p>
   <div class="tabs">
-    <button class="tab on" data-m="0">① Involution</button>
-    <button class="tab" data-m="1">② Groupe Klein</button>
-    <button class="tab" data-m="2">③ Nœud topologique</button>
-    <button class="tab" data-m="3">④ Chorégraphie</button>
+    <button class="tab on" data-m="0"><span data-en="① Involution" data-fr="① Involution">① Involution</span></button>
+    <button class="tab" data-m="1"><span data-en="② Klein group" data-fr="② Groupe Klein">② Klein group</span></button>
+    <button class="tab" data-m="2"><span data-en="③ Topological knot" data-fr="③ Nœud topologique">③ Topological knot</span></button>
+    <button class="tab" data-m="3"><span data-en="④ Choreography" data-fr="④ Chorégraphie">④ Choreography</span></button>
   </div>
   <canvas id="c4" width="860" height="380"></canvas>
   <div class="desc" id="d4"></div>
@@ -326,13 +361,13 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
 </div>
 
 <div class="sec" id="s5">
-  <h1>Géométrie chromatique de phase</h1>
-  <p>Phase de Berry, brisure séquentielle G→H→K, fondamental non dégénéré.</p>
+  <h1 data-en="Chromatic phase geometry" data-fr="Géométrie chromatique de phase">Chromatic phase geometry</h1>
+  <p data-en="Berry phase, sequential breaking G→H→K, non-degenerate ground state." data-fr="Phase de Berry, brisure séquentielle G→H→K, fondamental non dégénéré.">Berry phase, sequential breaking G→H→K, non-degenerate ground state.</p>
   <div class="tabs">
-    <button class="tab on" data-m="0">① Effondrement</button>
-    <button class="tab" data-m="1">② Brisure 2 étapes</button>
-    <button class="tab" data-m="2">③ Fondamental unique</button>
-    <button class="tab" data-m="3">④ Phase de Berry</button>
+    <button class="tab on" data-m="0"><span data-en="① Collapse" data-fr="① Effondrement">① Collapse</span></button>
+    <button class="tab" data-m="1"><span data-en="② 2-step breaking" data-fr="② Brisure 2 étapes">② 2-step breaking</span></button>
+    <button class="tab" data-m="2"><span data-en="③ Unique ground state" data-fr="③ Fondamental unique">③ Unique ground state</span></button>
+    <button class="tab" data-m="3"><span data-en="④ Berry phase" data-fr="④ Phase de Berry">④ Berry phase</span></button>
   </div>
   <canvas id="c5" width="860" height="380"></canvas>
   <div class="desc" id="d5"></div>
@@ -340,13 +375,13 @@ button.tab.on{background:#1c1c2a;color:#818cf8;border-color:#818cf8}
 </div>
 
 <div class="sec" id="s6">
-  <h1>Brisure spontanée, catastrophes de Thom, vide quantique</h1>
-  <p>Le même saut à trois échelles.</p>
+  <h1 data-en="Spontaneous breaking, Thom catastrophes, quantum vacuum" data-fr="Brisure spontanée, catastrophes de Thom, vide quantique">Spontaneous breaking, Thom catastrophes, quantum vacuum</h1>
+  <p data-en="The same jump at three scales." data-fr="Le même saut à trois échelles.">The same jump at three scales.</p>
   <div class="tabs">
-    <button class="tab on" data-m="0">① Brisure spontanée</button>
-    <button class="tab" data-m="1">② Catastrophe Thom</button>
-    <button class="tab" data-m="2">③ Vide quantique</button>
-    <button class="tab" data-m="3">④ Les trois ensemble</button>
+    <button class="tab on" data-m="0"><span data-en="① Spontaneous breaking" data-fr="① Brisure spontanée">① Spontaneous breaking</span></button>
+    <button class="tab" data-m="1"><span data-en="② Thom catastrophe" data-fr="② Catastrophe Thom">② Thom catastrophe</span></button>
+    <button class="tab" data-m="2"><span data-en="③ Quantum vacuum" data-fr="③ Vide quantique">③ Quantum vacuum</span></button>
+    <button class="tab" data-m="3"><span data-en="④ All three together" data-fr="④ Les trois ensemble">④ All three together</span></button>
   </div>
   <canvas id="c6" width="860" height="380"></canvas>
   <div class="desc" id="d6"></div>
@@ -363,7 +398,63 @@ document.querySelectorAll('.nb').forEach(b=>b.addEventListener('click',()=>{
   document.getElementById(b.dataset.s).classList.add('on');
 }));
 
+// Translation dictionary for canvas text (sub-module p1 - Geometry of abstract spaces)
+var TX_DICT_GE_P1 = {
+  "Friction": "Friction",
+  "Attraction": "Attraction",
+  "attracteur (point fixe)": "attractor (fixed point)",
+  "attracteur (cycle limite)": "attractor (limit cycle)",
+  "3 trajectoires quasi-identiques — divergence exponentielle": "3 nearly identical trajectories — exponential divergence",
+  "← étirement →": "← stretching →",
+  "étiré ×2": "stretched ×2",
+  "replié en fer à cheval": "folded into horseshoe",
+  "itération ": "iteration ",
+  "3 iter. → 8 bandes → ∞ = ensemble de Cantor": "3 iter. → 8 bands → ∞ = Cantor set",
+  "pétrissage ": "kneading ",
+  "même zone — contenu totalement mélangé": "same zone — content completely mixed",
+  "2 points proches →": "2 close points →",
+  "points séparés !": "separated points!",
+  "classique : bloqué": "classical: blocked",
+  "classique : bloque": "classical: blocked",
+  "quantique : tunnel !": "quantum: tunnel!",
+  "loi de Kramers : tau ~ exp(DeltaV/kT)": "Kramers' law: tau ~ exp(DeltaV/kT)",
+  "loi de Kramers : tau ~ exp(ΔV/kT)": "Kramers' law: tau ~ exp(ΔV/kT)",
+  "f(f(A)) = A": "f(f(A)) = A",
+  "noeud obligatoire": "obligatory knot",
+  "impossible a contourner sans briser V4": "impossible to avoid without breaking V4",
+  "3 corps — meme trajectoire — decales de T/3": "3 bodies — same trajectory — offset by T/3",
+  "3 corps — même trajectoire — décalés de T/3": "3 bodies — same trajectory — offset by T/3",
+  "cliquer sur une orbite": "click on an orbit",
+  "effondrement complet -> etat propre ": "full collapse -> eigenstate ",
+  "effondrement complet → état propre ": "full collapse → eigenstate ",
+  "Brisure en deux etapes": "Breaking in two steps",
+  "Brisure en deux étapes": "Breaking in two steps",
+  "Etape 1 : U(1) -> Z6 (symetrie continue -> discrete)": "Step 1: U(1) -> Z6 (continuous symmetry -> discrete)",
+  "Étape 1 : U(1) → Z6 (symétrie continue → discrète)": "Step 1: U(1) → Z6 (continuous symmetry → discrete)",
+  "Etape 2 : Z6 -> {1} (6 sites -> 1 fondamental)": "Step 2: Z6 -> {1} (6 sites -> 1 ground state)",
+  "Étape 2 : Z6 → {1} (6 sites → 1 fondamental)": "Step 2: Z6 → {1} (6 sites → 1 ground state)",
+  "|0> fondamental unique": "|0⟩ unique ground state",
+  "|0⟩ fondamental unique": "|0⟩ unique ground state",
+  "brisure spontanee": "spontaneous breaking",
+  "brisure spontanée": "spontaneous breaking",
+  "saut de Thom": "Thom jump",
+  "SAUT !": "JUMP!",
+  "plan de controle — fronce de Thom": "control plane — Thom cusp",
+  "plan de contrôle — fronce de Thom": "control plane — Thom cusp",
+  "espace de Thom": "Thom space",
+  "vide actuel": "current vacuum",
+  "nouveau vide": "new vacuum",
+  "vide de plus basse energie": "lower-energy vacuum",
+  "vide de plus basse énergie": "lower-energy vacuum",
+  "vide fluctue": "vacuum fluctuates",
+  "Compression": "Compression",
+  "Vitesse": "Speed",
+  "Z2xZ2 : 4 elements, tous d'ordre 2": "Z2xZ2: 4 elements, all of order 2",
+  "Z₂×Z₂ : 4 éléments, tous d'ordre 2": "Z₂×Z₂: 4 elements, all of order 2"
+};
+
 function tx(ctx,t,x,y,col,sz,al){
+  if(window.currentLang!=='fr' && TX_DICT_GE_P1[t]) t=TX_DICT_GE_P1[t];
   ctx.fillStyle=col||'rgba(150,150,160,0.8)';
   ctx.font=(sz||11)+'px Arial,sans-serif';
   ctx.textAlign=al||'center';
@@ -382,10 +473,16 @@ function tabs(secId, cb){
 (function(){
   const cv=document.getElementById('c0'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
   let m=0,f=0,a1=0,a2=0;
-  const D=['Un point sur un cercle — 1 angle α suffit pour se repérer. Brique de base du tore.',
+  const D_FR=['Un point sur un cercle — 1 angle α suffit pour se repérer. Brique de base du tore.',
     'Deux cercles indépendants : α pour le grand tour, β pour le petit. 2 angles → surface du beignet.',
     'Le tore 3D — le beignet. Si on déroulait sa surface : un rectangle dont les bords opposés se collent.',
     'Tore 4D : deux cercles dans deux plans perpendiculaires. Projection 2D. Violet = cercle α, vert = cercle β.'];
+  const D_EN=['A point on a circle — 1 angle α is enough to locate it. Building block of the torus.',
+    'Two independent circles: α for the big loop, β for the small one. 2 angles → donut surface.',
+    'The 3D torus — the donut. If we unroll its surface: a rectangle whose opposite edges glue together.',
+    '4D torus: two circles in two perpendicular planes. 2D projection. Purple = circle α, green = circle β.'];
+  let D=(window.currentLang==='fr')?D_FR:D_EN;
+  window._refreshD_s0=function(){D=(window.currentLang==='fr')?D_FR:D_EN;document.getElementById('d0').textContent=D[m];};
   tabs('s0',n=>{m=n;f=0;document.getElementById('d0').textContent=D[n];});
   document.getElementById('d0').textContent=D[0];
   document.getElementById('k0').innerHTML='<span>α</span><input type="range" id="a1r" min="0" max="360" value="0"><span class="v" id="a1v">0°</span><span style="margin-left:12px">β</span><input type="range" id="a2r" min="0" max="360" value="0"><span class="v" id="a2v">0°</span>';
@@ -443,9 +540,14 @@ function tabs(secId, cb){
 (function(){
   const cv=document.getElementById('c1'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
   let m=0,f=0,p1=.15,lor=[];
-  const D=['Toutes les trajectoires convergent vers le même point. Exposant de Lyapunov λ<0.',
+  const D_FR=['Toutes les trajectoires convergent vers le même point. Exposant de Lyapunov λ<0.',
     'Le système tourne indéfiniment sur le même cycle. Modèle : van der Pol, rythme cardiaque.',
     'Attracteur de Lorenz (1963) : λ₁≈+0.906. Deux trajectoires quasi-identiques divergent exponentiellement.'];
+  const D_EN=['All trajectories converge to the same point. Lyapunov exponent λ<0.',
+    'The system loops indefinitely on the same cycle. Models: van der Pol, heart rhythm.',
+    'Lorenz attractor (1963): λ₁≈+0.906. Two nearly identical trajectories diverge exponentially.'];
+  let D=(window.currentLang==='fr')?D_FR:D_EN;
+  window._refreshD_s1=function(){D=(window.currentLang==='fr')?D_FR:D_EN;document.getElementById('d1').textContent=D[m];};
   function initLor(){lor=[{x:.1,y:0,z:0,tr:[],c:'#818cf8'},{x:.101,y:0,z:0,tr:[],c:'#34d399'},{x:.1,y:.001,z:0,tr:[],c:'#f97316'}];}
   initLor();
   function buildK(){
@@ -517,10 +619,16 @@ function tabs(secId, cb){
 (function(){
   const cv=document.getElementById('c2'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
   let m=0,f=0,step=0;
-  const D=['Étirement (points s\'éloignent) + repliement (système borné) répétés → structure feuilletée infinie.',
+  const D_FR=['Étirement (points s\'éloignent) + repliement (système borné) répétés → structure feuilletée infinie.',
     'Fer à cheval de Smale (1960) : carré étiré, replié, replacé. ∞ itérations → ensemble de Cantor.',
     'Application du boulanger : étire, coupe, empile. Après N applications : 2^N bandes. Entropie = log 2.',
     'Section transverse de l\'attracteur : dimension de Hausdorff entre 1 et 2. Zoom : structure auto-similaire.'];
+  const D_EN=['Stretching (points move apart) + folding (bounded system) repeated → infinite layered structure.',
+    'Smale\'s horseshoe (1960): square stretched, folded, replaced. ∞ iterations → Cantor set.',
+    'Baker\'s map: stretch, cut, stack. After N applications: 2^N bands. Entropy = log 2.',
+    'Transverse section of the attractor: Hausdorff dimension between 1 and 2. Zoom: self-similar structure.'];
+  let D=(window.currentLang==='fr')?D_FR:D_EN;
+  window._refreshD_s2=function(){D=(window.currentLang==='fr')?D_FR:D_EN;document.getElementById('d2').textContent=D[m];};
 
   function buildK(){
     const k=document.getElementById('k2');
@@ -722,12 +830,20 @@ function tabs(secId, cb){
 (function(){
   const cv=document.getElementById('c3'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
   let m=0,f=0,bar=.55,en=.35,bif=.3,ns=.18,parts=[];
-  const D=[
+  const D_FR=[
     'Deux puits separés par une barriere. Energie < barriere : piégée. Energie > barriere : peut franchir.',
     'Effet tunnel quantique : la fonction onde filtre a travers la barriere meme sans energie suffisante.',
     'Bifurcation : incliner le paysage declenche un basculement brutal irreversible — hysteresis.',
     'Bruit thermique — loi de Kramers : tau proportionnel a exp(DeltaV/kT). Doubler la barriere = temps exponentiel.'
   ];
+  const D_EN=[
+    'Two wells separated by a barrier. Energy < barrier: trapped. Energy > barrier: can cross.',
+    'Quantum tunneling: the wavefunction leaks through the barrier even without sufficient energy.',
+    'Bifurcation: tilting the landscape triggers a sudden irreversible switch — hysteresis.',
+    'Thermal noise — Kramers\' law: tau proportional to exp(DeltaV/kT). Doubling the barrier = exponential time.'
+  ];
+  let D=(window.currentLang==='fr')?D_FR:D_EN;
+  window._refreshD_s3=function(){D=(window.currentLang==='fr')?D_FR:D_EN;document.getElementById('d3').textContent=D[m];};
   function initP(){parts=[];for(let i=0;i<10;i++)parts.push({x:Math.random()<.5?.18+Math.random()*.14:.68+Math.random()*.14,v:(Math.random()-.5)*.004,h:210+Math.floor(Math.random()*80)});}
   initP();
   function buildK(){
@@ -792,10 +908,16 @@ function tabs(secId, cb){
 (function(){
   const cv=document.getElementById('c4'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
   let m=0,f=0;
-  const D=['Involution centrale : A et A\' toujours a l\'oppose du centre. f(f(A))=A.',
+  const D_FR=['Involution centrale : A et A\' toujours a l\'oppose du centre. f(f(A))=A.',
     'Groupe de Klein Z2xZ2 : 4 symetries coexistent. Combiner deux donne la troisieme.',
     'Centre = noeud topologique obligatoire. Toute deformation preservant V4 maintient le croisement.',
     'Choregraphie Chenciner-Montgomery (2000) : 3 masses identiques sur la meme figure-8, decalees de T/3.'];
+  const D_EN=['Central involution: A and A\' always on opposite sides of center. f(f(A))=A.',
+    'Klein group Z2xZ2: 4 symmetries coexist. Combining two gives the third.',
+    'Center = obligatory topological knot. Any deformation preserving V4 keeps the crossing.',
+    'Chenciner-Montgomery choreography (2000): 3 identical masses on the same figure-8, T/3 apart.'];
+  let D=(window.currentLang==='fr')?D_FR:D_EN;
+  window._refreshD_s4=function(){D=(window.currentLang==='fr')?D_FR:D_EN;document.getElementById('d4').textContent=D[m];};
   tabs('s4',n=>{m=n;f=0;document.getElementById('d4').textContent=D[n];document.getElementById('k4').innerHTML='';});
   document.getElementById('d4').textContent=D[0];
   function f8(t){const s=Math.sin(t),c=Math.cos(t),d=1+s*s;return{x:c/d,y:s*c/d};}
@@ -855,10 +977,16 @@ function tabs(secId, cb){
 (function(){
   const cv=document.getElementById('c5'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
   let m=0,f=0,pr={bp:.5,an:.4,ph:.6},coll=false,colling=false,cT=0,tgt=1;
-  const D=['Superposition : plusieurs orbites coexistent. Cliquer sur une orbite pour l\'effondrement.',
+  const D_FR=['Superposition : plusieurs orbites coexistent. Cliquer sur une orbite pour l\'effondrement.',
     'Brisure sequentielle U(1)→Z_N→{1}. Curseur pour traverser les deux ruptures.',
     'Fondamental non degenere : une seule vallee minimale. Phase statique univoque.',
     'Phase de Berry gamma=contour A.dq. Couleur = phase geometrique accumulee.'];
+  const D_EN=['Superposition: several orbits coexist. Click on an orbit to trigger collapse.',
+    'Sequential breaking U(1)→Z_N→{1}. Slider crosses the two ruptures.',
+    'Non-degenerate ground state: a single minimum valley. Unique static phase.',
+    'Berry phase gamma=contour integral A.dq. Color = accumulated geometric phase.'];
+  let D=(window.currentLang==='fr')?D_FR:D_EN;
+  window._refreshD_s5=function(){D=(window.currentLang==='fr')?D_FR:D_EN;document.getElementById('d5').textContent=D[m];};
   cv.addEventListener('click',e=>{
     if(m!==0)return;const r=cv.getBoundingClientRect(),mx=(e.clientX-r.left)*(W/r.width),my=(e.clientY-r.top)*(H/r.height);
     const cx=W/2,cy=H/2,rads=[54,94,130],d=Math.sqrt((mx-cx)**2+(my-cy)**2);
@@ -940,10 +1068,16 @@ function tabs(secId, cb){
 (function(){
   const cv=document.getElementById('c6'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
   let m=0,f=0,bar=.55,bif=.3,ns=.4,spd=1,bX=.5,bV=0,fell=false,vac=[],thomSide=0,wasNear=false;
-  const D=['Regle comprimee : avant le seuil, un etat stable. Au-dela : deux etats, choix spontane.',
+  const D_FR=['Regle comprimee : avant le seuil, un etat stable. Au-dela : deux etats, choix spontane.',
     'Catastrophe de la fronce (Thom) : le point vert parcourt le plan de controle. Traverser la courbe jaune = saut instantane.',
     'Vide quantique : fluctuations permanentes. Cliquer Bulle pour creer une bulle de vide s\'etendant a c.',
     'Les trois simultanément : vide qui fluctue, potentiel qui se deforme, point de Thom en mouvement.'];
+  const D_EN=['Compressed ruler: below threshold, one stable state. Above: two states, spontaneous choice.',
+    'Cusp catastrophe (Thom): the green point traverses the control plane. Crossing the yellow curve = instant jump.',
+    'Quantum vacuum: permanent fluctuations. Click Bubble to create a vacuum bubble expanding at c.',
+    'All three simultaneously: fluctuating vacuum, deforming potential, moving Thom point.'];
+  let D=(window.currentLang==='fr')?D_FR:D_EN;
+  window._refreshD_s6=function(){D=(window.currentLang==='fr')?D_FR:D_EN;document.getElementById('d6').textContent=D[m];};
   function buildK(){
     const k=document.getElementById('k6');
     if(m===0){k.innerHTML='<span>Compression</span><input type="range" id="c6p" min="0" max="100" value="30"><span class="v" id="c6v">0.30</span>';document.getElementById('c6p').oninput=function(){const v=this.value/100;document.getElementById('c6v').textContent=v.toFixed(2);bar=v;if(v>.5&&!fell){fell=true;bX=Math.random()<.5?.22:.78;}if(v<=.5){fell=false;bX=.5;bV=0;}};}
@@ -1025,14 +1159,14 @@ function tabs(secId, cb){
 
 <!-- ══ MODULE 2 ══ -->
 <div id="screen-p2" class="screen">
-<h1>Expansion de l'univers & visualisations mathématiques</h1>
-<p class="sub">Liens entre l'expansion accélérée, l'horizon cosmologique, et nos visualisations : attracteurs, double puits, catastrophes de Thom.</p>
+<h1><span data-en="Expansion of the universe &amp; mathematical visualizations" data-fr="Expansion de l'univers &amp; visualisations mathématiques">Expansion of the universe &amp; mathematical visualizations</span></h1>
+<p class="sub"><span data-en="Links between accelerated expansion, cosmological horizon, and our visualizations: attractors, double well, Thom catastrophes." data-fr="Liens entre l'expansion accélérée, l'horizon cosmologique, et nos visualisations : attracteurs, double puits, catastrophes de Thom.">Links between accelerated expansion, cosmological horizon, and our visualizations: attractors, double well, Thom catastrophes.</span></p>
 
 <div class="tabs">
-  <button class="tab on" data-m="0">① Expansion & divergence</button>
-  <button class="tab" data-m="1">② Horizon observable</button>
-  <button class="tab" data-m="2">③ Puits cosmique</button>
-  <button class="tab" data-m="3">④ Catastrophe de Thom</button>
+  <button class="tab on" data-m="0"><span data-en="① Expansion &amp; divergence" data-fr="① Expansion &amp; divergence">① Expansion &amp; divergence</span></button>
+  <button class="tab" data-m="1"><span data-en="② Observable horizon" data-fr="② Horizon observable">② Observable horizon</span></button>
+  <button class="tab" data-m="2"><span data-en="③ Cosmic well" data-fr="③ Puits cosmique">③ Cosmic well</span></button>
+  <button class="tab" data-m="3"><span data-en="④ Thom catastrophe" data-fr="④ Catastrophe de Thom">④ Thom catastrophe</span></button>
 </div>
 <canvas id="cv_p2" width="900" height="380"></canvas>
 <div class="desc" id="desc_p2"></div>
@@ -1055,12 +1189,28 @@ function initGalaxies(){
 }
 initGalaxies();
 
-var DESCS=[
+var DESCS_FR=[
   'Comme dans l\'attracteur de Lorenz, deux galaxies initialement proches (violet et vert) divergent exponentiellement — mais c\'est l\'espace lui-même qui s\'étire. L\'énergie noire Λ amplifie cette divergence sans cesse, comme un exposant de Lyapunov toujours positif. Plus Λ est grand, plus la séparation s\'accélère.',
   'La ligne rouge est l\'horizon cosmologique : au-delà, les galaxies s\'éloignent plus vite que la lumière. Tout ce qui franchit cet horizon disparaît à jamais de l\'univers observable. Comme un attracteur chaotique qui "oublie" ses conditions initiales, l\'univers perd irrémédiablement l\'information sur ses régions les plus lointaines.',
   'Le destin thermodynamique vu comme un paysage de potentiel. La bille bleue (notre univers actuel) glisse inexorablement vers le Big Freeze — densité nulle, température zéro. Contrairement au double puits classique, il n\'y a pas de deuxième puits stable : descente sans retour. Λ contrôle la pente de cette descente.',
   'Les destins cosmiques (Big Freeze, Big Rip, rebond quantique) correspondent à différentes régions du plan de contrôle de Thom. Nos mesures actuelles placent l\'univers près de la courbe de bifurcation jaune. Un léger changement de Λ pourrait théoriquement faire basculer le destin vers un Big Rip — saut catastrophique irréversible.'
 ];
+var DESCS_EN=[
+  'As in the Lorenz attractor, two initially close galaxies (purple and green) diverge exponentially — but it is space itself that stretches. Dark energy Λ continuously amplifies this divergence, like an always-positive Lyapunov exponent. The greater Λ, the faster the separation.',
+  'The red line is the cosmological horizon: beyond it, galaxies recede faster than light. Anything that crosses this horizon disappears forever from the observable universe. Like a chaotic attractor that "forgets" its initial conditions, the universe irreversibly loses information about its most distant regions.',
+  'Thermodynamic fate seen as a potential landscape. The blue ball (our current universe) slides inexorably toward the Big Freeze — zero density, zero temperature. Unlike a classical double well, there is no second stable well: descent without return. Λ controls the slope of this descent.',
+  'Cosmic destinies (Big Freeze, Big Rip, quantum bounce) correspond to different regions of the Thom control plane. Our current measurements place the universe near the yellow bifurcation curve. A small change in Λ could theoretically switch the fate to a Big Rip — irreversible catastrophic jump.'
+];
+var DESCS=DESCS_EN;
+window.DESCS_P2_FR=DESCS_FR;
+window.DESCS_P2_EN=DESCS_EN;
+window.DESCS_P2_active=DESCS_EN;
+window.refreshP2=function(){
+  DESCS=window.DESCS_P2_active;
+  var d=document.getElementById('desc_p2');
+  if(d) d.textContent=DESCS[mode];
+  if(typeof buildCtrl==='function') buildCtrl();
+};
 
 document.querySelectorAll('#screen-p2 .tab').forEach(function(b){
   b.addEventListener('click',function(){
@@ -1091,7 +1241,31 @@ function buildCtrl(){
 }
 buildCtrl();
 
+// Translation dictionary for canvas text (sub-module p2 - Expansion of universe)
+var TX_DICT_GE_P2 = {
+  "Galaxie A": "Galaxy A",
+  "Galaxie B (Δx=3)": "Galaxy B (Δx=3)",
+  "Λ=": "Λ=",
+  "Δd=": "Δd=",
+  "Observateur": "Observer",
+  "Nous": "Us",
+  "Univers observable": "Observable universe",
+  "Horizon cosmologique (": "Cosmological horizon (",
+  "c)": "c)",
+  "Hors de portée  v > c": "Out of reach  v > c",
+  "Le photon jaune ne peut jamais dépasser l'horizon — il dérive vers le rouge à l'infini": "The yellow photon can never overtake the horizon — it redshifts to infinity",
+  "double puits classique (pour comparaison)": "classical double well (for comparison)",
+  "Big Freeze": "Big Freeze",
+  "Big Rip": "Big Rip",
+  "Rebond?": "Bounce?",
+  "Bassin d'attraction Big Freeze": "Big Freeze attraction basin",
+  "Chaque bifurcation = changement irréversible du destin de l'univers": "Each bifurcation = irreversible change of the universe's fate",
+  "SAUT cosmique!": "Cosmic JUMP!",
+  "Analogie : catastrophe de Thom": "Analogy: Thom catastrophe"
+};
+
 function tx(t,x,y,col,sz,al){
+  if(window.currentLang!=='fr' && TX_DICT_GE_P2[t]) t=TX_DICT_GE_P2[t];
   ctx.fillStyle=col||'rgba(150,150,160,.7)';
   ctx.font=(sz||11)+'px Arial,sans-serif';
   ctx.textAlign=al||'center';
@@ -1354,15 +1528,15 @@ loop();
 
 <!-- ══ MODULE 3 ══ -->
 <div id="screen-p3" class="screen">
-<h1>Trous noirs & Rayonnement de Hawking</h1>
-<p class="sub">Liens avec les attracteurs, le double puits, les catastrophes de Thom, le vide quantique et l'expansion cosmique.</p>
+<h1><span data-en="Black holes &amp; Hawking radiation" data-fr="Trous noirs &amp; Rayonnement de Hawking">Black holes &amp; Hawking radiation</span></h1>
+<p class="sub"><span data-en="Connections with attractors, double well, Thom catastrophes, quantum vacuum and cosmic expansion." data-fr="Liens avec les attracteurs, le double puits, les catastrophes de Thom, le vide quantique et l'expansion cosmique.">Connections with attractors, double well, Thom catastrophes, quantum vacuum and cosmic expansion.</span></p>
 
 <div class="tabs">
-  <button class="tab on" data-m="0">① Trou noir comme attracteur</button>
-  <button class="tab" data-m="1">② Horizon & catastrophe de Thom</button>
-  <button class="tab" data-m="2">③ Rayonnement de Hawking</button>
-  <button class="tab" data-m="3">④ Évaporation & paradoxe</button>
-  <button class="tab" data-m="4">⑤ Effet Unruh & vide quantique</button>
+  <button class="tab on" data-m="0"><span data-en="① Black hole as attractor" data-fr="① Trou noir comme attracteur">① Black hole as attractor</span></button>
+  <button class="tab" data-m="1"><span data-en="② Horizon &amp; Thom catastrophe" data-fr="② Horizon &amp; catastrophe de Thom">② Horizon &amp; Thom catastrophe</span></button>
+  <button class="tab" data-m="2"><span data-en="③ Hawking radiation" data-fr="③ Rayonnement de Hawking">③ Hawking radiation</span></button>
+  <button class="tab" data-m="3"><span data-en="④ Evaporation &amp; paradox" data-fr="④ Évaporation &amp; paradoxe">④ Evaporation &amp; paradox</span></button>
+  <button class="tab" data-m="4"><span data-en="⑤ Unruh effect &amp; quantum vacuum" data-fr="⑤ Effet Unruh &amp; vide quantique">⑤ Unruh effect &amp; quantum vacuum</span></button>
 </div>
 <canvas id="cv_p3" width="900" height="400"></canvas>
 <div class="desc" id="desc_p3"></div>
@@ -1373,13 +1547,30 @@ loop();
 var cv=document.getElementById('cv_p3'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
 var mode=0,frame=0,mass=50,speed=1;
 
-var DESCS=[
+var DESCS_FR=[
   'Un trou noir est l\'attracteur point fixe ultime : tout ce qui franchit l\'horizon converge vers la singularité. Le théorème de calvitie réduit l\'état à 3 paramètres (M, Q, J) — le bassin d\'attraction efface toute information. Comparer avec l\'attracteur de Lorenz : ici la convergence est absolue, pas chaotique.',
   'L\'horizon des événements est une bifurcation causale irréversible au sens de Thom. Aucune trajectoire ne peut revenir en arrière après le franchissement. Un observateur en chute libre ne ressent rien — le saut est imperceptible de l\'intérieur, exactement comme un saut catastrophique de fronce traversé depuis l\'extérieur de la courbe.',
   'Le rayonnement de Hawking est un effet tunnel quantique à travers l\'horizon. T_H = ℏc³/(8πGMk_B). Des paires particule-antiparticule émergent du vide près de l\'horizon : l\'une tombe dans le trou noir (énergie négative), l\'autre s\'échappe. Analogie directe avec l\'effet tunnel dans le double puits de potentiel.',
   'En émettant, le trou noir perd de la masse → T_H augmente → émission accélère → divergence exponentielle vers la fin de vie. Temps d\'évaporation t ~ M³. Le paradoxe de l\'information : l\'unitarité quantique exige que l\'information soit préservée — mais où va-t-elle si le trou noir s\'évapore en rayonnement thermique ?',
   'L\'effet Unruh : pour un observateur accéléré (accélération a), le vide quantique semble peuplé de particules à T_U = ℏa/(2πck_B). La notion de vide dépend de l\'observateur — brisure de la symétrie de Poincaré. Directement lié à la brisure de symétrie spontanée et au vide quantique fluctuant.'
 ];
+var DESCS_EN=[
+  'A black hole is the ultimate fixed-point attractor: anything crossing the horizon converges to the singularity. The no-hair theorem reduces the state to 3 parameters (M, Q, J) — the basin of attraction erases all information. Compare to the Lorenz attractor: here convergence is absolute, not chaotic.',
+  'The event horizon is an irreversible causal bifurcation in Thom\'s sense. No trajectory can come back after crossing it. A free-falling observer feels nothing — the jump is imperceptible from the inside, exactly like a cusp catastrophe jump crossed from outside the curve.',
+  'Hawking radiation is a quantum tunneling effect through the horizon. T_H = ℏc³/(8πGMk_B). Particle-antiparticle pairs emerge from the vacuum near the horizon: one falls into the black hole (negative energy), the other escapes. Direct analogy with tunneling in the double-well potential.',
+  'By emitting, the black hole loses mass → T_H increases → emission accelerates → exponential divergence toward end of life. Evaporation time t ~ M³. The information paradox: quantum unitarity requires information be preserved — but where does it go if the black hole evaporates into thermal radiation?',
+  'The Unruh effect: for an accelerated observer (acceleration a), the quantum vacuum appears populated by particles at T_U = ℏa/(2πck_B). The notion of vacuum depends on the observer — breaking of Poincaré symmetry. Directly linked to spontaneous symmetry breaking and the fluctuating quantum vacuum.'
+];
+var DESCS=DESCS_EN;
+window.DESCS_P3_FR=DESCS_FR;
+window.DESCS_P3_EN=DESCS_EN;
+window.DESCS_P3_active=DESCS_EN;
+window.refreshP3=function(){
+  DESCS=window.DESCS_P3_active;
+  var d=document.getElementById('desc_p3');
+  if(d) d.textContent=DESCS[mode];
+  if(typeof buildCtrl==='function') buildCtrl();
+};
 
 document.querySelectorAll('#screen-p3 .tab').forEach(function(b){
   b.addEventListener('click',function(){
@@ -1410,7 +1601,38 @@ function buildCtrl(){
 }
 buildCtrl();
 
+// Translation dictionary for canvas text (sub-module p3 - Black holes)
+var TX_DICT_GE_P3 = {
+  "Singularité": "Singularity",
+  "Horizon": "Horizon",
+  "Trou noir": "Black hole",
+  "Photonsphère (r=1.5r_s)": "Photon sphere (r=1.5r_s)",
+  "Disque d'accrétion": "Accretion disk",
+  "Bassin d'attraction": "Attraction basin",
+  "En chute": "Free fall",
+  "M=": "M=",
+  "Potentiel effectif V(r) — barrière d'horizon": "Effective potential V(r) — horizon barrier",
+  "Horizon des événements": "Event horizon",
+  "Irréversible — imperceptible de l'intérieur": "Irreversible — imperceptible from inside",
+  "Analogie : catastrophe de Thom": "Analogy: Thom catastrophe",
+  "bifurcation": "bifurcation",
+  "causale": "causal",
+  "(causal)": "(causal)",
+  "après →": "after →",
+  "SAUT !": "JUMP!",
+  "T_H = ℏc³/(8πGMk_B) — augmente quand M diminue": "T_H = ℏc³/(8πGMk_B) — increases as M decreases",
+  "T_H=": "T_H=",
+  "Particule (énergie <0) → trou noir": "Particle (energy <0) → black hole",
+  "Antiparticule → Rayonnement Hawking": "Antiparticle → Hawking radiation",
+  "E ~ k_B T_H = ": "E ~ k_B T_H = ",
+  "Rebond?": "Bounce?",
+  "Observateur": "Observer",
+  "Nous": "Us",
+  "Corrélation quantique": "Quantum correlation"
+};
+
 function tx(t,x,y,col,sz,al){
+  if(window.currentLang!=='fr' && TX_DICT_GE_P3[t]) t=TX_DICT_GE_P3[t];
   ctx.fillStyle=col||'rgba(150,150,160,.7)';
   ctx.font=(sz||11)+'px Arial,sans-serif';
   ctx.textAlign=al||'center';
@@ -1878,15 +2100,15 @@ loop();
 
 <!-- ══ MODULE 4 ══ -->
 <div id="screen-p4" class="screen">
-<h1>Complémentarité — Holographie — ER = EPR</h1>
-<p class="sub">Trois révolutions conceptuelles sur l'information, l'espace-temps et l'intrication quantique.</p>
+<h1><span data-en="Complementarity — Holography — ER = EPR" data-fr="Complémentarité — Holographie — ER = EPR">Complementarity — Holography — ER = EPR</span></h1>
+<p class="sub"><span data-en="Three conceptual revolutions on information, spacetime and quantum entanglement." data-fr="Trois révolutions conceptuelles sur l'information, l'espace-temps et l'intrication quantique.">Three conceptual revolutions on information, spacetime and quantum entanglement.</span></p>
 
 <div class="tabs">
-  <button class="tab on" data-m="0">① Complémentarité</button>
-  <button class="tab" data-m="1">② Principe holographique</button>
-  <button class="tab" data-m="2">③ AdS/CFT</button>
-  <button class="tab" data-m="3">④ ER = EPR</button>
-  <button class="tab" data-m="4">⑤ Synthèse</button>
+  <button class="tab on" data-m="0"><span data-en="① Complementarity" data-fr="① Complémentarité">① Complementarity</span></button>
+  <button class="tab" data-m="1"><span data-en="② Holographic principle" data-fr="② Principe holographique">② Holographic principle</span></button>
+  <button class="tab" data-m="2"><span data-en="③ AdS/CFT" data-fr="③ AdS/CFT">③ AdS/CFT</span></button>
+  <button class="tab" data-m="3"><span data-en="④ ER = EPR" data-fr="④ ER = EPR">④ ER = EPR</span></button>
+  <button class="tab" data-m="4"><span data-en="⑤ Synthesis" data-fr="⑤ Synthèse">⑤ Synthesis</span></button>
 </div>
 <canvas id="cv_p4" width="900" height="480"></canvas>
 <div class="desc" id="desc_p4"></div>
@@ -1897,13 +2119,30 @@ loop();
 var cv=document.getElementById('cv_p4'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
 var mode=0,frame=0,entangle=0.5,mass=50;
 
-var DESCS=[
+var DESCS_FR=[
   'Complémentarité de Susskind (1993) : l\'observateur distant voit l\'information revenir dans le rayonnement de Hawking. L\'observateur en chute libre franchit l\'horizon sans rien ressentir. Les deux descriptions sont correctes — mais leurs régions causales sont disjointes. Personne ne peut vérifier les deux simultanément : le no-cloning quantique interdit de lire deux copies du même état.',
   'Principe holographique (\'t Hooft & Susskind, 1993) : S = A/(4l²_P). Le contenu en information d\'un volume est proportionnel à son aire, non à son volume. Un bit par zone de Planck sur la surface frontière. La réalité 3D est encodée sur une surface 2D — exactement comme un hologramme optique encode une image 3D sur un film 2D.',
   'Correspondance AdS/CFT (Maldacena, 1997) : une théorie des cordes dans un espace anti-de Sitter à 5 dimensions (avec gravité) est exactement équivalente à une théorie des champs conforme sans gravité sur sa frontière à 4 dimensions. Dualité complète : un même calcul peut être fait des deux côtés. La gravité dans le volume = physique quantique sur le bord.',
   'ER = EPR (Maldacena & Susskind, 2013) : deux particules intriquées (EPR) sont reliées par un ver d\'Einstein-Rosen (ER) microscopique. L\'intrication quantique et la connexion géométrique de l\'espace-temps sont la même chose. Le curseur contrôle le degré d\'intrication — observer comment la géométrie du ver évolue.',
   'Synthèse : l\'information, l\'intrication et la géométrie de l\'espace-temps sont trois facettes du même objet. L\'espace-temps émerge de l\'intrication quantique. Les îles quantiques (Penington & Almheiri, 2019) formalisent comment l\'information sort d\'un trou noir via des structures topologiques non triviales — exactement les invariants topologiques du reste de ce document.'
 ];
+var DESCS_EN=[
+  'Susskind complementarity (1993): the distant observer sees information return in Hawking radiation. The free-falling observer crosses the horizon feeling nothing. Both descriptions are correct — but their causal regions are disjoint. No one can check both simultaneously: quantum no-cloning forbids reading two copies of the same state.',
+  'Holographic principle (\'t Hooft & Susskind, 1993): S = A/(4l²_P). The information content of a volume is proportional to its area, not its volume. One bit per Planck patch on the boundary surface. 3D reality is encoded on a 2D surface — exactly as an optical hologram encodes a 3D image on a 2D film.',
+  'AdS/CFT correspondence (Maldacena, 1997): a string theory in 5-dimensional anti-de Sitter space (with gravity) is exactly equivalent to a conformal field theory without gravity on its 4-dimensional boundary. Complete duality: the same calculation can be done on both sides. Gravity in the bulk = quantum physics on the boundary.',
+  'ER = EPR (Maldacena & Susskind, 2013): two entangled particles (EPR) are connected by a microscopic Einstein-Rosen (ER) wormhole. Quantum entanglement and the geometric connection of spacetime are the same thing. The slider controls the degree of entanglement — observe how the wormhole geometry evolves.',
+  'Synthesis: information, entanglement and spacetime geometry are three facets of the same object. Spacetime emerges from quantum entanglement. Quantum islands (Penington & Almheiri, 2019) formalize how information exits a black hole through non-trivial topological structures — exactly the topological invariants found throughout this document.'
+];
+var DESCS=DESCS_EN;
+window.DESCS_P4_FR=DESCS_FR;
+window.DESCS_P4_EN=DESCS_EN;
+window.DESCS_P4_active=DESCS_EN;
+window.refreshP4=function(){
+  DESCS=window.DESCS_P4_active;
+  var d=document.getElementById('desc_p4');
+  if(d) d.textContent=DESCS[mode];
+  if(typeof buildCtrl==='function') buildCtrl();
+};
 
 document.querySelectorAll('#screen-p4 .tab').forEach(function(b){
   b.addEventListener('click',function(){
@@ -1930,7 +2169,43 @@ function buildCtrl(){
 }
 buildCtrl();
 
+// Translation dictionary for canvas text (sub-module p4 - ER=EPR)
+var TX_DICT_GE_P4 = {
+  "Observateur": "Observer",
+  "Franchit horizon : rien": "Crosses horizon: nothing",
+  "(régions disjointes)": "(disjoint regions)",
+  "Deux descriptions correctes — aucun observateur ne peut les vérifier ensemble — aucune contradiction": "Both descriptions correct — no observer can check both — no contradiction",
+  "2 copies → jamais lisibles": "2 copies → never readable",
+  "Horizon causal": "Causal horizon",
+  "(matière, champs)": "(matter, fields)",
+  "Entropie classique (gaz) : S ~ V": "Classical entropy (gas): S ~ V",
+  "Entropie trou noir : S ~ A": "Black hole entropy: S ~ A",
+  "1 bit / l²_P": "1 bit / l²_P",
+  "A = aire de l'horizon": "A = horizon area",
+  "Analogie : hologramme optique": "Analogy: optical hologram",
+  "Film 2D → image 3D complète": "2D film → complete 3D image",
+  "Chaque morceau du film contient": "Each piece of the film contains",
+  "Bulk AdS₅": "Bulk AdS₅",
+  "(gravité + cordes)": "(gravity + strings)",
+  "Bord CFT₄": "Boundary CFT₄",
+  "(sans gravité)": "(no gravity)",
+  "Dictionnaire AdS/CFT": "AdS/CFT dictionary",
+  "ER = EPR": "ER = EPR",
+  "ER": "ER",
+  "Intrication": "Entanglement",
+  "Intrication EPR": "EPR entanglement",
+  "Intrication = Connexion géométrique": "Entanglement = Geometric connection",
+  "= ψ⟩ = (|↑↓⟩ - |↓↑⟩)/√2": "= ψ⟩ = (|↑↓⟩ - |↓↑⟩)/√2",
+  "Brisure de symétrie de Poincaré": "Poincaré symmetry breaking",
+  "(bain thermique !)": "(thermal bath!)",
+  "(notion de vide dépend de l'observateur)": "(vacuum depends on observer)",
+  "Horizon de Rindler": "Rindler horizon",
+  "Formule de Hawking-Unruh : T = ℏ·(a ou κ)/(2πck_B)": "Hawking-Unruh formula: T = ℏ·(a or κ)/(2πck_B)",
+  "Analogue : vide de Higgs vs. vide vrai": "Analogue: Higgs vacuum vs. true vacuum"
+};
+
 function tx(t,x,y,col,sz,al){
+  if(window.currentLang!=='fr' && TX_DICT_GE_P4[t]) t=TX_DICT_GE_P4[t];
   ctx.fillStyle=col||'rgba(150,150,160,.7)';
   ctx.font=(sz||11)+'px Arial,sans-serif';
   ctx.textAlign=al||'center';
@@ -2373,6 +2648,59 @@ function show(id) {
 
 // Init : afficher accueil
 show('home');
+
+// ── i18n: language switch ──────────────────────────────────────
+(function() {
+  var btns = document.querySelectorAll('.lang-btn');
+  var current = localStorage.getItem('lang') || 'en';
+  window.currentLang = current;
+  apply(current);
+
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var lang = btn.dataset.lang;
+      window.currentLang = lang;
+      apply(lang);
+      localStorage.setItem('lang', lang);
+    });
+  });
+
+  function apply(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-en]').forEach(function(el) {
+      var content = el.dataset[lang] || el.dataset.en;
+      if (content.indexOf('<') !== -1) {
+        el.innerHTML = content;
+      } else {
+        el.textContent = content;
+      }
+    });
+    btns.forEach(function(b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    // Swap DESCS arrays for sub-modules
+    try {
+      // p1 sections
+      ['s0','s1','s2','s3','s4','s5','s6'].forEach(function(s){
+        var fn = window['_refreshD_'+s];
+        if(typeof fn === 'function') fn();
+      });
+      // p2/p3/p4
+      if(typeof window.DESCS_P2_FR !== 'undefined') {
+        window.DESCS_P2_active = (lang==='fr') ? window.DESCS_P2_FR : window.DESCS_P2_EN;
+        if(typeof window.refreshP2 === 'function') window.refreshP2();
+      }
+      if(typeof window.DESCS_P3_FR !== 'undefined') {
+        window.DESCS_P3_active = (lang==='fr') ? window.DESCS_P3_FR : window.DESCS_P3_EN;
+        if(typeof window.refreshP3 === 'function') window.refreshP3();
+      }
+      if(typeof window.DESCS_P4_FR !== 'undefined') {
+        window.DESCS_P4_active = (lang==='fr') ? window.DESCS_P4_FR : window.DESCS_P4_EN;
+        if(typeof window.refreshP4 === 'function') window.refreshP4();
+      }
+    } catch(e) {}
+  }
+})();
 </script>
 
 </body>
