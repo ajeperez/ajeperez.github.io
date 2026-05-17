@@ -1,7 +1,7 @@
 # ajeperez.science
 
 > **Discrete φⁿ frequencies in neural networks — and H_φ theoretical framework**
-> Personal website of Alexandre Joseph Etienne PEREZ
+> Personal website of Alexandre Joseph Etienne P.
 
 🌐 **Website online**: [ajeperez.science](https://ajeperez.science) · [ajeperez.github.io](https://ajeperez.github.io)
 
