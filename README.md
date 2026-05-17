@@ -9,7 +9,7 @@
 
 ## 🇬🇧 English
 
-This repository contains the personal website gathering the empirical preprint and theoretical corpus of Alexandre Joseph Etienne PEREZ:
+This repository contains the personal website gathering the empirical preprint and theoretical corpus of Alexandre Joseph Etienne P.:
 
 - A stand-alone scientific preprint reporting a precision measurement of discrete golden-ratio φⁿ frequencies in spontaneous neural oscillations across seven LFP datasets, two species and three preparation types
 - A separately developed theoretical framework (H_φ theory) articulating the appearance of φ across biological and physical systems, in dialogue with the Pauli–Jung intuition of an *Unus Mundus*
@@ -57,7 +57,7 @@ ajeprz@proton.me
 
 ## 🇫🇷 Français
 
-Ce dépôt contient le site web personnel rassemblant le preprint empirique et le corpus théorique d'Alexandre Joseph Etienne PEREZ :
+Ce dépôt contient le site web personnel rassemblant le preprint empirique et le corpus théorique d'Alexandre Joseph Etienne P. :
 
 - Un preprint scientifique stand-alone rapportant une mesure de précision des fréquences discrètes φⁿ dans les oscillations neuronales spontanées sur sept jeux de données LFP, deux espèces et trois types de préparation
 - Un cadre théorique développé séparément (théorie H_φ) articulant l'apparition de φ à travers les systèmes biologiques et physiques, en dialogue avec l'intuition Pauli–Jung d'un *Unus Mundus*
