@@ -28,7 +28,6 @@ Static site (HTML / CSS / vanilla JS), no build step. Hosted on GitHub Pages wit
 ## Contact
 
 - Web: https://ajeperez.com
-- Email: contact@ajeperez.com
 - Based in Lausanne, Switzerland · Remote (EU)
 
 ---
