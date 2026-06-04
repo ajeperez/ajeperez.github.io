@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /assets/img/portrait.png
 Disallow: /assets/img/alexandre-perez.png
+
+Sitemap: https://ajeperez.com/sitemap.xml
