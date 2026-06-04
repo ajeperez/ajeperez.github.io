@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /assets/img/portrait.png
+Disallow: /assets/img/alexandre-perez.png
